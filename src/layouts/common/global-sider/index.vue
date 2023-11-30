@@ -1,12 +1,12 @@
 <template>
   <dark-mode-container
-    class="flex-col-stretch h-full shadow-[2px_0_8px_0_rgba(29,35,41,0.05)] z-2"
+    class="flex-col-stretch h-full shadow-[2px_0_8px_0_rgba(29,35,41,0.05)] z-20"
     :inverted="theme.sider.inverted"
   >
     <global-logo
       v-if="showLogo"
       :show-title="showTitle"
-      class="overflow-hidden transition-all duration-300 ease-[cubic-bezier(.4,0,.2,1)]"
+      class="overflow-hidden transition-base"
       :style="{
         width: app.siderCollapse ? theme.sider.collapsedWidth + 'px' : theme.sider.width + 'px',
         height: theme.header.height + 'px'

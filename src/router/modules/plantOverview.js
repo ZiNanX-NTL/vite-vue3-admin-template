@@ -5,7 +5,7 @@ const plantOverview = {
   meta: {
     title: '种植概况',
     requiresAuth: true,
-    keepAlive: true,
+    keepAlive: false,
     singleLayout: 'basic',
     permissions: ['super', 'admin', 'user'],
     icon: 'fluent:book-information-24-regular',

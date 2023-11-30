@@ -13,6 +13,7 @@ import {
   transformAuthRouteToSearchMenus
 } from '@/router';
 import { useAuthStore } from '../auth';
+import { useAppStore } from '../app';
 
 export const useRouteStore = defineStore('route-store', {
   state: () => ({
@@ -94,6 +95,38 @@ export const useRouteStore = defineStore('route-store', {
       });
 
       this.cacheRoutes = getCacheRoutes(vueRoutes);
+    },
+    /** 从缓存路由中去除某个路由 */
+    removeCacheRoute(name) {
+      const index = this.cacheRoutes.indexOf(name);
+      if (index > -1) {
+        this.cacheRoutes.splice(index, 1);
+      }
+    },
+    /** 添加某个缓存路由 */
+    addCacheRoute(name) {
+      const index = this.cacheRoutes.indexOf(name);
+      if (index === -1) {
+        this.cacheRoutes.push(name);
+      }
+    },
+    /**
+     * 重新缓存路由
+     */
+    async reCacheRoute(name) {
+      const { reloadPage } = useAppStore();
+
+      const isCached = this.cacheRoutes.includes(name);
+
+      if (isCached) {
+        this.removeCacheRoute(name);
+      }
+
+      await reloadPage();
+
+      if (isCached) {
+        this.addCacheRoute(name);
+      }
     }
   }
 });

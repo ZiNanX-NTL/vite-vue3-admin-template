@@ -1,7 +1,7 @@
 <template>
   <dark-mode-container
     class="h-full shadow-[0_1px_2px_rgba(0,21,41,0.08)] relative"
-    :class="mode === 'vertical-mix' ? 'z-3' : 'z-1'"
+    :class="mode === 'vertical-mix' ? 'z-30' : 'z-10'"
     :inverted="theme.header.inverted"
     :style="{ height: theme.header.height + 'px' }"
   >
