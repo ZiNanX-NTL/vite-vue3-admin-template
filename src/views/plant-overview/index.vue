@@ -1,8 +1,7 @@
 <template>
   <div>
     <!-- <div class="h-full bg-red overflow-hidden"> -->
-    <div v-if="isLoading" class="color-primary_10">测试</div>
-    <div v-else>asdfasdfasdf</div>
+    <div class="color-primary_10">测试</div>
     <n-button @click="handleLoading">aasdfas</n-button>
     <n-button type="primary" @click="handlere">aasdfas</n-button>
 
@@ -63,7 +62,6 @@
     </n-tabs>
     <!-- <AppLoading></AppLoading> -->
   </div>
-  <!-- </div> -->
 </template>
 
 <script setup>
@@ -83,9 +81,6 @@ const app = useAppStore();
 function handlere() {
   app.reloadPage(3000);
 }
-watch(app.reloadFlag, nv => {
-  console.log(nv);
-});
 </script>
 
 <style lang="scss" scoped></style>

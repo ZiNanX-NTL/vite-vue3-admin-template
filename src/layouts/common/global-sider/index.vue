@@ -30,7 +30,7 @@
         :collapsed="app.siderCollapse"
         :collapsed-width="theme.sider.collapsedWidth"
         :collapsed-icon-size="22"
-        :options="menus"
+        :options="routeStore.menus"
         :expanded-keys="expandedKeys"
         @update:value="handleUpdateMenu"
         @update:expanded-keys="handleUpdateExpandedKeys"
@@ -52,7 +52,7 @@ defineProps({
 
 const route = useRoute();
 const app = useAppStore();
-const { menus } = useRouteStore();
+const routeStore = useRouteStore();
 const { routerPush } = useRouterPush();
 const theme = useThemeStore();
 
@@ -73,7 +73,7 @@ const showTitle = computed(() => !app.siderCollapse);
 watch(
   () => route.name,
   () => {
-    expandedKeys.value = getActiveKeyPathsOfMenus(activeKey.value, menus);
+    expandedKeys.value = getActiveKeyPathsOfMenus(activeKey.value, routeStore.menus);
   },
   { immediate: true }
 );

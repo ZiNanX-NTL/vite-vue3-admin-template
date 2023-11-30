@@ -18,7 +18,6 @@
         </template>
         <!-- 不需要滚动时,view外层设置h-full,继承父级100%高度,需要滚动时外层不能继承父级100%高度 -->
         <div class="w-full flex">
-          {{ app.reloadFlag }}
           <global-content :style="contentStyle" />
         </div>
       </n-layout-content>
@@ -28,14 +27,13 @@
 </template>
 
 <script setup>
-import { useAppStore, useThemeStore } from '@/store';
+import { useThemeStore } from '@/store';
 import { useBasicLayout } from '@/utils';
 import { GlobalContent, GlobalSider, GlobalHeader, SettingDrawer, GlobalTab } from '../common';
 
 defineOptions({ name: 'BasicLayout' });
 
 const theme = useThemeStore();
-const app = useAppStore();
 
 const { mode, layoutProps, headerProps, siderProps } = useBasicLayout();
 

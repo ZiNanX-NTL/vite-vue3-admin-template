@@ -5,7 +5,7 @@
         <n-menu
           :value="activeKey"
           mode="horizontal"
-          :options="menus"
+          :options="routeStore.menus"
           :inverted="theme.header.inverted"
           @update:value="handleUpdateMenu"
         />
@@ -21,7 +21,7 @@ import { useRouterPush } from '@/utils';
 defineOptions({ name: 'HeaderMenu' });
 
 const route = useRoute();
-const { menus } = useRouteStore();
+const routeStore = useRouteStore();
 const theme = useThemeStore();
 const { routerPush } = useRouterPush();
 
