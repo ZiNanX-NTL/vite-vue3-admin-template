@@ -43,10 +43,5 @@
   "[vue]": {
     "editor.defaultFormatter": "Vue.volar"
   },
-  "cSpell.words": [
-    "Arcgis",
-    "Raycaster",
-    "TIANDITU",
-    "wkid"
-  ]
+  "cSpell.words": ["Arcgis", "Raycaster", "TIANDITU", "wkid"]
 }

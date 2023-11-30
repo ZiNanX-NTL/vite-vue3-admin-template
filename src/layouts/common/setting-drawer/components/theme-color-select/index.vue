@@ -7,9 +7,7 @@
   </n-grid>
   <n-space :vertical="true" class="pt-12px">
     <n-color-picker :value="theme.themeColor" :show-alpha="false" @update-value="theme.setThemeColor" />
-    <n-button :block="true" :type="otherColorBtnType" @click="openModal">
-      更多颜色
-    </n-button>
+    <n-button :block="true" :type="otherColorBtnType" @click="openModal">更多颜色</n-button>
   </n-space>
   <color-modal :visible="visible" @close="closeModal" />
 </template>
