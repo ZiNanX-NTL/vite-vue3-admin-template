@@ -1,0 +1,52 @@
+{
+  "css.customData": [".vscode/unocss.json"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.fontLigatures": true,
+  "editor.formatOnSave": false,
+  "editor.guides.bracketPairs": "active",
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "editor.tabSize": 2,
+  "eslint.validate": ["json"],
+  "files.associations": {
+    "*.env.*": "dotenv",
+    "*.svg": "html"
+  },
+  "files.eol": "\n",
+  "gutterpreview.paths": {
+    "@": "/src",
+    "~@": "/src"
+  },
+  "path-intellisense.mappings": {
+    "@": "${workspaceFolder}/src",
+    "~@": "${workspaceFolder}/src"
+  },
+
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "Vue.volar"
+  },
+  "cSpell.words": [
+    "Arcgis",
+    "Raycaster",
+    "TIANDITU",
+    "wkid"
+  ]
+}
