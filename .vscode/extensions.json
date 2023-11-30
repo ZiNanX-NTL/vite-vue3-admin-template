@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "simonsiefke.svg-preview",
+    "antfu.unocss",
+    "vue.vscode-typescript-vue-plugin",
+    "afzalsayed96.icones",
+    "mikestead.dotenv",
+    "wallabyjs.console-ninja",
+    "simonhe.common-intellisense",
+    "steoates.autoimport"
+  ]
+}
