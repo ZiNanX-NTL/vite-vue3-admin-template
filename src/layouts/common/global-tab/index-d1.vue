@@ -7,20 +7,20 @@
         :class="{ 'px-32px': scrollable }"
       >
         <template v-if="scrollable">
-          <icon-material-symbols-chevron-left-rounded class="tabs-arrow left-0" @click="scrollPrev" />
-          <icon-material-symbols-chevron-right-rounded class="tabs-arrow right-0" @click="scrollNext" />
+          <icon-material-symbols-chevron-left-rounded class="tabs-arrow left-0" />
+          <icon-material-symbols-chevron-right-rounded class="tabs-arrow right-0" />
         </template>
-        <n-scrollbar ref="scrollbarRef" x-scrollable>
+        <n-scrollbar x-scrollable>
           <div ref="navScroll" class="h-full py-10px flex-1 relative">
             <div ref="dragRef" class="tabs-card-scroll flex nowrap-hidden">
               <div
                 v-for="item in list"
                 :key="item.id"
-                class="select-none cursor-pointer flex flex-y-center h-32px pt-6px px-16px pb-4px rounded-3px mr-6px relative bg-red hover:text-#515a6e"
+                class="select-none cursor-pointer flex-none h-32px pt-6px px-16px pb-4px rounded-3px mr-6px inline-block relative bg-red hover:text-#515a6e"
               >
-                <span class="align-middle">{{ item.name }}</span>
+                <span class="float-left align-middle">{{ scrollable }}</span>
                 <icon-ic-round-close
-                  class="text-14px h-16px w-16px ml-12px rounded-50% text-#808695 hover:!text-#fff hover:bg-#808695 transition-base"
+                  class="text-14px h-16px w-16px -mt-2px ml-12px rounded-50% text-#808695 hover:!text-#fff hover:bg-#808695 transition-base"
                 />
               </div>
             </div>
@@ -46,16 +46,6 @@ const list = ref([
   { id: 3, name: '种植情况2' },
   { id: 4, name: '种植情况2' },
   { id: 5, name: '种植情况2' },
-  { id: 6, name: '种植情况2' },
-  { id: 7, name: '种植情况2' },
-  { id: 8, name: '种植情况2' },
-  { id: 9, name: '种植情况2' },
-  { id: 10, name: '种植情况2' },
-  { id: 11, name: '种植情况2' },
-  { id: 12, name: '种植情况2' },
-  { id: 13, name: '种植情况2' },
-  { id: 14, name: '种植情况2' },
-  { id: 15, name: '种植情况2' },
   { id: 16, name: '种植情况2' },
   { id: 17, name: '种植情况3' }
 ]);
@@ -69,16 +59,6 @@ const navScroll = ref();
 const { width: navScrollWidth } = useElementSize(navScroll);
 const { width: navWrapWidth } = useElementSize(navWrap);
 const scrollable = computed(() => navScrollWidth.value > navWrapWidth.value);
-
-// 翻页滚动
-const scrollbarRef = ref();
-function scrollPrev() {
-  console.log(navScroll.value.scrollLeft);
-  // scrollbarRef.value.scrollBy({ left: -navWrapWidth.value, behavior: 'smooth' });
-}
-function scrollNext() {
-  scrollbarRef.value.scrollBy({ left: navWrapWidth.value, behavior: 'smooth' });
-}
 </script>
 
 <style lang="scss" scoped>

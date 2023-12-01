@@ -10,7 +10,7 @@
     >
       <global-header v-if="layoutProps.showMixHeader" v-bind="headerProps" />
       <global-sider v-if="layoutProps.showMixSider" v-bind="siderProps" />
-      <n-layout-content class="wh-full pt-44px relative" :native-scrollbar="false" :style="layoutContentStyle">
+      <n-layout-content class="wh-full pt-52px relative" :native-scrollbar="false" :style="layoutContentStyle">
         <template v-if="contentMounted">
           <Teleport to=".n-layout-content">
             <global-tab class="absolute top-0"></global-tab>
@@ -49,7 +49,7 @@ const layoutContentStyle = computed(() => ({
   height: mode.value === 'vertical' ? `calc(100% - ${theme.header.height}px)` : ''
 }));
 const contentStyle = computed(() => ({
-  minHeight: `calc(100vh - ${theme.header.height}px - 44px)`
+  minHeight: `calc(100vh - ${theme.header.height}px - 52px)`
 }));
 
 const verticalNativeScroll = computed(() => {
