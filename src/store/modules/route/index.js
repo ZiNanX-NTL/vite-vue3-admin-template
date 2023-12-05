@@ -14,6 +14,7 @@ import {
 } from '@/router';
 import { useAuthStore } from '../auth';
 import { useAppStore } from '../app';
+import { useTabStore } from '../tab';
 
 export const useRouteStore = defineStore('route-store', {
   state: () => ({
@@ -67,6 +68,7 @@ export const useRouteStore = defineStore('route-store', {
     },
     /** 初始化静态路由 */
     async initStaticRoute() {
+      const { initHomeTab } = useTabStore();
       const auth = useAuthStore();
       const permissionMode = import.meta.env.VITE_PERMISSION_MODE;
 
@@ -77,6 +79,8 @@ export const useRouteStore = defineStore('route-store', {
         routes = filterAuthRoutesByUserRole(staticRoutes, auth.userInfo.userRole);
       }
       this.handleAuthRoute(routes);
+
+      initHomeTab(this.routeHomeName, router);
 
       this.isInitAuthRoute = true;
     },
