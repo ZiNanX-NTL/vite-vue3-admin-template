@@ -1,7 +1,7 @@
 import { effectScope, onScopeDispose, watch } from 'vue';
 import { useOsTheme } from 'naive-ui';
 import { kebabCase } from 'lodash-es';
-import { localStg, getColorPalettes } from '@/utils';
+import { localStg, getColorPalettes, getRgbOfColor } from '@/utils';
 import { useThemeStore } from '../modules';
 
 /** 订阅theme store */
@@ -85,13 +85,15 @@ function addThemeCssVarsToBody(themeVars) {
     const styleValue = themeVars[key];
 
     if (styleValue) {
-      style.push(`--${kebabCase(key)}: ${styleValue}`);
+      const { r, g, b } = getRgbOfColor(styleValue);
+      style.push(`--${kebabCase(key)}: ${r},${g},${b}`);
 
       if (key === 'primaryColor') {
         const colorPalettes = getColorPalettes(styleValue);
 
         colorPalettes.forEach((palette, index) => {
-          style.push(`--${kebabCase(key)}${index + 1}: ${palette}`);
+          const { r: pR, g: pG, b: pB } = getRgbOfColor(palette);
+          style.push(`--${kebabCase(key)}${index + 1}: ${pR},${pG},${pB}`);
         });
       }
     }

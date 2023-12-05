@@ -71,6 +71,22 @@
       "showIcon": true
     }
   },
+  "tab": {
+    "visible": true,
+    "height": 44,
+    "scrollMode": "button",
+    "scrollModeList": [
+      {
+        "value": "scrollBar",
+        "label": "滚动条"
+      },
+      {
+        "value": "button",
+        "label": "翻页按钮"
+      }
+    ],
+    "isCache": true
+  },
   "headerMenu": {
     "horizontalPosition": "flex-start",
     "horizontalPositionList": [

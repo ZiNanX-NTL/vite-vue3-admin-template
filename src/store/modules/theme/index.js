@@ -86,6 +86,14 @@ export const useThemeStore = defineStore('theme-store', {
     setHeaderCrumbIconVisible(visible) {
       this.header.crumb.showIcon = visible;
     },
+    /** 设置多页签可见 */
+    setTabVisible(visible) {
+      this.tab.visible = visible;
+    },
+    /** 设置多页签翻页风格 */
+    setTabMode(mode) {
+      this.tab.scrollMode = mode;
+    },
     /** 设置切换页面时是否过渡动画 */
     setPageIsAnimate(animate) {
       this.page.animate = animate;

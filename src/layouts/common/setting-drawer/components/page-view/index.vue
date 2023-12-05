@@ -7,6 +7,18 @@
     <setting-menu label="面包屑图标">
       <n-switch :value="theme.header.crumb.showIcon" @update:value="theme.setHeaderCrumbIconVisible" />
     </setting-menu>
+    <setting-menu label="多页签">
+      <n-switch :value="theme.tab.visible" @update:value="theme.setTabVisible" />
+    </setting-menu>
+    <setting-menu label="多页签滚动模式">
+      <n-select
+        class="w-120px"
+        size="small"
+        :value="theme.tab.scrollMode"
+        :options="theme.tab.scrollModeList"
+        @update:value="theme.setTabMode"
+      />
+    </setting-menu>
     <setting-menu label="页面切换动画">
       <n-switch :value="theme.page.animate" @update:value="theme.setPageIsAnimate" />
     </setting-menu>
