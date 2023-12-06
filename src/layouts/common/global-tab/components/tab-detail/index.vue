@@ -26,21 +26,40 @@
 </template>
 
 <script setup>
-import { useSortable } from '@vueuse/integrations/useSortable';
+import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
 import { useTabStore } from '@/store';
 
 defineOptions({ name: 'TabDetail' });
+const emit = defineEmits(['scroll']);
 
 const route = useRoute();
 const tab = useTabStore();
 
 const tabRef = ref();
 useSortable(tabRef, tab.tabs, {
-  animation: 150
+  animation: 150,
+  onUpdate: e => {
+    moveArrayElement(tab.tabs, e.oldIndex, e.newIndex);
+  }
 });
 
 function init() {
   tab.iniTabStore(route);
+}
+
+// 初始化
+init();
+
+async function getActiveTabClientX() {
+  await nextTick();
+  if (tabRef.value && tabRef.value.children.length && tabRef.value.children[tab.activeTabIndex]) {
+    const activeTabElement = tabRef.value.children[tab.activeTabIndex];
+    const { x, width } = activeTabElement.getBoundingClientRect();
+    const clientX = x + width / 2;
+    setTimeout(() => {
+      emit('scroll', clientX);
+    }, 50);
+  }
 }
 
 watch(
@@ -50,9 +69,15 @@ watch(
     tab.setActiveTab(route.fullPath);
   }
 );
-
-// 初始化
-init();
+watch(
+  () => tab.activeTabIndex,
+  () => {
+    getActiveTabClientX();
+  },
+  {
+    immediate: true
+  }
+);
 </script>
 
 <style lang="scss" scoped></style>

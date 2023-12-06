@@ -12,7 +12,7 @@
         </template>
         <n-scrollbar ref="scrollbarRef" x-scrollable :theme-overrides="scrollbarThemeOverrides">
           <div ref="navScroll" class="h-full py-10px flex-1 relative">
-            <TabDetail />
+            <TabDetail @scroll="handleScroll" />
           </div>
         </n-scrollbar>
       </div>
@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import { useElementSize } from '@vueuse/core';
+import { useElementBounding, useElementSize } from '@vueuse/core';
 import { useThemeStore } from '@/store';
 import { ReloadButton, TabDetail } from './components';
 
@@ -39,6 +39,7 @@ const navWrap = ref();
 const navScroll = ref();
 const { width: navScrollWidth } = useElementSize(navScroll);
 const { width: navWrapWidth } = useElementSize(navWrap);
+const isOverflow = computed(() => navScrollWidth.value > navWrapWidth.value);
 const flippable = computed(() => theme.tab.scrollMode === 'button' && navScrollWidth.value > navWrapWidth.value);
 
 // 翻页滚动
@@ -48,6 +49,14 @@ function scrollPrev() {
 }
 function scrollNext() {
   scrollbarRef.value.scrollBy({ left: navWrapWidth.value, behavior: 'smooth' });
+}
+// 点击标签页滚动
+const { left: navWrapLeft } = useElementBounding(navWrap);
+function handleScroll(clientX) {
+  if (!isOverflow) return;
+  const currentX = clientX - navWrapLeft.value;
+  const deltaX = currentX - navWrapWidth.value / 2;
+  scrollbarRef.value.scrollBy({ left: deltaX, behavior: 'smooth' });
 }
 </script>
 
