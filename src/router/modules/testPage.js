@@ -1,16 +1,16 @@
-const plantOverview = {
-  name: 'plant-overview',
-  path: '/plant-overview',
+const testPageRoute = {
+  name: 'test-page',
+  path: '/test-page',
   component: 'self',
   meta: {
-    title: '种植概况',
+    title: '测试页面',
     requiresAuth: true,
     keepAlive: true,
     singleLayout: 'basic',
     permissions: ['super', 'admin', 'user'],
     icon: 'fluent:book-information-24-regular',
-    order: 1
+    order: 3
   }
 };
 
-export default plantOverview;
+export default testPageRoute;

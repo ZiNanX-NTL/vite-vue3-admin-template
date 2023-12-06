@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 
 export const useAppStore = defineStore('app-store', {
   state: () => ({
+    contentRef: null,
     loadingVisible: false,
     reloadFlag: true,
     siderCollapse: false,
@@ -10,6 +11,9 @@ export const useAppStore = defineStore('app-store', {
   }),
   getters: {},
   actions: {
+    setContentRef(contentRef) {
+      this.contentRef = contentRef;
+    },
     setLoadingVisible(visible) {
       this.loadingVisible = visible;
     },

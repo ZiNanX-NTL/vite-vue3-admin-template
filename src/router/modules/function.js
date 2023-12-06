@@ -41,7 +41,7 @@ const functionRoute = {
     }
   ],
   meta: {
-    title: '测试页面',
+    title: '多页签',
     icon: 'fluent:book-information-24-regular',
     order: 2
   }

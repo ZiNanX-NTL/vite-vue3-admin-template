@@ -11,6 +11,7 @@
       <global-header v-if="layoutProps.showMixHeader" v-bind="headerProps" />
       <global-sider v-if="layoutProps.showMixSider" v-bind="siderProps" />
       <n-layout-content
+        ref="contentRef"
         class="wh-full relative"
         :class="{ 'pt-52px': theme.tab.visible }"
         :native-scrollbar="false"
@@ -32,19 +33,22 @@
 </template>
 
 <script setup>
-import { useThemeStore } from '@/store';
+import { useAppStore, useThemeStore } from '@/store';
 import { useBasicLayout } from '@/utils';
 import { GlobalContent, GlobalSider, GlobalHeader, SettingDrawer, GlobalTab } from '../common';
 
 defineOptions({ name: 'BasicLayout' });
 
 const theme = useThemeStore();
+const app = useAppStore();
 
 const { mode, layoutProps, headerProps, siderProps } = useBasicLayout();
 
 const contentMounted = ref(false);
+const contentRef = ref();
 onMounted(() => {
   contentMounted.value = true;
+  app.setContentRef(contentRef);
 });
 
 const layoutStyle = computed(() => ({

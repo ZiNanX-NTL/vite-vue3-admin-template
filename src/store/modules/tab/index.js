@@ -1,8 +1,14 @@
 import { defineStore } from 'pinia';
-import { useRouterPush } from '@/utils';
+import { localStg, useRouterPush } from '@/utils';
 import { useThemeStore } from '../theme';
 import { useRouteStore } from '../route';
-import { getIndexInTabRoutesByRouteName, getTabRouteByVueRoute, getTabRoutes, isInTabRoutes } from './helpers';
+import {
+  getIndexInTabRoutes,
+  getIndexInTabRoutesByRouteName,
+  getTabRouteByVueRoute,
+  getTabRoutes,
+  isInTabRoutes
+} from './helpers';
 
 export const useTabStore = defineStore('tab-store', {
   state: () => ({
@@ -40,6 +46,32 @@ export const useTabStore = defineStore('tab-store', {
         // 有子路由的不能作为Tab
         this.homeTab = getTabRouteByVueRoute(findHome);
       }
+    },
+    /**
+     * 记录tab滚动位置
+     * @param fullPath - 路由fullPath
+     * @param position - tab当前页的滚动位置
+     */
+    recordTabScrollPosition(fullPath, position) {
+      const index = getIndexInTabRoutes(this.tabs, fullPath);
+      if (index > -1) {
+        this.tabs[index].scrollPosition = position;
+      }
+    },
+    /**
+     * 获取tab滚动位置
+     * @param fullPath - 路由fullPath
+     */
+    getTabScrollPosition(fullPath) {
+      const position = {
+        left: 0,
+        top: 0
+      };
+      const index = getIndexInTabRoutes(this.tabs, fullPath);
+      if (index > -1) {
+        Object.assign(position, this.tabs[index].scrollPosition);
+      }
+      return position;
     },
     /**
      * 设置当前路由对应的页签为激活状态
@@ -145,6 +177,10 @@ export const useTabStore = defineStore('tab-store', {
           this.setActiveTab(activePath);
         }
       }
+    },
+    /** 缓存页签路由数据 */
+    cacheTabRoutes() {
+      localStg.set('multiTabRoutes', this.tabs);
     }
   }
 });
