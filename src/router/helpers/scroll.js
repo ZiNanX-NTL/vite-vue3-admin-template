@@ -32,8 +32,8 @@ export const scrollBehavior = async (to, from) => {
 
     setTimeout(() => {
       if (contentRef) {
-        contentRef?.scrollTo({ top: scrollPosition.top, left: scrollPosition.left, behavior: 'smooth' });
+        contentRef?.scrollTo({ top: scrollPosition.top, left: scrollPosition.left, behavior: 'auto' });
       }
-    }, 400);
+    }, 350);
   });
 };

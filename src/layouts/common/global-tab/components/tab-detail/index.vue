@@ -9,6 +9,7 @@
           tab.activeTab === item.fullPath
       }"
       @click="tab.handleClickTab(item.fullPath)"
+      @contextmenu="handleContextMenu($event, item.fullPath, item.meta.affix)"
     >
       <svg-icon
         :icon="item.meta.icon"
@@ -23,11 +24,20 @@
       />
     </div>
   </div>
+  <context-menu
+    :visible="dropdown.visible"
+    :current-path="dropdown.currentPath"
+    :affix="dropdown.affix"
+    :x="dropdown.x"
+    :y="dropdown.y"
+    @update:visible="handleDropdownVisible"
+  />
 </template>
 
 <script setup>
 import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
 import { useTabStore } from '@/store';
+import { ContextMenu } from './components';
 
 defineOptions({ name: 'TabDetail' });
 const emit = defineEmits(['scroll']);
@@ -49,6 +59,37 @@ function init() {
 
 // 初始化
 init();
+
+// 右键下拉菜单
+const dropdown = reactive({
+  visible: false,
+  affix: false,
+  x: 0,
+  y: 0,
+  currentPath: ''
+});
+function setDropdown(config) {
+  Object.assign(dropdown, config);
+}
+/** 点击右键菜单 */
+async function handleContextMenu(e, currentPath, affix) {
+  e.preventDefault();
+
+  const { clientX, clientY } = e;
+
+  setDropdown({ visible: false });
+  await nextTick();
+  setDropdown({
+    visible: true,
+    x: clientX,
+    y: clientY,
+    currentPath,
+    affix
+  });
+}
+function handleDropdownVisible(visible) {
+  setDropdown({ visible });
+}
 
 async function getActiveTabClientX() {
   await nextTick();

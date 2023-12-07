@@ -3,11 +3,18 @@ import { defineStore } from 'pinia';
 
 export const useAppStore = defineStore('app-store', {
   state: () => ({
+    /** n-content引用 */
     contentRef: null,
+    /** 全局loading显示 */
     loadingVisible: false,
+    /** 重载页面(控制页面的显示) */
     reloadFlag: true,
+    /** 侧边栏折叠状态 */
     siderCollapse: false,
-    settingDrawerVisible: false
+    /** 项目配置的抽屉可见状态 */
+    settingDrawerVisible: false,
+    /** 主体内容全屏 */
+    contentFull: false
   }),
   getters: {},
   actions: {
@@ -51,6 +58,10 @@ export const useAppStore = defineStore('app-store', {
     /** 切换抽屉可见状态 */
     toggleSettingDrawerVisible() {
       this.settingDrawerVisible = !this.settingDrawerVisible;
+    },
+    /** 设置主体内容全屏 */
+    setContentFull(full) {
+      this.contentFull = full;
     }
   }
 });

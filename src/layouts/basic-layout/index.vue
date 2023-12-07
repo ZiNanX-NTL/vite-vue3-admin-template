@@ -13,13 +13,13 @@
       <n-layout-content
         ref="contentRef"
         class="wh-full relative"
-        :class="{ 'pt-52px': theme.tab.visible }"
+        :class="{ 'pt-52px': theme.tab.visible && !app.contentFull }"
         :native-scrollbar="false"
         :style="layoutContentStyle"
       >
         <template v-if="theme.tab.visible && contentMounted">
           <Teleport to=".n-layout-content">
-            <global-tab class="absolute top-0"></global-tab>
+            <global-tab class="absolute top-0" :class="{ '!-top-52px': app.contentFull }"></global-tab>
           </Teleport>
         </template>
         <!-- 不需要滚动时,view外层设置h-full,继承父级100%高度,需要滚动时外层不能继承父级100%高度 -->
@@ -33,6 +33,7 @@
 </template>
 
 <script setup>
+import { useFullscreen } from '@vueuse/core';
 import { useAppStore, useThemeStore } from '@/store';
 import { useBasicLayout } from '@/utils';
 import { GlobalContent, GlobalSider, GlobalHeader, SettingDrawer, GlobalTab } from '../common';
@@ -76,6 +77,26 @@ watch([verticalNativeScroll, horizontalNativeScroll], async () => {
   contentMounted.value = false;
   await nextTick();
   contentMounted.value = true;
+});
+
+// 内容全屏
+// const fullscreenRef = ref();
+const { isFullscreen, toggle } = useFullscreen(contentRef);
+watch(
+  () => app.contentFull,
+  newValue => {
+    if (newValue && !isFullscreen.value) {
+      toggle();
+    }
+    if (!newValue && isFullscreen.value) {
+      toggle();
+    }
+  }
+);
+watch(isFullscreen, newValue => {
+  if (!newValue) {
+    app.setContentFull(false);
+  }
 });
 </script>
 

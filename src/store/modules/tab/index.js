@@ -47,6 +47,10 @@ export const useTabStore = defineStore('tab-store', {
         this.homeTab = getTabRouteByVueRoute(findHome);
       }
     },
+    /** 缓存页签路由数据 */
+    cacheTabRoutes() {
+      localStg.set('multiTabRoutes', this.tabs);
+    },
     /**
      * 记录tab滚动位置
      * @param fullPath - 路由fullPath
@@ -178,9 +182,62 @@ export const useTabStore = defineStore('tab-store', {
         }
       }
     },
-    /** 缓存页签路由数据 */
-    cacheTabRoutes() {
-      localStg.set('multiTabRoutes', this.tabs);
+    /**
+     * 清空多页签(多页签首页保留)
+     * @param excludes - 保留的多页签path
+     */
+    async clearTab(excludes = []) {
+      const { routerPush } = useRouterPush();
+
+      const homePath = this.homeTab.fullPath;
+      const remain = [homePath, ...excludes];
+      const hasActive = remain.includes(this.activeTab);
+      const updateTabs = this.tabs.filter(tab => remain.includes(tab.fullPath));
+      if (hasActive) this.tabs = updateTabs;
+      if (!hasActive && updateTabs.length) {
+        const activePath = updateTabs[updateTabs.length - 1].fullPath;
+        const navigationFailure = await routerPush(activePath);
+        if (!navigationFailure) {
+          this.tabs = updateTabs;
+          this.setActiveTab(activePath);
+        }
+      }
+    },
+    /**
+     * 清除左边多页签
+     * @param fullPath - 路由fullPath
+     */
+    clearLeftTab(fullPath) {
+      const index = getIndexInTabRoutes(this.tabs, fullPath);
+      if (index > -1) {
+        const excludes = this.tabs.slice(index).map(item => item.fullPath);
+        this.clearTab(excludes);
+      }
+    },
+    /**
+     * 清除右边多页签
+     * @param fullPath - 路由fullPath
+     */
+    clearRightTab(fullPath) {
+      const index = getIndexInTabRoutes(this.tabs, fullPath);
+      if (index > -1) {
+        const excludes = this.tabs.slice(0, index + 1).map(item => item.fullPath);
+        this.clearTab(excludes);
+      }
+    },
+    /** 清除所有多页签 */
+    clearAllTab() {
+      this.clearTab();
+    },
+    /**
+     * 设置当前路由对应的页签title
+     * @param title - tab名称
+     */
+    setActiveTabTitle(title) {
+      const item = this.tabs.find(tab => tab.fullPath === this.activeTab);
+      if (item) {
+        item.meta.title = title;
+      }
     }
   }
 });
