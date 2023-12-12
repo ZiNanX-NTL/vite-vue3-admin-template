@@ -82,7 +82,7 @@ function handleUpdateExpandedKeys(keys) {
 const showTitle = computed(() => !app.siderCollapse);
 
 // 折叠后的宽度
-const collapsedWidth = computed(() => (isMobile ? 0 : theme.sider.collapsedWidth));
+const collapsedWidth = computed(() => (isMobile.value ? 0 : theme.sider.collapsedWidth));
 
 watch(
   () => route.name,
