@@ -8,7 +8,7 @@
       :show-title="showTitle"
       class="overflow-hidden transition-base"
       :style="{
-        width: app.siderCollapse ? theme.sider.collapsedWidth + 'px' : theme.sider.width + 'px',
+        width: app.siderCollapse ? collapsedWidth + 'px' : theme.sider.width + 'px',
         height: theme.header.height + 'px'
       }"
     />
@@ -17,7 +17,7 @@
       :show-trigger="theme.sider.showTrigger !== 'headerIcon' && theme.sider.showTrigger"
       collapse-mode="width"
       :collapsed="app.siderCollapse"
-      :collapsed-width="theme.sider.collapsedWidth"
+      :collapsed-width="collapsedWidth"
       :width="theme.sider.width"
       :native-scrollbar="false"
       :inverted="!theme.darkMode && theme.sider.inverted"
@@ -28,7 +28,7 @@
         :value="activeKey"
         :inverted="!theme.darkMode && theme.sider.inverted"
         :collapsed="app.siderCollapse"
-        :collapsed-width="theme.sider.collapsedWidth"
+        :collapsed-width="collapsedWidth"
         :collapsed-icon-size="22"
         :options="routeStore.menus"
         :expanded-keys="expandedKeys"
@@ -36,13 +36,23 @@
         @update:expanded-keys="handleUpdateExpandedKeys"
       />
     </n-layout-sider>
+    <!-- siderBar 遮罩 -->
+    <Teleport to="body">
+      <transition name="fade">
+        <div
+          v-if="isMobile && !app.siderCollapse"
+          class="sider-mask absolute-lt z-200 wh-full bg-[rgba(0,0,0,.2)]"
+          @click="app.setSiderCollapse(true)"
+        ></div>
+      </transition>
+    </Teleport>
   </dark-mode-container>
 </template>
 
 <script setup>
 import { getActiveKeyPathsOfMenus } from '@/router';
 import { useAppStore, useRouteStore, useThemeStore } from '@/store';
-import { useRouterPush } from '@/utils';
+import { useBasicLayout, useRouterPush } from '@/utils';
 import GlobalLogo from '../global-logo/index.vue';
 
 defineOptions({ name: 'GlobalSider' });
@@ -55,6 +65,7 @@ const app = useAppStore();
 const routeStore = useRouteStore();
 const { routerPush } = useRouterPush();
 const theme = useThemeStore();
+const { isMobile } = useBasicLayout();
 
 const activeKey = computed(() => (route.meta?.activeMenu ? route.meta.activeMenu : route.name));
 const expandedKeys = ref([]);
@@ -69,6 +80,9 @@ function handleUpdateExpandedKeys(keys) {
 }
 
 const showTitle = computed(() => !app.siderCollapse);
+
+// 折叠后的宽度
+const collapsedWidth = computed(() => (isMobile ? 0 : theme.sider.collapsedWidth));
 
 watch(
   () => route.name,

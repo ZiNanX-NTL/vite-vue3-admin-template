@@ -1,7 +1,7 @@
 <template>
   <n-layout :has-sider="layoutProps.showSider" class="wh-full" :native-scrollbar="horizontalNativeScroll">
     <global-header v-if="layoutProps.showHeader" v-bind="headerProps" />
-    <global-sider v-if="layoutProps.showSider" v-bind="siderProps" />
+    <global-sider v-if="layoutProps.showSider" v-bind="siderProps" :class="{ 'absolute z-300': isMobile }" />
     <n-layout
       :has-sider="layoutProps.showMixSider"
       class="wh-full"
@@ -43,7 +43,7 @@ defineOptions({ name: 'BasicLayout' });
 const theme = useThemeStore();
 const app = useAppStore();
 
-const { mode, layoutProps, headerProps, siderProps } = useBasicLayout();
+const { mode, isMobile, layoutProps, headerProps, siderProps } = useBasicLayout();
 
 const contentMounted = ref(false);
 const contentRef = ref();

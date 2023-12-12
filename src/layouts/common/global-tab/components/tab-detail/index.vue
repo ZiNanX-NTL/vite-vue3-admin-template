@@ -37,6 +37,7 @@
 <script setup>
 import { useSortable, moveArrayElement } from '@vueuse/integrations/useSortable';
 import { useTabStore } from '@/store';
+import { useBasicLayout } from '@/utils';
 import { ContextMenu } from './components';
 
 defineOptions({ name: 'TabDetail' });
@@ -44,10 +45,12 @@ const emit = defineEmits(['scroll']);
 
 const route = useRoute();
 const tab = useTabStore();
+const { isMobile } = useBasicLayout();
 
 const tabRef = ref();
 useSortable(tabRef, tab.tabs, {
   animation: 150,
+  delay: isMobile ? 500 : 0,
   onUpdate: e => {
     moveArrayElement(tab.tabs, e.oldIndex, e.newIndex);
   }
