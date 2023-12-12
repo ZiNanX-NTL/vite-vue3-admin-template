@@ -50,7 +50,7 @@ const { isMobile } = useBasicLayout();
 const tabRef = ref();
 useSortable(tabRef, tab.tabs, {
   animation: 150,
-  delay: isMobile ? 500 : 0,
+  delay: isMobile.value ? 500 : 0,
   onUpdate: e => {
     moveArrayElement(tab.tabs, e.oldIndex, e.newIndex);
   }
