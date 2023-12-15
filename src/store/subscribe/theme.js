@@ -49,8 +49,8 @@ export default function subscribeThemeStore() {
     // 监听操作系统主题模式
     watch(
       useOsTheme,
-      newValue => {
-        const isDark = newValue === 'dark';
+      mode => {
+        const isDark = mode.value === 'dark';
         theme.setAutoFollowSystemMode(isDark);
       },
       { immediate: true }
