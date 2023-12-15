@@ -8,14 +8,16 @@
       :show-title="showTitle"
       class="overflow-hidden transition-base"
       :style="{
-        width: app.siderCollapse ? collapsedWidth + 'px' : theme.sider.width + 'px',
+        width: logoWidth,
         height: theme.header.height + 'px'
       }"
     />
     <n-layout-sider
       class="flex-1 h-0"
       :show-trigger="theme.sider.showTrigger !== 'headerIcon' && theme.sider.showTrigger"
-      collapse-mode="width"
+      :trigger-style="theme.sider.showTrigger === 'arrow-circle' ? 'top: 240px' : ''"
+      :collapsed-trigger-style="theme.sider.showTrigger === 'arrow-circle' ? 'top: 240px' : ''"
+      :collapse-mode="theme.sider.showTrigger === 'bar' ? 'transform' : 'width'"
       :collapsed="app.siderCollapse"
       :collapsed-width="collapsedWidth"
       :width="theme.sider.width"
@@ -65,7 +67,7 @@ const app = useAppStore();
 const routeStore = useRouteStore();
 const { routerPush } = useRouterPush();
 const theme = useThemeStore();
-const { isMobile } = useBasicLayout();
+const { isMobile, mode } = useBasicLayout();
 
 const activeKey = computed(() => (route.meta?.activeMenu ? route.meta.activeMenu : route.name));
 const expandedKeys = ref([]);
@@ -81,8 +83,17 @@ function handleUpdateExpandedKeys(keys) {
 
 const showTitle = computed(() => !app.siderCollapse);
 
-// 折叠后的宽度
-const collapsedWidth = computed(() => (isMobile.value ? 0 : theme.sider.collapsedWidth));
+/** 折叠后的宽度 */
+const collapsedWidth = computed(() =>
+  isMobile.value || theme.sider.showTrigger === 'bar' ? 0 : theme.sider.collapsedWidth
+);
+/** logo的宽度 */
+const logoWidth = computed(() => {
+  if (theme.logo.isCustomizeWidth && mode.value !== 'vertical') {
+    return `${theme.logo.width}px`;
+  }
+  return app.siderCollapse ? `${collapsedWidth.value}px` : `${theme.sider.width}px`;
+});
 
 watch(
   () => route.name,

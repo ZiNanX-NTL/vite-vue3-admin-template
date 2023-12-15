@@ -6,7 +6,7 @@
     :style="{ height: theme.header.height + 'px' }"
   >
     <n-layout-header class="flex-y-center h-full" :inverted="!theme.darkMode && theme.header.inverted">
-      <global-logo v-if="showLogo" :show-title="true" class="h-full" :style="{ width: theme.sider.width + 'px' }" />
+      <global-logo v-if="showLogo" :show-title="true" class="h-full" :style="{ width: logoWidth }" />
       <div v-if="!showHeaderMenu" class="flex-1-hidden flex-y-center h-full">
         <menu-collapse v-if="(showMenuCollapse || isMobile) && theme.sider.showTrigger === 'headerIcon'" />
         <global-breadcrumb v-if="theme.header.crumb.visible && !isMobile" />
@@ -52,6 +52,14 @@ const theme = useThemeStore();
 const { mode, isMobile } = useBasicLayout();
 
 const showButton = import.meta.env.DEV;
+
+/** logo的宽度 */
+const logoWidth = computed(() => {
+  if (theme.logo.isCustomizeWidth) {
+    return `${theme.logo.width}px`;
+  }
+  return `${theme.sider.width}px`;
+});
 </script>
 
 <style lang="scss" scoped></style>

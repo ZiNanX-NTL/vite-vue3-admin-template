@@ -71,6 +71,10 @@
       "showIcon": true
     }
   },
+  "logo": {
+    "isCustomizeWidth": false,
+    "width": 300
+  },
   "tab": {
     "visible": true,
     "height": 44,
@@ -120,7 +124,7 @@
       },
       {
         "value": "bar",
-        "label": "条形切换"
+        "label": "条形箭头切换"
       }
     ]
   },

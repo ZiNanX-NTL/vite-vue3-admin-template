@@ -37,6 +37,18 @@
         @update:value="theme.setSiderWidth"
       />
     </setting-menu>
+    <setting-menu label="自定义logo宽度">
+      <n-switch :value="theme.logo.isCustomizeWidth" @update:value="theme.setIsCustomizeWidth" />
+    </setting-menu>
+    <setting-menu label="自定义logo宽度">
+      <n-input-number
+        class="w-120px"
+        size="small"
+        :value="theme.logo.width"
+        :step="1"
+        @update:value="theme.setLogoWidth"
+      />
+    </setting-menu>
   </n-space>
 </template>
 

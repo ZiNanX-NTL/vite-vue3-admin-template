@@ -78,6 +78,14 @@ export const useThemeStore = defineStore('theme-store', {
         this.sider.width = width;
       }
     },
+    /** 设置是否自定义logo宽度 */
+    setIsCustomizeWidth(isCustomize) {
+      this.logo.isCustomizeWidth = isCustomize;
+    },
+    /** 设置自定义logo宽度 */
+    setLogoWidth(width) {
+      this.logo.width = width;
+    },
     /** 设置头部面包屑可见 */
     setHeaderCrumbVisible(visible) {
       this.header.crumb.visible = visible;
