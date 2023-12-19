@@ -58,11 +58,16 @@ const layoutStyle = computed(() => ({
 const layoutContentStyle = computed(() => ({
   height: mode.value === 'vertical' ? `calc(100% - ${theme.header.height}px)` : ''
 }));
-const contentStyle = computed(() => ({
-  minHeight: theme.tab.visible
-    ? `calc(100vh - ${theme.header.height}px - 52px)`
-    : `calc(100vh - ${theme.header.height}px)`
-}));
+const contentStyle = computed(() => {
+  if (app.contentFull) {
+    return { minHeight: '100vh' };
+  }
+  return {
+    minHeight: theme.tab.visible
+      ? `calc(100vh - ${theme.header.height}px - 52px)`
+      : `calc(100vh - ${theme.header.height}px)`
+  };
+});
 
 const verticalNativeScroll = computed(() => {
   if (mode.value === 'vertical' && theme.scrollMode === 'wrapper') return false;

@@ -17,6 +17,7 @@
         </n-scrollbar>
       </div>
       <reload-button />
+      <fullscreen-button />
     </div>
   </dark-mode-container>
 </template>
@@ -24,7 +25,7 @@
 <script setup>
 import { useElementBounding, useElementSize } from '@vueuse/core';
 import { useThemeStore } from '@/store';
-import { ReloadButton, TabDetail } from './components';
+import { ReloadButton, FullscreenButton, TabDetail } from './components';
 
 defineOptions({ name: 'GlobalTab' });
 

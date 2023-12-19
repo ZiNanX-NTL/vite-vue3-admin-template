@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { useAppStore, useTabStore } from '@/store';
+import { useTabStore } from '@/store';
 import { useIconRender } from '@/utils';
 
 defineOptions({ name: 'ContextMenu' });
@@ -43,7 +43,6 @@ const props = defineProps({
 
 const emit = defineEmits(['update:visible']);
 
-const app = useAppStore();
 const tab = useTabStore();
 const { iconRender } = useIconRender();
 
@@ -61,23 +60,6 @@ function hide() {
 }
 
 const options = computed(() => [
-  {
-    label: '内容全屏',
-    key: 'full-content',
-    icon: iconRender({ icon: 'gridicons-fullscreen' })
-  },
-  {
-    label: '重新加载',
-    key: 'reload-current',
-    disabled: props.currentPath !== tab.activeTab,
-    icon: iconRender({ icon: 'ant-design:reload-outlined' })
-  },
-  {
-    label: '关闭',
-    key: 'close-current',
-    disabled: props.currentPath === tab.homeTab.fullPath || Boolean(props.affix),
-    icon: iconRender({ icon: 'ant-design:close-outlined' })
-  },
   {
     label: '关闭其他',
     key: 'close-other',
@@ -101,24 +83,6 @@ const options = computed(() => [
 ]);
 
 const actionMap = new Map([
-  [
-    'full-content',
-    () => {
-      app.setContentFull(true);
-    }
-  ],
-  [
-    'reload-current',
-    () => {
-      app.reloadPage();
-    }
-  ],
-  [
-    'close-current',
-    () => {
-      tab.removeTab(props.currentPath);
-    }
-  ],
   [
     'close-other',
     () => {
