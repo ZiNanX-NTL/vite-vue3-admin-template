@@ -1,3 +1,4 @@
+import localforage from 'localforage';
 import { decrypto, encrypto } from '../crypto';
 
 function createLocalStorage(isEncryption) {
@@ -60,3 +61,17 @@ function createLocalStorage(isEncryption) {
 }
 
 export const localStg = createLocalStorage(false);
+
+export function createLocalforage(driver) {
+  const driverMap = {
+    local: localforage.LOCALSTORAGE,
+    indexedDB: localforage.INDEXEDDB,
+    webSQL: localforage.WEBSQL
+  };
+
+  localforage.config({
+    driver: driverMap[driver]
+  });
+
+  return localforage;
+}

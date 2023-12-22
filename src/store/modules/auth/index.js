@@ -38,8 +38,8 @@ export const useAuthStore = defineStore('auth-store', {
     },
     /**
      * 登录
-     * @param userName - 用户名
-     * @param password - 密码
+     * @param {LoginParams['userName']} userName - 用户名
+     * @param {LoginParams['password']} password - 密码
      */
     async login(userName, password) {
       this.loginLoading = true;

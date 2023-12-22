@@ -2,8 +2,7 @@ import { mockInstance } from '@/service';
 
 /**
  * 登录
- * @param data.userName - 用户名
- * @param data.password - 密码
+ * @param { LoginParams } data - 负载参数
  */
 export function fetchLogin(data) {
   return mockInstance.post({ url: '/login', data });
