@@ -4,7 +4,7 @@ const plantOverview = {
   component: 'self',
   meta: {
     title: '种植概况',
-    requiresAuth: false,
+    requiresAuth: true,
     keepAlive: true,
     singleLayout: 'basic',
     permissions: ['super', 'admin', 'user'],

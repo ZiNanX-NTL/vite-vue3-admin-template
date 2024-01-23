@@ -25,7 +25,7 @@ export default function subscribeThemeStore() {
       () => theme.naiveThemeOverrides,
       newValue => {
         if (newValue.common) {
-          addThemeCssVarsToBody(newValue.common);
+          addThemeCssVarsToHtml(newValue.common);
         }
       },
       { immediate: true }
@@ -78,7 +78,7 @@ function handleCssDarkMode() {
 }
 
 /** 添加css vars至html */
-function addThemeCssVarsToBody(themeVars) {
+function addThemeCssVarsToHtml(themeVars) {
   const keys = Object.keys(themeVars);
   const style = [];
   keys.forEach(key => {
