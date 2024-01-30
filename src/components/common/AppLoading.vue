@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed-center flex-col">
+  <div class="fixed-center flex-vertical">
     <!-- <system-logo class="text-128px text-primary" /> -->
     <div class="w-56px h-56px my-36px">
       <div class="relative h-full animate-spin">

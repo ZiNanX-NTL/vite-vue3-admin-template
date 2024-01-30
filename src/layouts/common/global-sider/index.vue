@@ -1,6 +1,6 @@
 <template>
   <dark-mode-container
-    class="flex-col-stretch h-full shadow-[2px_0_8px_0_rgba(29,35,41,0.05)] z-20"
+    class="flex-vertical-stretch h-full shadow-[2px_0_8px_0_rgba(29,35,41,0.05)] z-20"
     :inverted="theme.sider.inverted"
   >
     <global-logo

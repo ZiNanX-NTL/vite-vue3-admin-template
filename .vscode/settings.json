@@ -1,7 +1,7 @@
 {
   "css.customData": [".vscode/unocss.json"],
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   "editor.fontLigatures": true,
   "editor.formatOnSave": false,

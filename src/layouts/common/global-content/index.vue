@@ -7,7 +7,7 @@
           v-if="app.reloadFlag"
           :key="route.fullPath"
           :class="{ 'p-16px': showPadding }"
-          class="flex-grow bg-#f6f9f8 dark:bg-#101014 transition-base"
+          class="flex-grow transition-base"
         />
       </keep-alive>
     </transition>

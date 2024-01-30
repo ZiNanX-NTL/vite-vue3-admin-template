@@ -7,7 +7,7 @@
       <template #trigger>
         <div
           class="layout-card__shadow gap-6px w-96px h-64px p-6px rd-4px"
-          :class="[mode === 'vertical' ? 'flex' : 'flex-col']"
+          :class="[mode === 'vertical' ? 'flex' : 'flex-vertical']"
         >
           <slot></slot>
         </div>

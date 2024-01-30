@@ -11,7 +11,7 @@
     >
       <template v-if="item.value === 'vertical'">
         <div class="w-18px h-full bg-primary:50 rd-4px"></div>
-        <div class="flex-1 flex-col gap-6px">
+        <div class="flex-1 flex-vertical gap-6px">
           <div class="h-16px bg-primary rd-4px"></div>
           <div class="flex-1 bg-primary:25 rd-4px"></div>
         </div>
