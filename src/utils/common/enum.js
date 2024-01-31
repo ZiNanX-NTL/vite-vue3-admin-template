@@ -1,3 +1,5 @@
+import { isBoolean, isNumber, isRegExp, isString } from './typeof';
+
 /**
  * EnumFactory 类用于创建枚举工厂，扩展枚举对象：keys、values(含 key 值的[{key,text,type}])、formatter。
  */
@@ -58,7 +60,7 @@ export class EnumFactory {
    * @returns {string} 枚举项的文本
    */
   static extractTextFromItem(item, key, options) {
-    if (typeof item === 'string') {
+    if (isString(item) || isBoolean(item) || isNumber(item) || isRegExp(item)) {
       return item;
     } else if (item && item.text) {
       return item.text;

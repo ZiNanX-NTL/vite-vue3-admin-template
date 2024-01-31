@@ -27,7 +27,8 @@
 
 <script setup>
 import { useAuthStore } from '@/store';
-import { formRules, useRouterPush } from '@/utils';
+import { useFormRules } from '@/hooks';
+import { useRouterPush } from '@/utils';
 
 const auth = useAuthStore();
 const { login } = useAuthStore();
@@ -40,6 +41,7 @@ const model = reactive({
   password: 'soybean123'
 });
 
+const { formRules } = useFormRules();
 const rules = {
   password: formRules.pwd
 };

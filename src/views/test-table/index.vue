@@ -6,9 +6,10 @@
           v-model:columns="filteredColumns"
           :disabled-delete="true"
           :loading="loading"
+          @add="handleAdd"
           @refresh="getData"
         />
-        <!-- @add="handleAdd"
+        <!--
 				@delete="handleBatchDelete"
 				 -->
       </template>
@@ -22,6 +23,12 @@
         :row-key="item => item.id"
         remote
       />
+      <table-action-modal
+        v-model:visible="modalVisible"
+        :operate-type="operateType"
+        :row-data="editingData"
+        @submitted="getData"
+      />
     </n-card>
   </div>
 </template>
@@ -32,7 +39,7 @@ import { genderEnum, userStatusEnum } from '@/constants';
 import { useTable, useBoolean } from '@/hooks';
 import { fetchUserList } from '@/api';
 // import TableColumnSetting from './components/column-setting.vue';
-// import TableActionModal from './components/table-action-modal.vue';
+import TableActionModal from './components/TableActionModal.vue';
 
 const {
   columns,
@@ -48,7 +55,7 @@ const {
   apiFn: fetchUserList,
   apiParams: {
     page: 1,
-    pageSize: 10
+    pageSize: 20
     // 如果要在Form中使用searchParams，则需要定义以下属性，并且该值为null
     // 该值不能为undefined，否则Form中的属性将不起作用
   },
@@ -125,14 +132,18 @@ const {
       align: 'center',
       render: row => {
         return (
-          <NSpace justify={'center'}>
-            <NButton size={'small'} onClick={() => handleEditTable(row.id)}>
+          <NSpace justify="center">
+            <NButton type="primary" ghost size="small" onClick={() => handleEditTable(row)}>
               编辑
             </NButton>
-            <NPopconfirm onPositiveClick={() => handleDeleteTable(row.id)}>
+            <NPopconfirm onPositiveClick={() => handleDelete(row.id)}>
               {{
                 default: () => '确认删除',
-                trigger: () => <NButton size={'small'}>删除</NButton>
+                trigger: () => (
+                  <NButton type="error" ghost size="small">
+                    删除
+                  </NButton>
+                )
               }}
             </NPopconfirm>
           </NSpace>
@@ -142,35 +153,23 @@ const {
   ]
 });
 
-const { bool: visible, setTrue: openModal } = useBoolean();
+const { bool: modalVisible, setTrue: openModal } = useBoolean();
 
-const modalType = ref('add');
+const operateType = ref('add');
+const editingData = ref(null);
 
-function setModalType(type) {
-  modalType.value = type;
-}
-
-const editData = ref(null);
-
-function setEditData(item) {
-  editData.value = item;
-}
-
-function handleAddTable() {
-  openModal();
-  setModalType('add');
-}
-
-function handleEditTable(id) {
-  const findItem = data.value.find(item => item.id === id);
-  if (findItem) {
-    setEditData(findItem);
-  }
-  setModalType('edit');
+function handleAdd() {
+  operateType.value = 'add';
   openModal();
 }
 
-function handleDeleteTable(id) {
+function handleEditTable(row) {
+  editingData.value = row;
+  operateType.value = 'edit';
+  openModal();
+}
+
+function handleDelete(id) {
   console.log(id);
 }
 </script>

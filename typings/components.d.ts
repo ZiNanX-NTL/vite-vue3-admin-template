@@ -59,6 +59,7 @@ declare module 'vue' {
     NEmpty: typeof import('naive-ui')['NEmpty']
     NForm: typeof import('naive-ui')['NForm']
     NFormItem: typeof import('naive-ui')['NFormItem']
+    NFormItemGi: typeof import('naive-ui')['NFormItemGi']
     NGradientText: typeof import('naive-ui')['NGradientText']
     NGrid: typeof import('naive-ui')['NGrid']
     NGridItem: typeof import('naive-ui')['NGridItem']
@@ -76,6 +77,8 @@ declare module 'vue' {
     NNotificationProvider: typeof import('naive-ui')['NNotificationProvider']
     NPopconfirm: typeof import('naive-ui')['NPopconfirm']
     NPopover: typeof import('naive-ui')['NPopover']
+    NRadio: typeof import('naive-ui')['NRadio']
+    NRadioGroup: typeof import('naive-ui')['NRadioGroup']
     NScrollbar: typeof import('naive-ui')['NScrollbar']
     NSelect: typeof import('naive-ui')['NSelect']
     NSpace: typeof import('naive-ui')['NSpace']
@@ -90,7 +93,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     SvgIcon: typeof import('./../src/components/common/SvgIcon.vue')['default']
     SystemLogo: typeof import('./../src/components/common/SystemLogo.vue')['default']
-    TableColumnSetting: typeof import('./../src/components/business/tableColumnSetting.vue')['default']
-    TableHeaderOperation: typeof import('./../src/components/business/tableHeaderOperation.vue')['default']
+    TableColumnSetting: typeof import('./../src/components/business/TableColumnSetting.vue')['default']
+    TableHeaderOperation: typeof import('./../src/components/business/TableHeaderOperation.vue')['default']
   }
 }

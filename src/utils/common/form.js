@@ -1,4 +1,4 @@
-import { REGEXP_CODE_SIX, REGEXP_EMAIL, REGEXP_PHONE, REGEXP_PWD } from '@/config';
+import { REG_CODE_SIX, REG_EMAIL, REG_PHONE, REG_PWD } from '@/config';
 
 /** 创建自定义错误信息的必填表单规则 */
 export const createRequiredFormRule = (message = '不能为空') => ({ required: true, message });
@@ -7,17 +7,17 @@ export const createRequiredFormRule = (message = '不能为空') => ({ required:
 export const formRules = {
   phone: [
     createRequiredFormRule('请输入手机号码'),
-    { pattern: REGEXP_PHONE, message: '手机号码格式错误', trigger: 'input' }
+    { pattern: REG_PHONE, message: '手机号码格式错误', trigger: 'input' }
   ],
   pwd: [
     createRequiredFormRule('请输入密码'),
-    { pattern: REGEXP_PWD, message: '密码为6-18位数字/字符/符号，至少2种组合', trigger: 'input' }
+    { pattern: REG_PWD, message: '密码为6-18位数字/字符/符号，至少2种组合', trigger: 'input' }
   ],
   code: [
     createRequiredFormRule('请输入验证码'),
-    { pattern: REGEXP_CODE_SIX, message: '验证码格式错误', trigger: 'input' }
+    { pattern: REG_CODE_SIX, message: '验证码格式错误', trigger: 'input' }
   ],
-  email: [{ pattern: REGEXP_EMAIL, message: '邮箱格式错误', trigger: 'blur' }]
+  email: [{ pattern: REG_EMAIL, message: '邮箱格式错误', trigger: 'blur' }]
 };
 
 /** 是否为空字符串 */
