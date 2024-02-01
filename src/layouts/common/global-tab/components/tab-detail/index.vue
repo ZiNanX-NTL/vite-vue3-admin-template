@@ -48,9 +48,8 @@ const tab = useTabStore();
 const { isMobile } = useBasicLayout();
 
 const tabRef = ref();
-useSortable(tabRef, tab.tabs, {
+const { option } = useSortable(tabRef, tab.tabs, {
   animation: 150,
-  delay: isMobile.value ? 500 : 0,
   onUpdate: e => {
     moveArrayElement(tab.tabs, e.oldIndex, e.newIndex);
   }
@@ -117,6 +116,15 @@ watch(
   () => tab.activeTabIndex,
   () => {
     getActiveTabClientX();
+  },
+  {
+    immediate: true
+  }
+);
+watch(
+  isMobile,
+  () => {
+    option('delay', isMobile.value ? 500 : 0);
   },
   {
     immediate: true

@@ -4,11 +4,15 @@
       <div
         ref="navWrap"
         class="h-full flex flex-y-center w-[calc(100%-64px)] relative"
-        :class="{ 'px-32px': flippable }"
+        :class="{ 'px-37px': flippable }"
       >
         <template v-if="flippable">
-          <icon-material-symbols-chevron-left-rounded class="tabs-arrow left-0" @click="scrollPrev" />
-          <icon-material-symbols-chevron-right-rounded class="tabs-arrow right-0" @click="scrollNext" />
+          <hover-container class="w-32px h-32px absolute left-0" @click="scrollPrev">
+            <icon-material-symbols-chevron-left-rounded class="text-30px" />
+          </hover-container>
+          <hover-container class="w-32px h-32px absolute right-0" @click="scrollNext">
+            <icon-material-symbols-chevron-right-rounded class="text-30px" />
+          </hover-container>
         </template>
         <n-scrollbar ref="scrollbarRef" x-scrollable :theme-overrides="scrollbarThemeOverrides">
           <div ref="navScroll" class="h-full py-10px flex-1 relative">
@@ -64,5 +68,9 @@ function handleScroll(clientX) {
 <style lang="scss" scoped>
 .tabs-arrow {
   @apply w-32px h-32px cursor-pointer absolute text-16px text-#515a6e;
+}
+
+:deep(.n-scrollbar > .n-scrollbar-container) {
+  @apply overflow-y-hidden;
 }
 </style>
