@@ -25,7 +25,7 @@
             clearable
           />
         </n-form-item-gi>
-        <n-form-item-gi suffix>
+        <n-form-item-gi suffix :show-feedback="false">
           <n-space class="w-full" justify="end">
             <n-button @click="reset">
               <template #icon>
