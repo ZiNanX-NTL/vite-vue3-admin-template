@@ -14,23 +14,23 @@
         <n-form-item-gi label="用户名" path="userName">
           <n-input v-model:value="model.userName" placeholder="请输入用户名" />
         </n-form-item-gi>
-        <n-form-item-gi label="用户年龄" path="age">
-          <n-input-number v-model:value="model.age" :precision="0" placeholder="请输入年龄" />
+        <n-form-item-gi label="邮箱" path="email">
+          <n-input v-model:value="model.email" placeholder="请输入邮箱" />
         </n-form-item-gi>
         <n-form-item-gi label="手机号码" path="phone">
           <n-input v-model:value="model.phone" placeholder="请输入手机号码" />
         </n-form-item-gi>
-        <n-form-item-gi label="邮箱" path="email">
-          <n-input v-model:value="model.email" placeholder="请输入邮箱" />
+        <n-form-item-gi label="用户年龄" path="age">
+          <n-input-number v-model:value="model.age" class="w-full" :precision="0" placeholder="请输入年龄" />
         </n-form-item-gi>
         <n-form-item-gi label="性别" path="gender">
           <n-radio-group v-model:value="model.gender">
-            <n-radio v-for="item in genderEnum.values" :key="item.key" :value="item.key" :label="item.text" />
+            <n-radio v-for="item in genderEnum.values" :key="item.value" :value="item.value" :label="item.label" />
           </n-radio-group>
         </n-form-item-gi>
         <n-form-item-gi label="用户状态" path="userStatus">
           <n-radio-group v-model:value="model.userStatus">
-            <n-radio v-for="item in userStatusEnum.values" :key="item.key" :value="item.key" :label="item.text" />
+            <n-radio v-for="item in userStatusEnum.values" :key="item.value" :value="item.value" :label="item.label" />
           </n-radio-group>
         </n-form-item-gi>
       </n-grid>

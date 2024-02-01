@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-vertical-stretch">
+  <div class="flex-vertical-stretch overflow-hidden <sm:overflow-auto">
     <n-card :bordered="false" size="small" title="表格" class="card-wrapper h-full">
       <template #header-extra>
         <TableHeaderOperation
@@ -14,10 +14,11 @@
 				 -->
       </template>
       <n-data-table
-        class="h-full"
+        class="sm:h-full"
         :columns="columns"
         :data="data"
-        flex-height
+        :flex-height="!isMobile"
+        :scroll-x="640"
         :loading="loading"
         :pagination="pagination"
         :row-key="item => item.id"
@@ -37,21 +38,13 @@
 import { NSpace, NPopconfirm, NButton } from 'naive-ui';
 import { genderEnum, userStatusEnum } from '@/constants';
 import { useTable, useBoolean } from '@/hooks';
+import { useBasicLayout } from '@/utils';
 import { fetchUserList } from '@/api';
-// import TableColumnSetting from './components/column-setting.vue';
 import TableActionModal from './components/TableActionModal.vue';
 
-const {
-  columns,
-  filteredColumns,
-  data,
-  loading,
-  pagination,
-  getData,
-  updateSearchParams,
-  searchParams,
-  resetSearchParams
-} = useTable({
+const { isMobile } = useBasicLayout();
+
+const { columns, filteredColumns, data, loading, pagination, getData, updateSearchParams } = useTable({
   apiFn: fetchUserList,
   apiParams: {
     page: 1,
@@ -99,7 +92,7 @@ const {
       align: 'center',
       render: row => {
         if (row.gender) {
-          return <NTag type={genderEnum[row.gender].type}>{genderEnum[row.gender].text}</NTag>;
+          return <NTag type={genderEnum[row.gender].type}>{genderEnum[row.gender].label}</NTag>;
         }
 
         return <span></span>;
@@ -121,7 +114,7 @@ const {
       align: 'center',
       render: row => {
         if (row.userStatus) {
-          return <NTag type={userStatusEnum[row.userStatus].type}>{userStatusEnum[row.userStatus].text}</NTag>;
+          return <NTag type={userStatusEnum[row.userStatus].type}>{userStatusEnum[row.userStatus].label}</NTag>;
         }
         return <span></span>;
       }

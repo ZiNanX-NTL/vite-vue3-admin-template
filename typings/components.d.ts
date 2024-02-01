@@ -23,6 +23,8 @@ declare module 'vue' {
     IconIcRoundDelete: typeof import('~icons/ic/round-delete')['default']
     IconIcRoundHdrAuto: typeof import('~icons/ic/round-hdr-auto')['default']
     IconIcRoundPlus: typeof import('~icons/ic/round-plus')['default']
+    IconIcRoundRefresh: typeof import('~icons/ic/round-refresh')['default']
+    IconIcRoundSearch: typeof import('~icons/ic/round-search')['default']
     IconLineMdMenuFoldLeft: typeof import('~icons/line-md/menu-fold-left')['default']
     IconLineMdMenuUnfoldLeft: typeof import('~icons/line-md/menu-unfold-left')['default']
     IconLocalAvatar: typeof import('~icons/local/avatar')['default']
