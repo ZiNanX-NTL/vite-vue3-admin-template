@@ -1,7 +1,7 @@
 import { effectScope, onScopeDispose, watch } from 'vue';
 import { useOsTheme } from 'naive-ui';
 import { kebabCase } from 'lodash-es';
-import { localStg, getColorPalettes, getRgbOfColor } from '@/utils';
+import { sessionStg, getColorPalettes, getRgbOfColor } from '@/utils';
 import { useThemeStore } from '../modules';
 
 /** 订阅theme store */
@@ -15,7 +15,7 @@ export default function subscribeThemeStore() {
     watch(
       () => theme.themeColor,
       newValue => {
-        localStg.set('themeColor', newValue);
+        sessionStg.set('themeColor', newValue);
       },
       { immediate: true }
     );
