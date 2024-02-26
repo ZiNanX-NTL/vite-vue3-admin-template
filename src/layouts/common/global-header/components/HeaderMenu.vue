@@ -1,6 +1,10 @@
 <template>
   <div class="flex-1-hidden h-full px-10px">
-    <n-scrollbar :x-scrollable="true" class="flex-1-hidden h-full" content-class="h-full">
+    <n-scrollbar
+      :x-scrollable="theme.headerMenu.overflowMode === 'scroll'"
+      class="flex-1-hidden h-full"
+      content-class="h-full"
+    >
       <div class="flex-y-center h-full">
         <n-menu
           :value="activeKey"

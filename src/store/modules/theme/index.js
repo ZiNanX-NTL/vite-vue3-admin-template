@@ -66,6 +66,10 @@ export const useThemeStore = defineStore('theme-store', {
     setHorizontalMenuPosition(position) {
       this.headerMenu.horizontalPosition = position;
     },
+    /** 设置水平模式的菜单溢出的处理方式 */
+    setHorizontalMenuOverflowMode(mode) {
+      this.headerMenu.overflowMode = mode;
+    },
     /** 设置头部高度 */
     setHeaderHeight(height) {
       if (height) {
