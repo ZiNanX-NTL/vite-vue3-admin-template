@@ -47,15 +47,15 @@ const { title } = getAppInfo();
 
 const modules = [
   {
-    key: loginModuleEnum['pwd-login'].key,
-    label: loginModuleEnum['pwd-login'].text,
+    value: loginModuleEnum['pwd-login'].value,
+    label: loginModuleEnum['pwd-login'].label,
     component: PwdLogin
   }
 ];
 
 const activeModule = computed(() => {
   const active = { ...modules[0] };
-  const findItem = modules.find(item => item.key === props.module);
+  const findItem = modules.find(item => item.value === props.module);
   if (findItem) {
     Object.assign(active, findItem);
   }
