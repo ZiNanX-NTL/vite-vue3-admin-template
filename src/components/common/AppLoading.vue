@@ -12,7 +12,9 @@
       </div>
     </div>
 
-    <h2 class="text-28px font-500 text-#646464">{{ loadingTitle }}</h2>
+    <slot>
+      <h2 class="text-28px font-500 text-#646464">{{ loadingTitle }}</h2>
+    </slot>
   </div>
 </template>
 

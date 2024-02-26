@@ -7,6 +7,8 @@ export const useAppStore = defineStore('app-store', {
     contentRef: null,
     /** 全局loading显示 */
     loadingVisible: false,
+    /** 全局loading标题 */
+    loadingTitle: '加载中...',
     /** 重载页面(控制页面的显示) */
     reloadFlag: true,
     /** 侧边栏折叠状态 */
@@ -23,6 +25,9 @@ export const useAppStore = defineStore('app-store', {
     },
     setLoadingVisible(visible) {
       this.loadingVisible = visible;
+    },
+    setLoadingTitle(title) {
+      this.loadingTitle = title;
     },
     /**
      * 重载页面
