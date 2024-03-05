@@ -30,7 +30,7 @@ export default function useTable(config) {
     pageSize: 10,
     showSizePicker: true,
     pageSizes: [10, 15, 20, 25, 30],
-    onChange: async page => {
+    onUpdatePage: async page => {
       pagination.page = page;
 
       await onPaginationChanged?.(pagination);
