@@ -7,8 +7,8 @@
       </n-button>
     </template>
     <vue-draggable v-model="columns">
-      <div v-for="item in columns" :key="item.key" class="flex-y-center h-36px px-6px hover:bg-primary_active rd-4px">
-        <icon-mdi-drag class="mr-8px text-20px cursor-move" />
+      <div v-for="item in columns" :key="item.key" class="h-36px flex-y-center rd-4px px-6px hover:bg-primary_active">
+        <icon-mdi-drag class="mr-8px cursor-move text-20px" />
         <NCheckbox v-model:checked="item.checked">
           {{ item.title }}
         </NCheckbox>

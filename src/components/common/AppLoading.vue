@@ -1,12 +1,12 @@
 <template>
   <div class="fixed-center flex-vertical">
     <!-- <system-logo class="text-128px text-primary" /> -->
-    <div class="w-56px h-56px my-36px">
+    <div class="my-36px h-56px w-56px">
       <div class="relative h-full animate-spin">
         <div
           v-for="(item, index) in loadingClasses"
           :key="index"
-          class="absolute w-16px h-16px bg-primary rounded-8px animate-pulse"
+          class="absolute h-16px w-16px animate-pulse rounded-8px bg-primary"
           :class="item"
         ></div>
       </div>

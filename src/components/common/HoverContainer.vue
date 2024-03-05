@@ -2,7 +2,7 @@
   <div v-if="showTooltip">
     <n-tooltip :placement="placement" trigger="hover">
       <template #trigger>
-        <div class="flex-center h-full cursor-pointer dark:hover:bg-#333" :class="contentClassName">
+        <div class="h-full flex-center cursor-pointer dark:hover:bg-#333" :class="contentClassName">
           <slot></slot>
         </div>
       </template>

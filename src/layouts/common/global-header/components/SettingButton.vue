@@ -1,6 +1,6 @@
 <template>
   <hover-container
-    class="w-40px h-full"
+    class="h-full w-40px"
     tooltip-content="主题配置"
     :inverted="theme.header.inverted"
     @click="app.toggleSettingDrawerVisible"

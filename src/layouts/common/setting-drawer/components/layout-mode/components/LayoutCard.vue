@@ -1,12 +1,12 @@
 <template>
   <div
-    class="border-2px rounded-6px cursor-pointer hover:border-primary"
+    class="cursor-pointer border-2px rounded-6px hover:border-primary"
     :class="[checked ? 'border-primary' : 'border-transparent']"
   >
     <n-tooltip :placement="activeConfig.placement" trigger="hover">
       <template #trigger>
         <div
-          class="layout-card__shadow gap-6px w-96px h-64px p-6px rd-4px"
+          class="layout-card__shadow h-64px w-96px gap-6px rd-4px p-6px"
           :class="[mode === 'vertical' ? 'flex' : 'flex-vertical']"
         >
           <slot></slot>

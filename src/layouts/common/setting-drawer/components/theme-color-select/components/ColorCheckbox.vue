@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-center w-20px h-20px rounded-2px shadow cursor-pointer" :style="{ backgroundColor: color }">
+  <div class="h-20px w-20px flex-center cursor-pointer rounded-2px shadow" :style="{ backgroundColor: color }">
     <icon-ic-outline-check v-if="checked" :class="[iconClass, isWhite ? 'text-gray-700' : 'text-white']" />
   </div>
 </template>

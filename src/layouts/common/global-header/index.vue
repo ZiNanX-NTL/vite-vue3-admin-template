@@ -1,18 +1,18 @@
 <template>
   <dark-mode-container
-    class="h-full shadow-[0_1px_2px_rgba(0,21,41,0.08)] relative"
+    class="relative h-full shadow-[0_1px_2px_rgba(0,21,41,0.08)]"
     :class="mode === 'vertical-mix' ? 'z-30' : 'z-10'"
     :inverted="theme.header.inverted"
     :style="{ height: theme.header.height + 'px' }"
   >
-    <n-layout-header class="flex-y-center h-full" :inverted="!theme.darkMode && theme.header.inverted">
+    <n-layout-header class="h-full flex-y-center" :inverted="!theme.darkMode && theme.header.inverted">
       <global-logo v-if="showLogo" :show-title="true" class="h-full" :style="{ width: logoWidth }" />
-      <div v-if="!showHeaderMenu" class="flex-1-hidden flex-y-center h-full">
+      <div v-if="!showHeaderMenu" class="h-full flex-y-center flex-1-hidden">
         <menu-collapse v-if="(showMenuCollapse || isMobile) && theme.sider.showTrigger === 'headerIcon'" />
         <global-breadcrumb v-if="theme.header.crumb.visible && !isMobile" />
       </div>
       <header-menu v-else />
-      <div class="flex justify-end h-full">
+      <div class="h-full flex justify-end">
         <global-search />
         <full-screen />
         <theme-mode />

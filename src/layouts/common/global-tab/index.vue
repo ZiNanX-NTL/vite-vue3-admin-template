@@ -1,21 +1,21 @@
 <template>
-  <dark-mode-container class="w-full h-52px pl-16px shadow-[0_1px_2px_rgba(0,21,41,0.08)]">
+  <dark-mode-container class="h-52px w-full pl-16px shadow-[0_1px_2px_rgba(0,21,41,0.08)]">
     <div class="h-full flex flex-y-center transition-base">
       <div
         ref="navWrap"
-        class="h-full flex flex-y-center w-[calc(100%-64px)] relative"
+        class="relative h-full w-[calc(100%-64px)] flex flex-y-center"
         :class="{ 'px-37px': flippable }"
       >
         <template v-if="flippable">
-          <hover-container class="w-32px h-32px absolute left-0" @click="scrollPrev">
+          <hover-container class="absolute left-0 h-32px w-32px" @click="scrollPrev">
             <icon-material-symbols-chevron-left-rounded class="text-30px" />
           </hover-container>
-          <hover-container class="w-32px h-32px absolute right-0" @click="scrollNext">
+          <hover-container class="absolute right-0 h-32px w-32px" @click="scrollNext">
             <icon-material-symbols-chevron-right-rounded class="text-30px" />
           </hover-container>
         </template>
         <n-scrollbar ref="scrollbarRef" x-scrollable :theme-overrides="scrollbarThemeOverrides">
-          <div ref="navScroll" class="h-full py-10px flex-1 relative">
+          <div ref="navScroll" class="relative h-full flex-1 py-10px">
             <TabDetail @scroll="handleScroll" />
           </div>
         </n-scrollbar>

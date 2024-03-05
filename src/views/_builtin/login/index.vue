@@ -1,18 +1,18 @@
 <template>
-  <div class="relative flex-center wh-full" :style="{ backgroundColor: bgColor }">
+  <div class="relative wh-full flex-center" :style="{ backgroundColor: bgColor }">
     <dark-mode-switch
       :dark="theme.darkMode"
       class="absolute left-48px top-24px z-3 text-20px"
       @update:dark="theme.setDarkMode"
     />
-    <n-card :bordered="false" size="large" class="z-4 !w-auto rounded-20px shadow-sm">
-      <div class="w-300px sm:w-360px py-10px">
+    <n-card :bordered="false" size="large" class="z-4 rounded-20px shadow-sm !w-auto">
+      <div class="w-300px py-10px sm:w-360px">
         <header class="flex-y-center justify-between">
           <system-logo class="text-64px text-primary" />
           <n-gradient-text type="primary" :size="28">{{ title }}</n-gradient-text>
         </header>
         <main class="pt-24px">
-          <h3 class="text-18px text-primary font-medium">
+          <h3 class="text-18px font-medium text-primary">
             {{ activeModule.label }}
           </h3>
           <div class="pt-24px">

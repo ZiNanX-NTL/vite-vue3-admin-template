@@ -1,12 +1,12 @@
 {
   "recommendations": [
-		"vue.volar",
+    "vue.volar",
     "simonsiefke.svg-preview",
     "antfu.unocss",
     "afzalsayed96.icones",
     "mikestead.dotenv",
     "wallabyjs.console-ninja",
     "simonhe.common-intellisense",
-		"steoates.autoimport",
+    "steoates.autoimport"
   ]
 }

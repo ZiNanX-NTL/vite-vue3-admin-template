@@ -1,6 +1,6 @@
 <template>
   <dark-mode-container
-    class="flex-vertical-stretch h-full shadow-[2px_0_8px_0_rgba(29,35,41,0.05)] z-20"
+    class="z-20 h-full flex-vertical-stretch shadow-[2px_0_8px_0_rgba(29,35,41,0.05)]"
     :inverted="theme.sider.inverted"
   >
     <global-logo
@@ -13,7 +13,7 @@
       }"
     />
     <n-layout-sider
-      class="flex-1 h-0"
+      class="h-0 flex-1"
       :show-trigger="theme.sider.showTrigger !== 'headerIcon' && theme.sider.showTrigger"
       :trigger-style="theme.sider.showTrigger === 'arrow-circle' ? 'top: 240px' : ''"
       :collapsed-trigger-style="theme.sider.showTrigger === 'arrow-circle' ? 'top: 240px' : ''"

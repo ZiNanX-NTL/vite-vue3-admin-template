@@ -3,7 +3,7 @@
     <div class="pb-12px">
       <template v-for="item in options" :key="item.path">
         <div
-          class="bg-#e5e7eb dark:bg-dark h-56px mt-8px px-14px rounded-4px cursor-pointer flex-y-center justify-between"
+          class="mt-8px h-56px flex-y-center cursor-pointer justify-between rounded-4px bg-#e5e7eb px-14px dark:bg-dark"
           :style="{
             background: item.path === active ? theme.themeColor : '',
             color: item.path === active ? '#fff' : ''
@@ -12,10 +12,10 @@
           @mouseenter="handleMouse(item)"
         >
           <svg-icon :icon="item.meta.icon" :local-icon="item.meta.localIcon" />
-          <span class="flex-1 ml-5px">
+          <span class="ml-5px flex-1">
             {{ item.meta?.title }}
           </span>
-          <icon-ant-design-enter-outlined class="icon text-20px p-2px mr-3px" />
+          <icon-ant-design-enter-outlined class="icon mr-3px p-2px text-20px" />
         </div>
       </template>
     </div>

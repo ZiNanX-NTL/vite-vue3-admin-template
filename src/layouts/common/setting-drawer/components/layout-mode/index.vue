@@ -10,23 +10,23 @@
       @click="theme.setLayoutMode(item.value)"
     >
       <template v-if="item.value === 'vertical'">
-        <div class="w-18px h-full bg-primary:50 rd-4px"></div>
-        <div class="flex-1 flex-vertical gap-6px">
-          <div class="h-16px bg-primary rd-4px"></div>
-          <div class="flex-1 bg-primary:25 rd-4px"></div>
+        <div class="h-full w-18px rd-4px bg-primary:50"></div>
+        <div class="flex-vertical flex-1 gap-6px">
+          <div class="h-16px rd-4px bg-primary"></div>
+          <div class="flex-1 rd-4px bg-primary:25"></div>
         </div>
       </template>
       <template v-if="item.value === 'horizontal'">
-        <div class="h-16px bg-primary rd-4px"></div>
-        <div class="flex-1 flex gap-6px">
-          <div class="flex-1 bg-primary:25 rd-4px"></div>
+        <div class="h-16px rd-4px bg-primary"></div>
+        <div class="flex flex-1 gap-6px">
+          <div class="flex-1 rd-4px bg-primary:25"></div>
         </div>
       </template>
       <template v-if="item.value === 'vertical-mix'">
-        <div class="h-16px bg-primary rd-4px"></div>
-        <div class="flex-1 flex gap-6px">
-          <div class="w-18px bg-primary:50 rd-4px"></div>
-          <div class="flex-1 bg-primary:25 rd-4px"></div>
+        <div class="h-16px rd-4px bg-primary"></div>
+        <div class="flex flex-1 gap-6px">
+          <div class="w-18px rd-4px bg-primary:50"></div>
+          <div class="flex-1 rd-4px bg-primary:25"></div>
         </div>
       </template>
     </layout-card>

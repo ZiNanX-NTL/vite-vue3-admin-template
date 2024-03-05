@@ -12,7 +12,7 @@
       <global-sider v-if="layoutProps.showMixSider" v-bind="siderProps" />
       <n-layout-content
         ref="contentRef"
-        class="wh-full relative"
+        class="relative wh-full"
         :class="{ 'pt-52px': theme.tab.visible && !app.contentFull }"
         :native-scrollbar="false"
         :style="layoutContentStyle"

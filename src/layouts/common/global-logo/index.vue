@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="routeHomePath" class="flex-center w-full nowrap-hidden">
+  <router-link :to="routeHomePath" class="w-full flex-center nowrap-hidden">
     <system-logo class="text-32px text-primary" />
     <h2 v-show="showTitle" class="pl-8px text-16px font-bold text-primary transition-base">aptx管理系统</h2>
   </router-link>

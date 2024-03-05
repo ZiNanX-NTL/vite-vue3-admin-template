@@ -1,5 +1,5 @@
 <template>
-  <n-modal :show="visible" preset="card" class="w-640px h-480px" :z-index="10001" @close="handleClose">
+  <n-modal :show="visible" preset="card" class="h-480px w-640px" :z-index="10001" @close="handleClose">
     <div class="flex-x-center">
       <n-gradient-text type="primary" :size="24">中国传统颜色</n-gradient-text>
     </div>
@@ -8,7 +8,7 @@
         <n-grid :cols="8" :x-gap="16" :y-gap="8">
           <n-grid-item v-for="i in item.data" :key="i.label">
             <color-checkbox
-              class="!w-full !h-36px !rounded-4px"
+              class="!h-36px !w-full !rounded-4px"
               :color="i.color"
               :checked="i.color === theme.themeColor"
               icon-class="text-20px"

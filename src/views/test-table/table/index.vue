@@ -1,6 +1,6 @@
 <template>
   <div class="flex-vertical-stretch overflow-hidden <sm:overflow-auto">
-    <n-card :bordered="false" size="small" title="表格" class="card-wrapper h-full">
+    <n-card :bordered="false" size="small" title="表格" class="h-full card-wrapper">
       <template #header-extra>
         <TableHeaderOperation
           v-model:columns="filteredColumns"

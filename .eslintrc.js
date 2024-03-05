@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['soybeanjs/vue'],
+  extends: ['soybeanjs/vue', '@unocss'],
   overrides: [
     {
       files: ['./scripts/*.js'],
