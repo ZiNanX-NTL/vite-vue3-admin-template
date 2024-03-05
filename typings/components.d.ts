@@ -95,7 +95,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     SvgIcon: typeof import('./../src/components/common/SvgIcon.vue')['default']
     SystemLogo: typeof import('./../src/components/common/SystemLogo.vue')['default']
-    TableColumnSetting: typeof import('./../src/components/business/TableColumnSetting.vue')['default']
-    TableHeaderOperation: typeof import('./../src/components/business/TableHeaderOperation.vue')['default']
+    TableColumnSetting: typeof import('./../src/components/business/tableColumnSetting.vue')['default']
+    TableHeaderOperation: typeof import('./../src/components/business/tableHeaderOperation.vue')['default']
   }
 }
