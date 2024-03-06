@@ -1,5 +1,5 @@
 <template>
-  <div class="relative wh-full flex-center" :style="{ backgroundColor: bgColor }">
+  <div class="relative size-full flex-center" :style="{ backgroundColor: bgColor }">
     <dark-mode-switch
       :dark="theme.darkMode"
       class="absolute left-48px top-24px z-3 text-20px"

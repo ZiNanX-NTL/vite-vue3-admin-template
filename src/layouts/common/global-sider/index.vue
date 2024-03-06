@@ -43,7 +43,7 @@
       <transition name="fade">
         <div
           v-if="isMobile && !app.siderCollapse"
-          class="sider-mask absolute-lt z-200 wh-full bg-[rgba(0,0,0,.2)]"
+          class="sider-mask absolute-lt z-200 size-full bg-[rgba(0,0,0,.2)]"
           @click="app.setSiderCollapse(true)"
         ></div>
       </transition>

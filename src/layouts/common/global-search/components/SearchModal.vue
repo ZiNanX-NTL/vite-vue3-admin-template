@@ -6,7 +6,7 @@
     preset="card"
     footer-style="padding: 0; margin: 0"
     class="fixed left-0 right-0"
-    :class="[isMobile ? 'wh-full top-0px rounded-0' : 'w-630px top-50px']"
+    :class="[isMobile ? 'size-full top-0px rounded-0' : 'w-630px top-50px']"
     @after-leave="handleClose"
   >
     <n-input-group>

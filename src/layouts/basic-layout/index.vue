@@ -1,10 +1,10 @@
 <template>
-  <n-layout :has-sider="layoutProps.showSider" class="wh-full" :native-scrollbar="horizontalNativeScroll">
+  <n-layout :has-sider="layoutProps.showSider" class="size-full" :native-scrollbar="horizontalNativeScroll">
     <global-header v-if="layoutProps.showHeader" v-bind="headerProps" />
     <global-sider v-if="layoutProps.showSider" v-bind="siderProps" :class="{ 'absolute z-300': isMobile }" />
     <n-layout
       :has-sider="layoutProps.showMixSider"
-      class="wh-full"
+      class="size-full"
       :style="layoutStyle"
       :native-scrollbar="verticalNativeScroll"
     >
@@ -12,7 +12,7 @@
       <global-sider v-if="layoutProps.showMixSider" v-bind="siderProps" />
       <n-layout-content
         ref="contentRef"
-        class="relative wh-full"
+        class="relative size-full"
         :class="{ 'pt-52px': theme.tab.visible && !app.contentFull }"
         :native-scrollbar="false"
         :style="layoutContentStyle"
