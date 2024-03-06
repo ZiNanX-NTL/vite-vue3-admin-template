@@ -86,14 +86,14 @@ function addThemeCssVarsToHtml(themeVars) {
 
     if (styleValue) {
       const { r, g, b } = getRgbOfColor(styleValue);
-      style.push(`--${kebabCase(key)}: ${r},${g},${b}`);
+      style.push(`--${kebabCase(key)}: ${r} ${g} ${b}`);
 
       if (key === 'primaryColor') {
         const colorPalettes = getColorPalettes(styleValue);
 
         colorPalettes.forEach((palette, index) => {
           const { r: pR, g: pG, b: pB } = getRgbOfColor(palette);
-          style.push(`--${kebabCase(key)}${index + 1}: ${pR},${pG},${pB}`);
+          style.push(`--${kebabCase(key)}${index + 1}: ${pR} ${pG} ${pB}`);
         });
       }
     }

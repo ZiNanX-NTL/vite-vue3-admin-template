@@ -13,7 +13,7 @@
     </div>
 
     <slot>
-      <h2 class="text-28px font-500 text-#646464">{{ loadingTitle }}</h2>
+      <h2 class="text-28px text-#646464 font-500">{{ loadingTitle }}</h2>
     </slot>
   </div>
 </template>
@@ -52,7 +52,7 @@ function addThemeColorCssVars() {
 
   const { r, g, b } = getRgbOfColor(themeColor);
 
-  const cssVars = `--primary-color: ${r},${g},${b}`;
+  const cssVars = `--primary-color: ${r} ${g} ${b}`;
   document.documentElement.style.cssText = cssVars;
 }
 
