@@ -3,13 +3,13 @@ import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 import { getSrcPath } from '../utils';
 
 export default viteEnv => {
-  const { VITE_ICON_PREFFIX, VITE_ICON_LOCAL_PREFIX } = viteEnv;
+  const { VITE_ICON_PREFIX, VITE_ICON_LOCAL_PREFIX } = viteEnv;
 
   const srcPath = getSrcPath();
   const localIconPath = `${srcPath}/assets/svg-icon`;
 
   /** 本地svg图标集合名称 */
-  const collectionName = VITE_ICON_LOCAL_PREFIX.replace(`${VITE_ICON_PREFFIX}-`, '');
+  const collectionName = VITE_ICON_LOCAL_PREFIX.replace(`${VITE_ICON_PREFIX}-`, '');
 
   return Icons({
     compiler: 'vue3',
