@@ -21,8 +21,8 @@ dist-ssr
 *.sln
 *.sw?
 
-/src/typings/auto-imports.d.ts
-/src/typings/components.d.ts
+typings/auto-imports.d.ts
+typings/components.d.ts
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
