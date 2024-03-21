@@ -1,7 +1,7 @@
 export const viteCss = {
   preprocessorOptions: {
     scss: {
-      additionalData: `@use "./src/styles/scss/global.scss" as *;`
+      additionalData: `@use "@/styles/scss/global.scss" as *;`
     }
   }
 };
