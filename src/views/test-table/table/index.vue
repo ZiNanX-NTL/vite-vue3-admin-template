@@ -57,6 +57,7 @@ const { columns, filteredColumns, data, loading, pagination, getData, updateSear
     getData();
   },
   transformer: res => {
+		console.log(res)
     const { records = [], current = 1, size = 10, total = 0 } = res.data || {};
 
     return {
