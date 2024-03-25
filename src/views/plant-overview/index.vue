@@ -68,8 +68,8 @@
       <n-tab name="旁边">在两点半消失</n-tab>
     </n-tabs>
     <!-- <AppLoading></AppLoading> -->
-  <!-- </div> -->
-	</div>
+    <!-- </div> -->
+  </div>
 </template>
 
 <script setup>

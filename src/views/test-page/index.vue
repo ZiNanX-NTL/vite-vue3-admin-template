@@ -1,46 +1,45 @@
 <template>
   <div class="flex-vertical-stretch overflow-hidden">
-		<n-card title="测试" class="h-full">
-			<div class="h-500px overflow-auto aaa box">
+    <n-card title="测试" class="h-full">
+      <div class="aaa box h-500px overflow-auto">
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+        <div>测试{{ index }}</div>
+      </div>
 
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-				<div>测试{{ index }}</div>
-			</div>
-
-			<n-button @click="add">+</n-button>
-		</n-card>
+      <n-button @click="add">+</n-button>
+    </n-card>
   </div>
 </template>
 
@@ -54,6 +53,6 @@ function add() {
 <style lang="scss" scoped>
 .aaa {
   @include scrollbar(8px, #e1e1e1);
-	color: $xtxColor
+  color: $xtxColor;
 }
 </style>

@@ -12,7 +12,7 @@
           <n-gradient-text type="primary" :size="28">{{ title }}</n-gradient-text>
         </header>
         <main class="pt-24px">
-          <h3 class="text-18px font-medium text-primary">
+          <h3 class="text-18px text-primary font-medium">
             {{ activeModule.label }}
           </h3>
           <div class="pt-24px">

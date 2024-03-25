@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap-class min-h-520px size-full flex-vertical-center gap-24px overflow-hidden">
+  <div class="wrap-class size-full min-h-520px flex-vertical-center gap-24px overflow-hidden">
     <div class="wrap-class flex text-400px text-primary">
       <icon-local-no-permission v-if="type === '403'" />
       <icon-local-not-found v-if="type === '404'" />
