@@ -13,7 +13,7 @@ import { useBoolean, useLoading } from '../common';
  * @param {Boolean} config.immediate 是否立即请求数据
  * @returns {Object}
  */
-export default function useTable(config) {
+export function useTable(config) {
   const { loading, startLoading, endLoading } = useLoading();
   const { bool: empty, setBool: setEmpty } = useBoolean();
 
