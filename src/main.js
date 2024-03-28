@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import GlobalLoading from './components/common/GlobalLoading.vue';
-import { setupAssets, setupLoading } from './plugins';
+import { setupAssets, setupDayjs, setupLoading } from './plugins';
 import { setupStore } from './store';
 import { setupDirectives } from './directives';
 import { setupRouter } from './router';
@@ -12,6 +12,8 @@ async function bootstrapApp() {
 
   // app loading
   setupLoading();
+
+  setupDayjs();
 
   const app = createApp(App);
 
