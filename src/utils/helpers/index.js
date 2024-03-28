@@ -4,3 +4,4 @@ export * from './router';
 export * from './icon';
 export * from './layout';
 export * from './breadcrumb';
+export * from './element';
