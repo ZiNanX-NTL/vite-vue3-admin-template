@@ -37,7 +37,7 @@
 <script setup lang="jsx">
 import { NSpace, NPopconfirm, NButton } from 'naive-ui';
 import { genderEnum, userStatusEnum } from '@/constants';
-import { useTable, useBoolean } from '@/hooks';
+import { useTable, useTableOperate } from '@/hooks';
 import { useBasicLayout } from '@/utils';
 import { fetchUserList } from '@/api';
 import TableActionModal from './components/TableActionModal.vue';
@@ -147,24 +147,15 @@ const { columns, filteredColumns, data, loading, pagination, getData, updateSear
   ]
 });
 
-const { bool: modalVisible, setTrue: openModal } = useBoolean();
-
-const operateType = ref('add');
-const editingData = ref(null);
-
-function handleAdd() {
-  operateType.value = 'add';
-  openModal();
-}
+const { modalVisible, operateType, handleAdd, editingData, handleEdit, onDeleted } = useTableOperate(getData);
 
 function handleEditTable(row) {
-  editingData.value = row;
-  operateType.value = 'edit';
-  openModal();
+  handleEdit(row);
 }
 
 function handleDelete(id) {
   console.log(id);
+  onDeleted();
 }
 </script>
 

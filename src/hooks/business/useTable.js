@@ -153,3 +153,41 @@ function useTableColumn(factory) {
     filteredColumns
   };
 }
+
+export function useTableOperate(getData) {
+  const { bool: modalVisible, setTrue: openModal, setFalse: closeModal } = useBoolean();
+
+  const operateType = ref('add');
+  /** the editing row data */
+  const editingData = ref(null);
+
+  function handleAdd() {
+    operateType.value = 'add';
+    openModal();
+  }
+
+  function handleEdit(row) {
+    operateType.value = 'edit';
+    editingData.value = row || null;
+
+    openModal();
+  }
+
+  /** the hook after the delete operation is completed */
+  async function onDeleted() {
+    window.$message?.success('删除成功');
+
+    await getData();
+  }
+
+  return {
+    modalVisible,
+    openModal,
+    closeModal,
+    operateType,
+    editingData,
+    handleAdd,
+    handleEdit,
+    onDeleted
+  };
+}
