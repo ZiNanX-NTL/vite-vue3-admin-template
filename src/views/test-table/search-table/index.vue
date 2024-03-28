@@ -5,7 +5,6 @@
       <template #header-extra>
         <table-header-operation
           v-model:columns="filteredColumns"
-          :disabled-delete="true"
           :loading="loading"
           @add="handleAdd"
           @refresh="getData"
