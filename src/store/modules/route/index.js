@@ -71,13 +71,14 @@ export const useRouteStore = defineStore('route-store', {
       const { initHomeTab } = useTabStore();
       const auth = useAuthStore();
       const permissionMode = import.meta.env.VITE_PERMISSION_MODE;
+      const roleKey = import.meta.env.VITE_ROLE_KEY;
       const permissionKey = import.meta.env.VITE_PERMISSION_KEY;
 
       let routes;
       if (permissionMode === 'RBAC') {
-        routes = filterAuthRoutesByUserPermission(staticRoutes, auth.userInfo[permissionKey]);
+        routes = filterAuthRoutesByUserPermission(staticRoutes, auth.userInfo[roleKey]);
       } else {
-        routes = filterAuthRoutesByUserRole(staticRoutes, auth.userInfo[permissionKey]);
+        routes = filterAuthRoutesByUserRole(staticRoutes, [...auth.userInfo[roleKey], ...auth.userInfo[permissionKey]]);
       }
       this.handleAuthRoute(routes);
 

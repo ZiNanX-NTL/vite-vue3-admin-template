@@ -24,9 +24,9 @@
     </NCard>
     <NCard title="权限钩子函数 `hasAuth`" :bordered="false" size="small" segmented class="card-wrapper">
       <NSpace>
-        <NButton v-if="hasAuth('super')">超级管理员可见</NButton>
-        <NButton v-if="hasAuth('admin')">管理员可见</NButton>
-        <NButton v-if="hasAuth('user')">用户可见</NButton>
+        <NButton v-if="hasAuth('B_CODE1')">超级管理员可见</NButton>
+        <NButton v-if="hasAuth('B_CODE2')">管理员可见</NButton>
+        <NButton v-if="hasAuth('B_CODE3')">用户可见</NButton>
       </NSpace>
     </NCard>
   </NSpace>

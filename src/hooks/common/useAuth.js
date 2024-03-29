@@ -4,6 +4,7 @@ import { isString } from '@/utils';
 export default function useAuth() {
   const authStore = useAuthStore();
   const permissionMode = import.meta.env.VITE_PERMISSION_MODE;
+  const roleKey = import.meta.env.VITE_ROLE_KEY;
   const permissionKey = import.meta.env.VITE_PERMISSION_KEY;
 
   function hasAuth(codes) {
@@ -12,16 +13,17 @@ export default function useAuth() {
     }
 
     if (permissionMode === 'RBAC') {
+      const permissionList = [...authStore.userInfo[roleKey], ...authStore.userInfo[permissionKey]];
       if (isString(codes)) {
-        return authStore.userInfo[permissionKey].includes(codes);
+        return permissionList.includes(codes);
       }
-      return codes.some(code => authStore.userInfo[permissionKey].includes(code));
+      return codes.some(code => permissionList.includes(code));
     }
 
     if (isString(codes)) {
-      return authStore.userInfo[permissionKey] === codes;
+      return authStore.userInfo[roleKey] === codes;
     }
-    return codes.includes(authStore.userInfo[permissionKey]);
+    return codes.includes(authStore.userInfo[roleKey]);
   }
 
   return {

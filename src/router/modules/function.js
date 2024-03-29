@@ -54,7 +54,7 @@ const functionRoute = {
       meta: {
         title: '权限测试页面',
         icon: 'ic:round-tab',
-        permissions: ['admin']
+        permissions: ['super']
       }
     }
   ],

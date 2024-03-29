@@ -39,7 +39,7 @@ export const userModel = [
     userId: '0',
     userName: 'Soybean',
     userRole: ['super'],
-    userPermissions: ['admin', 'user', 'super'],
+    userPermissions: ['B_CODE1', 'B_CODE2', 'B_CODE3'],
     password: 'soybean123'
   },
   {
@@ -48,7 +48,7 @@ export const userModel = [
     userId: '1',
     userName: 'Super',
     userRole: ['super'],
-    userPermissions: ['admin', 'user', 'super'],
+    userPermissions: ['B_CODE1', 'B_CODE2', 'B_CODE3'],
     password: 'super123'
   },
   {
@@ -57,7 +57,7 @@ export const userModel = [
     userId: '2',
     userName: 'Admin',
     userRole: ['admin'],
-    userPermissions: ['admin', 'user'],
+    userPermissions: ['B_CODE2', 'B_CODE3'],
     password: 'admin123'
   },
   {
@@ -66,7 +66,7 @@ export const userModel = [
     userId: '3',
     userName: 'User01',
     userRole: ['user'],
-    userPermissions: ['user'],
+    userPermissions: ['B_CODE3'],
     password: 'user01123'
   }
 ];
