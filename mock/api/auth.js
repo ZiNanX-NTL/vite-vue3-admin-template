@@ -59,13 +59,14 @@ const apis = [
       const userInfo = {
         userId: '',
         userName: '',
-        userRole: 'user'
+        userRole: 'user',
+        userPermissions: []
       };
       const isInUser = userModel.some(item => {
         const flag = item.token === authorization;
         if (flag) {
-          const { userId, userName, userRole } = item;
-          Object.assign(userInfo, { userId, userName, userRole });
+          const { userId, userName, userRole, userPermissions } = item;
+          Object.assign(userInfo, { userId, userName, userRole, userPermissions });
         }
         return flag;
       });

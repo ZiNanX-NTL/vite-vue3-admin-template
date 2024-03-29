@@ -9,8 +9,7 @@ const functionRoute = {
       component: 'self',
       meta: {
         title: 'Tab',
-        i18nTitle: 'routes.function.tab',
-        requiresAuth: true,
+        requiresAuth: false,
         icon: 'ic:round-tab'
       }
     },
@@ -37,6 +36,25 @@ const functionRoute = {
         multiTab: true,
         activeMenu: 'function_tab',
         icon: 'ic:round-tab'
+      }
+    },
+    {
+      name: 'function_toggle-auth',
+      path: '/function/toggle-auth',
+      component: 'self',
+      meta: {
+        title: '权限切换',
+        icon: 'ic:round-tab'
+      }
+    },
+    {
+      name: 'function_test-page',
+      path: '/function/test-page',
+      component: 'self',
+      meta: {
+        title: '权限测试页面',
+        icon: 'ic:round-tab',
+        permissions: ['admin']
       }
     }
   ],

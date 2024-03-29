@@ -45,7 +45,9 @@ export function useRouterPush() {
       params: { module }
     };
     const redirect = redirectUrl || route.value.fullPath;
-    Object.assign(routeLocation, { query: { redirect } });
+    routeLocation.query = {
+      redirect
+    };
     routerPush(routeLocation);
   }
 

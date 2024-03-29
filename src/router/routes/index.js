@@ -6,7 +6,8 @@ export const ROOT_ROUTE = {
   path: '/',
   redirect: import.meta.env.VITE_ROUTE_HOME_PATH,
   meta: {
-    title: 'Root'
+    title: 'Root',
+    constant: true
   }
 };
 
@@ -63,25 +64,8 @@ export const constantRoutes = [
     component: 'blank',
     meta: {
       title: '未找到',
-      singleLayout: 'blank'
+      singleLayout: 'blank',
+      constant: true
     }
   }
-  // {
-  //   name: 'layout',
-  //   path: '/layout',
-  //   component: BlankLayout,
-  //   meta: {
-  //     title: '布局页'
-  //   },
-  //   children: [
-  //     {
-  //       name: 'plant_overview',
-  //       path: 'plant-overview',
-  //       component: () => import('@/views/plant-overview/index.vue'),
-  //       meta: {
-  //         title: '种植概况'
-  //       }
-  //     }
-  //   ]
-  // }
 ];

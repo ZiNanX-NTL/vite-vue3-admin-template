@@ -100,12 +100,12 @@ export function useLeaflet(options: L.MapOptions = {}, hooks: MapHooks = {}) {
       return;
     }
 
-    // resize chart
+    // resize map
     if (isRendered()) {
       resize();
     }
 
-    // render chart
+    // render map
     await render();
   }
 
