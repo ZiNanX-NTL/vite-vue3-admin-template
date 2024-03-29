@@ -59,7 +59,7 @@ const functionRoute = {
     }
   ],
   meta: {
-    title: '多页签',
+    title: '系统功能',
     icon: 'fluent:book-information-24-regular',
     order: 2
   }
