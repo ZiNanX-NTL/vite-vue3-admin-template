@@ -1,19 +1,20 @@
-import { useAuthStore } from '@/store';
+import { useAuthStore, useRouteStore } from '@/store';
 import { isString } from '@/utils';
 
 export default function useAuth() {
   const authStore = useAuthStore();
-  const permissionMode = import.meta.env.VITE_PERMISSION_MODE;
-  const roleKey = import.meta.env.VITE_ROLE_KEY;
-  const permissionKey = import.meta.env.VITE_PERMISSION_KEY;
+  const routeStore = useRouteStore();
 
   function hasAuth(codes) {
     if (!authStore.isLogin) {
       return false;
     }
 
-    if (permissionMode === 'RBAC') {
-      const permissionList = [...authStore.userInfo[roleKey], ...authStore.userInfo[permissionKey]];
+    if (routeStore.permissionMode === 'RBAC') {
+      const permissionList = [
+        ...authStore.userInfo[routeStore.roleKey],
+        ...authStore.userInfo[routeStore.permissionKey]
+      ];
       if (isString(codes)) {
         return permissionList.includes(codes);
       }
@@ -21,9 +22,9 @@ export default function useAuth() {
     }
 
     if (isString(codes)) {
-      return authStore.userInfo[roleKey] === codes;
+      return authStore.userInfo[routeStore.roleKey] === codes;
     }
-    return codes.includes(authStore.userInfo[roleKey]);
+    return codes.includes(authStore.userInfo[routeStore.roleKey]);
   }
 
   return {

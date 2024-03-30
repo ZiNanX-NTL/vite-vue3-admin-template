@@ -19,6 +19,9 @@ import { useTabStore } from '../tab';
 export const useRouteStore = defineStore('route-store', {
   state: () => ({
     authRouteMode: import.meta.env.VITE_AUTH_ROUTE_MODE,
+    permissionMode: import.meta.env.VITE_PERMISSION_MODE,
+    roleKey: import.meta.env.VITE_ROLE_KEY,
+    permissionKey: import.meta.env.VITE_PERMISSION_KEY,
     isInitAuthRoute: false,
     routeHomeName: transformRoutePathToRouteName(import.meta.env.VITE_ROUTE_HOME_PATH),
     menus: [],
@@ -70,15 +73,15 @@ export const useRouteStore = defineStore('route-store', {
     async initStaticRoute() {
       const { initHomeTab } = useTabStore();
       const auth = useAuthStore();
-      const permissionMode = import.meta.env.VITE_PERMISSION_MODE;
-      const roleKey = import.meta.env.VITE_ROLE_KEY;
-      const permissionKey = import.meta.env.VITE_PERMISSION_KEY;
 
       let routes;
-      if (permissionMode === 'RBAC') {
-        routes = filterAuthRoutesByUserPermission(staticRoutes, auth.userInfo[roleKey]);
+      if (this.permissionMode === 'RBAC') {
+        routes = filterAuthRoutesByUserPermission(staticRoutes, auth.userInfo[this.roleKey]);
       } else {
-        routes = filterAuthRoutesByUserRole(staticRoutes, [...auth.userInfo[roleKey], ...auth.userInfo[permissionKey]]);
+        routes = filterAuthRoutesByUserRole(staticRoutes, [
+          ...auth.userInfo[this.roleKey],
+          ...auth.userInfo[this.permissionKey]
+        ]);
       }
       this.handleAuthRoute(routes);
 
