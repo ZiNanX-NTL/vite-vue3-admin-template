@@ -28,7 +28,7 @@ export const useAuthStore = defineStore('auth-store', {
       clearAuthStorage();
       this.$reset();
 
-      if (!route.value.meta.constant) {
+      if (!route.meta.constant) {
         toLogin();
       }
 
