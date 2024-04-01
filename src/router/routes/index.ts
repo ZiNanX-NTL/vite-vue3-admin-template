@@ -1,7 +1,7 @@
 import { getLoginModuleRegExp } from '../helpers';
 
 /** 根路由: / */
-export const ROOT_ROUTE = {
+export const ROOT_ROUTE: AuthRoute.Route = {
   name: 'root',
   path: '/',
   redirect: import.meta.env.VITE_ROUTE_HOME_PATH,
@@ -12,7 +12,7 @@ export const ROOT_ROUTE = {
 };
 
 /** 固定的路由 */
-export const constantRoutes = [
+export const constantRoutes: AuthRoute.Route[] = [
   ROOT_ROUTE,
   {
     name: 'login',

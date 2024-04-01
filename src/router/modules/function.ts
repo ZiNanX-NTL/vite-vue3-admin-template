@@ -1,4 +1,4 @@
-const functionRoute = {
+const functionRoute: AuthRoute.Route = {
   name: 'function',
   path: '/function',
   component: 'basic',

@@ -1,4 +1,4 @@
-const tableRoute = {
+const tableRoute: AuthRoute.Route = {
   name: 'test-table',
   path: '/test-table',
   component: 'basic',
@@ -11,7 +11,6 @@ const tableRoute = {
         title: '表格页面1',
         requiresAuth: true,
         keepAlive: false,
-        singleLayout: 'self',
         permissions: ['super', 'admin', 'user'],
         icon: 'ic:round-tab'
       }
@@ -24,7 +23,6 @@ const tableRoute = {
         title: '表格页面2',
         requiresAuth: true,
         keepAlive: false,
-        singleLayout: 'self',
         permissions: ['super', 'admin', 'user'],
         icon: 'ic:round-tab'
       }

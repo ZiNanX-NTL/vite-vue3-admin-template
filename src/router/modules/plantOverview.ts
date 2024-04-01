@@ -1,16 +1,16 @@
-const testPageRoute = {
-  name: 'test-page',
-  path: '/test-page',
+const plantOverview: AuthRoute.Route = {
+  name: 'plant-overview',
+  path: '/plant-overview',
   component: 'self',
   meta: {
-    title: '测试页面',
+    title: '种植概况',
     requiresAuth: true,
     keepAlive: true,
     singleLayout: 'basic',
     permissions: ['super', 'admin', 'user'],
     icon: 'fluent:book-information-24-regular',
-    order: 3
+    order: 1
   }
 };
 
-export default testPageRoute;
+export default plantOverview;
