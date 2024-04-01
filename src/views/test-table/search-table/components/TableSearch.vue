@@ -1,7 +1,7 @@
 <template>
   <n-card title="搜索" :bordered="false" size="small" class="card-wrapper">
     <n-form ref="formRef" :model="model" :rules="rules" label-placement="left">
-      <n-grid cols="1 s:2 m:5" :x-gap="24" responsive="screen" item-responsive>
+      <n-grid cols="1 s:2 m:5" :x-gap="24" responsive="screen" item-responsive :collapsed="collapsed">
         <n-form-item-gi label="用户名" path="userName">
           <n-input v-model:value="model.userName" placeholder="请输入用户名" />
         </n-form-item-gi>
@@ -25,7 +25,7 @@
             clearable
           />
         </n-form-item-gi>
-        <n-form-item-gi suffix :show-feedback="false">
+        <n-gi suffix :show-feedback="false" #="{ overflow }">
           <n-space class="w-full" justify="end">
             <n-button @click="reset">
               <template #icon>
@@ -39,8 +39,14 @@
               </template>
               搜索
             </n-button>
+            <n-button circle ghost @click="collapsed = !collapsed">
+              <template #icon>
+                <icon-ep-arrow-up-bold v-if="!overflow" class="text-icon" />
+                <icon-ep-arrow-down-bold v-else class="text-icon" />
+              </template>
+            </n-button>
           </n-space>
-        </n-form-item-gi>
+        </n-gi>
       </n-grid>
     </n-form>
   </n-card>
@@ -59,6 +65,8 @@ const emit = defineEmits(['reset', 'search']);
 const { formRef, validate, restoreValidation } = useNaiveForm();
 
 const model = defineModel('model', { required: true });
+
+const collapsed = ref(false);
 
 const rules = computed(() => {
   const { patternRules } = useFormRules(); // inside computed to make locale reactive
