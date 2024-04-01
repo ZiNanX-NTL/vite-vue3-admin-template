@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { router } from '@/router';
 import { localStg, useRouterPush } from '@/utils';
 import { useThemeStore } from '../theme';
 import { useRouteStore } from '../route';
@@ -36,12 +37,12 @@ export const useTabStore = defineStore('tab-store', {
   actions: {
     /**
      * 初始化首页页签路由
-     * @param routeHomeName - 路由首页的name
-     * @param router - 路由实例
      */
-    initHomeTab(routeHomeName, router) {
+    initHomeTab() {
+      const routeStore = useRouteStore();
+
       const routes = router.getRoutes();
-      const findHome = routes.find(item => item.name === routeHomeName);
+      const findHome = routes.find(item => item.name === routeStore.routeHomeName);
       if (findHome && !findHome.children.length) {
         // 有子路由的不能作为Tab
         this.homeTab = getTabRouteByVueRoute(findHome);

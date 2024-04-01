@@ -11,3 +11,8 @@ export function fetchLogin(data) {
 export function fetchUserInfo() {
   return mockInstance.get({ url: '/getUserInfo' });
 }
+
+/** 获取用户信息 */
+export function fetchGetUserRoutes() {
+  return mockInstance.get({ url: '/getUserRoutes' });
+}

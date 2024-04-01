@@ -3,15 +3,19 @@ import {
   constantRoutes,
   routes as staticRoutes,
   router,
+  ROOT_ROUTE,
   getConstantRouteNames,
+  transformRouteNameToRoutePath,
   transformRoutePathToRouteName,
   filterAuthRoutesByUserPermission,
   filterAuthRoutesByUserRole,
   transformAuthRouteToMenu,
   transformAuthRouteToVueRoutes,
   getCacheRoutes,
-  transformAuthRouteToSearchMenus
+  transformAuthRouteToSearchMenus,
+  sortRoutesByOrder
 } from '@/router';
+import { fetchGetUserRoutes } from '@/api';
 import { useAuthStore } from '../auth';
 import { useAppStore } from '../app';
 import { useTabStore } from '../tab';
@@ -23,6 +27,7 @@ export const useRouteStore = defineStore('route-store', {
     roleKey: import.meta.env.VITE_ROLE_KEY,
     permissionKey: import.meta.env.VITE_PERMISSION_KEY,
     isInitAuthRoute: false,
+    removeRouteFns: [],
     routeHomeName: transformRoutePathToRouteName(import.meta.env.VITE_ROUTE_HOME_PATH),
     menus: [],
     cacheRoutes: [],
@@ -31,18 +36,13 @@ export const useRouteStore = defineStore('route-store', {
   actions: {
     /** 重置路由的store */
     resetRouteStore() {
-      this.resetRoutes();
+      this.resetVueRoutes();
       this.$reset();
     },
     /** 重置路由数据，保留固定路由 */
-    resetRoutes() {
-      const routes = router.getRoutes();
-      routes.forEach(route => {
-        const name = route.name || 'root';
-        if (!this.isConstantRoute(name)) {
-          router.removeRoute(name);
-        }
-      });
+    resetVueRoutes() {
+      this.removeRouteFns.forEach(fn => fn());
+      this.removeRouteFns.length = 0;
     },
     /**
      * 是否是固定路由
@@ -63,15 +63,18 @@ export const useRouteStore = defineStore('route-store', {
     },
     /** 初始化权限路由 */
     async initAuthRoute() {
+      const { initHomeTab } = useTabStore();
+
       if (this.authRouteMode === 'dynamic') {
-        // await this.initDynamicRoute();
+        await this.initDynamicRoute();
       } else {
         await this.initStaticRoute();
       }
+
+      initHomeTab();
     },
     /** 初始化静态路由 */
     async initStaticRoute() {
-      const { initHomeTab } = useTabStore();
       const auth = useAuthStore();
 
       let routes;
@@ -85,25 +88,81 @@ export const useRouteStore = defineStore('route-store', {
       }
       this.handleAuthRoute(routes);
 
-      initHomeTab(this.routeHomeName, router);
-
       this.isInitAuthRoute = true;
+    },
+    /** Init dynamic auth route */
+    async initDynamicRoute() {
+      const { data, error } = await fetchGetUserRoutes();
+
+      if (!error) {
+        const { routes, home } = data;
+
+        const sortRoutes = sortRoutesByOrder(routes);
+        this.handleAuthRoute(sortRoutes);
+        this.setRouteHome(home);
+        this.handleUpdateRootRouteRedirect(home);
+
+        this.isInitAuthRoute = true;
+      }
     },
     /**
      * 处理权限路由
      * @param routes - 权限路由
      */
     handleAuthRoute(routes) {
+      const vueRoutes = transformAuthRouteToVueRoutes(routes);
+      this.resetVueRoutes();
+      this.addRoutesToVueRouter(vueRoutes);
+
       this.menus = transformAuthRouteToMenu(routes);
       this.searchMenus = transformAuthRouteToSearchMenus(routes);
-
-      const vueRoutes = transformAuthRouteToVueRoutes(routes);
-
-      vueRoutes.forEach(route => {
-        router.addRoute(route);
-      });
-
       this.cacheRoutes = getCacheRoutes(vueRoutes);
+    },
+    /**
+     * Add routes to vue router
+     *
+     * @param routes Vue routes
+     */
+    addRoutesToVueRouter(routes) {
+      routes.forEach(route => {
+        const removeFn = router.addRoute(route);
+        this.addRemoveRouteFn(removeFn);
+      });
+    },
+    /**
+     * Add remove route fn
+     *
+     * @param fn
+     */
+    addRemoveRouteFn(fn) {
+      this.removeRouteFns.push(fn);
+    },
+
+    /**
+     * Set route home
+     *
+     * @param routeKey Route key
+     */
+    setRouteHome(routeKey) {
+      this.routeHomeName = routeKey;
+    },
+    /**
+     * Update root route redirect when auth route mode is dynamic
+     *
+     * @param redirectKey Redirect route key
+     */
+    handleUpdateRootRouteRedirect(redirectKey) {
+      const redirect = transformRouteNameToRoutePath(redirectKey);
+
+      if (redirect) {
+        const rootRoute = { ...ROOT_ROUTE, redirect };
+
+        router.removeRoute(rootRoute.name);
+
+        const [rootVueRoute] = transformAuthRouteToVueRoutes([rootRoute]);
+
+        router.addRoute(rootVueRoute);
+      }
     },
     /** 从缓存路由中去除某个路由 */
     removeCacheRoute(name) {
