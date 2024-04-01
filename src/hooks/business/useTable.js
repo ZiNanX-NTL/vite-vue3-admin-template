@@ -1,4 +1,5 @@
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, watch } from 'vue';
+import { useBasicLayout } from '@/utils';
 import { useBoolean, useLoading } from '../common';
 
 /**
@@ -25,6 +26,7 @@ export function useTable(config) {
 
   const data = ref([]);
 
+  const { isMobile } = useBasicLayout();
   const pagination = reactive({
     page: 1,
     pageSize: 10,
@@ -79,6 +81,18 @@ export function useTable(config) {
   if (immediate) {
     getData();
   }
+
+  watch(
+    isMobile,
+    newValue => {
+      if (newValue) {
+        Object.assign(pagination, { pageSlot: 3 });
+      } else {
+        Object.assign(pagination, { pageSlot: 9 });
+      }
+    },
+    { immediate: true }
+  );
 
   return {
     loading,
