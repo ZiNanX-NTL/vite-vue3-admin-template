@@ -8,7 +8,7 @@ const tableRoute: AuthRoute.Route = {
       path: '/test-table/table',
       component: 'self',
       meta: {
-        title: '表格页面1',
+        title: '基础表格',
         requiresAuth: true,
         keepAlive: false,
         permissions: ['super', 'admin', 'user'],
@@ -20,7 +20,19 @@ const tableRoute: AuthRoute.Route = {
       path: '/test-table/search-table',
       component: 'self',
       meta: {
-        title: '表格页面2',
+        title: '搜索表格',
+        requiresAuth: true,
+        keepAlive: false,
+        permissions: ['super', 'admin', 'user'],
+        icon: 'ic:round-tab'
+      }
+    },
+    {
+      name: 'test-table_high-level-Search',
+      path: '/test-table/high-level-Search',
+      component: 'self',
+      meta: {
+        title: '高级检索',
         requiresAuth: true,
         keepAlive: false,
         permissions: ['super', 'admin', 'user'],
@@ -29,7 +41,7 @@ const tableRoute: AuthRoute.Route = {
     }
   ],
   meta: {
-    title: '表格页面',
+    title: '表格示例',
     permissions: ['super', 'admin', 'user'],
     icon: 'fluent:book-information-24-regular',
     order: 4

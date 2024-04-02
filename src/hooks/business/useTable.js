@@ -1,4 +1,5 @@
 import { ref, reactive, computed, watch } from 'vue';
+import { cloneDeep } from 'lodash-es';
 import { useBasicLayout } from '@/utils';
 import { useBoolean, useLoading } from '../common';
 
@@ -18,11 +19,18 @@ export function useTable(config) {
   const { loading, startLoading, endLoading } = useLoading();
   const { bool: empty, setBool: setEmpty } = useBoolean();
 
-  const { apiFn, apiParams, transformer, onPaginationChanged, immediate = true } = config;
+  const {
+    apiFn,
+    apiParams,
+    formatSearchParams = params => params,
+    transformer,
+    onPaginationChanged,
+    immediate = true
+  } = config;
 
   const { columns, filteredColumns, reloadColumns } = useTableColumn(config.columns);
 
-  const searchParams = reactive({ ...apiParams });
+  const searchParams = reactive(cloneDeep(apiParams));
 
   const data = ref([]);
 
@@ -53,7 +61,9 @@ export function useTable(config) {
   async function getData() {
     startLoading();
 
-    const response = await apiFn(searchParams);
+    const formattedParams = formatSearchParams(searchParams);
+
+    const response = await apiFn(formattedParams);
 
     const { data: tableData, pageNum, pageSize, total } = transformer(response);
 
@@ -75,7 +85,7 @@ export function useTable(config) {
 
   /** reset search params */
   function resetSearchParams() {
-    Object.assign(searchParams, apiParams);
+    Object.assign(searchParams, cloneDeep(apiParams));
   }
 
   if (immediate) {
