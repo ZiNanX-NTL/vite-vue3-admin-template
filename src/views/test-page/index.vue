@@ -1,6 +1,28 @@
 <template>
   <div class="flex-vertical-stretch overflow-hidden">
     <n-card title="测试" class="h-full">
+      <CountTo v-slot="{ value }" :end-value="123">
+        <p class="mb-4px flex-center">
+          <n-gradient-text
+            :gradient="{
+              from: '#19c6fe',
+              to: '#fff'
+            }"
+            class="text-30px font-600"
+          >
+            {{ value }}
+          </n-gradient-text>
+          <n-gradient-text
+            :gradient="{
+              from: '#19c6fe',
+              to: '#fff'
+            }"
+            class="text-20px font-600"
+          >
+            {{ `($)` }}
+          </n-gradient-text>
+        </p>
+      </CountTo>
       <div class="aaa box h-500px overflow-auto">
         <div>测试{{ index }}</div>
         <div>测试{{ index }}</div>
