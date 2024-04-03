@@ -1,7 +1,7 @@
 <template>
   <n-flex :size="16" :wrap="false">
     <n-card v-if="!collapsed" title="高级搜索" :bordered="false" size="small" class="w-350px card-wrapper">
-      <n-scrollbar class="max-h-270px">
+      <n-scrollbar :style="{ height: treeHeight + 'px' }">
         <n-tree
           block-line
           cascade
@@ -96,6 +96,7 @@
 </template>
 
 <script setup>
+import { useElementSize } from '@vueuse/core';
 import { userStatusEnum, genderEnum } from '@/constants';
 import { useFormRules, useNaiveForm } from '@/hooks';
 
@@ -110,6 +111,9 @@ const { formRef, validate, restoreValidation } = useNaiveForm();
 const model = defineModel('model', { required: true });
 
 const collapsed = ref(false);
+
+// 获取n-tree滚动区高度
+const { height: treeHeight } = useElementSize(formRef);
 
 const rules = computed(() => {
   const { patternRules } = useFormRules(); // inside computed to make locale reactive
