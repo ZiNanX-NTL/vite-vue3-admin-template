@@ -32,7 +32,8 @@ export default defineConfig({
       'i-flex-y-center': 'inline-flex items-center',
       'i-flex-vertical': 'inline-flex flex-col',
       'i-flex-vertical-stretch': 'i-flex-vertical items-stretch',
-      'flex-1-hidden': 'flex-1 overflow-hidden'
+      'flex-1-hidden': 'flex-1 overflow-hidden',
+      'flex-vertical-full': 'flex-vertical-stretch overflow-hidden'
     },
     {
       'absolute-lt': 'absolute left-0 top-0',

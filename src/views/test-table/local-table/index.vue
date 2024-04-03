@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-vertical-stretch overflow-hidden <sm:overflow-auto">
+  <div class="flex-vertical-full <sm:overflow-auto">
     <n-card :bordered="false" size="small" title="表格" class="h-full card-wrapper">
       <template #header-extra>
         <TableHeaderOperation

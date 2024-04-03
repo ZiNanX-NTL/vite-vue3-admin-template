@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-vertical-stretch gap-16px overflow-hidden <sm:overflow-auto">
+  <div class="flex-vertical-full gap-16px <sm:overflow-auto">
     <table-search v-model:model="searchParams" @reset="resetSearchParams" @search="getData"></table-search>
     <n-card :bordered="false" size="small" title="表格" class="h-full card-wrapper">
       <template #header-extra>
