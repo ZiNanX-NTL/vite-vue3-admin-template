@@ -69,7 +69,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useEcharts } from '@/hooks';
 const index = ref(1);
 function add() {
@@ -98,7 +98,7 @@ const { domRef, updateOptions } = useEcharts(() => ({
   xAxis: {
     type: 'category',
     boundaryGap: false,
-    data: []
+    data: [] as string[]
   },
   yAxis: {
     type: 'value'
@@ -132,7 +132,7 @@ const { domRef, updateOptions } = useEcharts(() => ({
       emphasis: {
         focus: 'series'
       },
-      data: []
+      data: [] as number[]
     },
     {
       color: '#26deca',

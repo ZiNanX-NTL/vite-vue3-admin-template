@@ -4,75 +4,45 @@
   </slot>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { TransitionPresets, useTransition } from '@vueuse/core';
 
 defineOptions({
   name: 'CountTo'
 });
 
-const props = defineProps({
-  /** 初始值 */
-  startValue: {
-    type: Number,
-    default: 0
-  },
-  /** 结束值 */
-  endValue: {
-    type: Number,
-    default: 2024
-  },
-  /** 动画时长 */
-  duration: {
-    type: Number,
-    default: 1500
-  },
-  /** 自动动画 */
-  autoplay: {
-    type: Boolean,
-    default: true
-  },
-  /** 进制 */
-  decimals: {
-    type: Number,
-    default: 0
-  },
-  /** 前缀 */
-  prefix: {
-    type: String,
-    default: ''
-  },
-  /** 后缀 */
-  suffix: {
-    type: String,
-    default: ''
-  },
-  /** 分割符号 */
-  separator: {
-    type: String,
-    default: ','
-  },
-  /** 小数点 */
-  decimal: {
-    type: String,
-    default: '.'
-  },
-  /** 使用缓冲动画函数 */
-  useEasing: {
-    type: Boolean,
-    default: true
-  },
-  /** 缓冲动画函数类型 */
-  transition: {
-    type: String,
-    default: 'linear'
-  }
+interface Props {
+  startValue?: number;
+  endValue?: number;
+  duration?: number;
+  autoplay?: boolean;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+  separator?: string;
+  decimal?: string;
+  useEasing?: boolean;
+  transition?: keyof typeof TransitionPresets;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  startValue: 0,
+  endValue: 2021,
+  duration: 1500,
+  autoplay: true,
+  decimals: 0,
+  prefix: '',
+  suffix: '',
+  separator: ',',
+  decimal: '.',
+  useEasing: true,
+  transition: 'linear'
 });
 
 const attrs = useAttrs();
-const bindAttrs = computed(() => ({
-  class: attrs.class || '',
-  style: attrs.style || ''
+const bindAttrs = computed<{ class: string; style: string }>(() => ({
+  class: (attrs.class as string) || '',
+  style: (attrs.style as string) || ''
 }));
 
 const source = ref(props.startValue);
@@ -87,7 +57,7 @@ const outputValue = useTransition(source, {
 
 const value = computed(() => formatValue(outputValue.value));
 
-function formatValue(num) {
+function formatValue(num: number) {
   const { decimals, decimal, separator, suffix, prefix } = props;
 
   let number = num.toFixed(decimals);
