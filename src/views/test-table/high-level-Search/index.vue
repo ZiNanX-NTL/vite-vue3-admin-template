@@ -67,7 +67,8 @@ const {
     userStatus: null,
 
     dataTypes: [1],
-    dataSources: [1]
+    dataSources: [1],
+    checkedKeys: ['0']
   },
   onPaginationChanged: p => {
     updateSearchParams({ page: p.page, pageSize: p.pageSize });
