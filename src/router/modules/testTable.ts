@@ -16,6 +16,18 @@ const tableRoute: AuthRoute.Route = {
       }
     },
     {
+      name: 'test-table_local-table',
+      path: '/test-table/local-table',
+      component: 'self',
+      meta: {
+        title: '本地分页',
+        requiresAuth: true,
+        keepAlive: false,
+        permissions: ['super', 'admin', 'user'],
+        icon: 'ic:round-tab'
+      }
+    },
+    {
       name: 'test-table_search-table',
       path: '/test-table/search-table',
       component: 'self',

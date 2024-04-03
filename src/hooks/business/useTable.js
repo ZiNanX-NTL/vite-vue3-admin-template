@@ -65,7 +65,7 @@ export function useTable(config) {
 
     const response = await apiFn(formattedParams);
 
-    const { data: tableData, pageNum, pageSize, total } = transformer(response);
+    const { data: tableData, pageNum = pagination.page, pageSize = pagination.pageSize, total } = transformer(response);
 
     data.value = tableData;
 

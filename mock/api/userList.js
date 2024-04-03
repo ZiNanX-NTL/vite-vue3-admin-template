@@ -39,6 +39,23 @@ const apis = [
         }
       };
     }
+  },
+  {
+    url: '/mock/allUserList',
+    method: 'get',
+    response: () => {
+      // 接口接收分页参数,根据参数返回分页列表数据
+      const total = data.list.length;
+
+      return {
+        code: 200,
+        message: 'ok',
+        data: {
+          records: data.list,
+          total
+        }
+      };
+    }
   }
 ];
 

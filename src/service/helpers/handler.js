@@ -16,7 +16,7 @@ export async function handleServiceResult(error, data) {
 
 /** 请求结果的适配器：用于接收适配器函数和请求结果 */
 export function adapter(adapterFun, ...args) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, _reject) => {
     let result;
 
     const hasError = args.some(item => {
