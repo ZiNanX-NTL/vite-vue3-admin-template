@@ -1,3 +1,4 @@
+import type { PluginOption } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import unocss from '@unocss/vite';
@@ -10,7 +11,7 @@ import svgIcons from './vitePluginSvgIcons';
 import compression from './vitePluginCompression';
 import mock from './vitePluginMock';
 
-export function setupVitePlugins(viteEnv) {
+export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | PluginOption[])[] {
   return [
     vue(),
     vueJsx(),

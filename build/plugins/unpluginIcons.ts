@@ -2,7 +2,7 @@ import Icons from 'unplugin-icons/vite';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 import { getSrcPath } from '../utils';
 
-export default viteEnv => {
+export default (viteEnv: ImportMetaEnv) => {
   const { VITE_ICON_PREFIX, VITE_ICON_LOCAL_PREFIX } = viteEnv;
 
   const srcPath = getSrcPath();

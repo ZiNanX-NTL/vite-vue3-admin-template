@@ -12,7 +12,7 @@ import {
 
 // https://vitejs.dev/config/
 export default defineConfig(configEnv => {
-  const viteEnv = loadEnv(configEnv.mode, process.cwd());
+  const viteEnv = loadEnv(configEnv.mode, process.cwd()) as unknown as ImportMetaEnv;
 
   const rootPath = getRootPath();
   const srcPath = getSrcPath();

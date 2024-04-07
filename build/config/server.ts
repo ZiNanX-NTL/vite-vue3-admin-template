@@ -1,4 +1,6 @@
-export function viteServer(viteEnv) {
+import type { ServerOptions } from 'vite';
+
+export function viteServer(viteEnv: ImportMetaEnv): ServerOptions {
   return {
     host: '0.0.0.0',
     port: 3200,

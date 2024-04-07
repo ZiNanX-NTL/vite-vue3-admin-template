@@ -1,4 +1,4 @@
-import { computed, effectScope, nextTick, onScopeDispose, ref, watch } from 'vue';
+import { computed, effectScope, nextTick, onScopeDispose, ref, watch, unref } from 'vue';
 import * as echarts from 'echarts/core';
 import { BarChart, GaugeChart, LineChart, PictorialBarChart, PieChart, RadarChart, ScatterChart } from 'echarts/charts';
 import type {
@@ -30,6 +30,7 @@ import type {
 import { LabelLayout, UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import { useElementSize } from '@vueuse/core';
+import { router } from '@/router';
 import { useThemeStore } from '@/store';
 
 export type ECOption = echarts.ComposeOption<
@@ -92,6 +93,9 @@ export function useEcharts<T extends ECOption>(optionsFactory: () => T, hooks: C
 
   let chart: echarts.ECharts | null = null;
   const chartOptions: T = optionsFactory();
+
+  const route = unref(router.currentRoute);
+  const isKeepAlive = route.meta.keepAlive;
 
   const {
     onRender = instance => {
@@ -171,8 +175,10 @@ export function useEcharts<T extends ECOption>(optionsFactory: () => T, hooks: C
     if (!chart) return;
 
     await onDestroy?.(chart);
-    chart?.dispose();
-    chart = null;
+    if (!isKeepAlive) {
+      chart?.dispose();
+      chart = null;
+    }
   }
 
   /** change chart theme */
