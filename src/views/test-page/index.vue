@@ -86,9 +86,7 @@ const { domRef, updateOptions } = useEcharts(() => ({
       }
     }
   },
-  legend: {
-    data: ['下载量', '注册量']
-  },
+  legend: {},
   grid: {
     left: '3%',
     right: '4%',
