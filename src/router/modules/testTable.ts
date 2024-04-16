@@ -40,8 +40,8 @@ const tableRoute: AuthRoute.Route = {
       }
     },
     {
-      name: 'test-table_high-level-Search',
-      path: '/test-table/high-level-Search',
+      name: 'test-table_high-level-search',
+      path: '/test-table/high-level-search',
       component: 'self',
       meta: {
         title: '高级检索',
