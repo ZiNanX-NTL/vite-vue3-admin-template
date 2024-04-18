@@ -171,28 +171,19 @@ export function useEcharts<T extends ECOption>(optionsFactory: () => T, hooks: C
   }
 
   /** destroy chart */
-  async function destroy() {
+  async function destroy(isForce = false) {
     if (!chart) return;
 
     await onDestroy?.(chart);
-    if (!isKeepAlive) {
+    if (!isKeepAlive || isForce) {
       chart?.dispose();
       chart = null;
     }
   }
 
-  /** changeTheme destroy chart */
-  async function changeThemeDestroy() {
-    if (!chart) return;
-
-    await onDestroy?.(chart);
-    chart?.dispose();
-    chart = null;
-  }
-
   /** change chart theme */
   async function changeTheme() {
-    await changeThemeDestroy();
+    await destroy(true);
     await render();
     await onUpdated?.(chart!);
   }
