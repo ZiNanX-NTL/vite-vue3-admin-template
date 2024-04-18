@@ -181,9 +181,18 @@ export function useEcharts<T extends ECOption>(optionsFactory: () => T, hooks: C
     }
   }
 
+  /** changeTheme destroy chart */
+  async function changeThemeDestroy() {
+    if (!chart) return;
+
+    await onDestroy?.(chart);
+    chart?.dispose();
+    chart = null;
+  }
+
   /** change chart theme */
   async function changeTheme() {
-    await destroy();
+    await changeThemeDestroy();
     await render();
     await onUpdated?.(chart!);
   }
