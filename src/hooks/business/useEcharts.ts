@@ -29,9 +29,9 @@ import type {
 } from 'echarts/components';
 import { LabelLayout, UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
-import { useElementSize } from '@vueuse/core';
 import { router } from '@/router';
 import { useThemeStore } from '@/store';
+import { useRender } from '../common';
 
 export type ECOption = echarts.ComposeOption<
   | BarSeriesOption
@@ -88,10 +88,7 @@ export function useEcharts<T extends ECOption>(optionsFactory: () => T, hooks: C
   const darkMode = computed(() => themeStore.darkMode);
 
   const domRef = ref<HTMLElement | null>(null);
-  const initialSize = { width: 0, height: 0 };
-  const { width, height } = useElementSize(domRef, initialSize);
 
-  let chart: echarts.ECharts | null = null;
   const chartOptions: T = optionsFactory();
 
   const route = unref(router.currentRoute);
@@ -115,19 +112,38 @@ export function useEcharts<T extends ECOption>(optionsFactory: () => T, hooks: C
     onDestroy
   } = hooks;
 
-  /**
-   * whether can render chart
-   *
-   * when domRef is ready and initialSize is valid
-   */
-  function canRender() {
-    return domRef.value && initialSize.width > 0 && initialSize.height > 0;
-  }
+  const {
+    instance: chartInstance,
+    isRendered,
+    render,
+    destroy
+  } = useRender(domRef, {
+    async render() {
+      const chartTheme = darkMode.value ? 'dark' : 'light';
 
-  /** is chart rendered */
-  function isRendered() {
-    return Boolean(domRef.value && chart);
-  }
+      await nextTick();
+
+      const chart = echarts.init(domRef.value, chartTheme);
+
+      chart.setOption({ ...chartOptions, backgroundColor: 'transparent' });
+
+      await onRender?.(chart);
+
+      return chart;
+    },
+    resize(instance) {
+      instance?.value?.resize();
+    },
+    async destroy(instance, isForce = false) {
+      if (!instance?.value) return;
+
+      await onDestroy?.(instance?.value);
+      if (!isKeepAlive || isForce) {
+        instance?.value?.dispose();
+        instance.value = null;
+      }
+    }
+  });
 
   /**
    * update chart options
@@ -142,90 +158,33 @@ export function useEcharts<T extends ECOption>(optionsFactory: () => T, hooks: C
     Object.assign(chartOptions, updatedOpts);
 
     if (isRendered()) {
-      chart?.clear();
+      chartInstance.value?.clear();
     }
 
-    chart?.setOption({ ...updatedOpts, backgroundColor: 'transparent' });
+    chartInstance.value?.setOption({ ...updatedOpts, backgroundColor: 'transparent' });
 
-    await onUpdated?.(chart!);
-  }
-
-  /** render chart */
-  async function render() {
-    if (!isRendered()) {
-      const chartTheme = darkMode.value ? 'dark' : 'light';
-
-      await nextTick();
-
-      chart = echarts.init(domRef.value, chartTheme);
-
-      chart.setOption({ ...chartOptions, backgroundColor: 'transparent' });
-
-      await onRender?.(chart);
-    }
-  }
-
-  /** resize chart */
-  function resize() {
-    chart?.resize();
-  }
-
-  /** destroy chart */
-  async function destroy(isForce = false) {
-    if (!chart) return;
-
-    await onDestroy?.(chart);
-    if (!isKeepAlive || isForce) {
-      chart?.dispose();
-      chart = null;
-    }
+    await onUpdated?.(chartInstance.value!);
   }
 
   /** change chart theme */
   async function changeTheme() {
-    await destroy(true);
-    await render();
-    await onUpdated?.(chart!);
-  }
-
-  /**
-   * render chart by size
-   *
-   * @param w width
-   * @param h height
-   */
-  async function renderChartBySize(w: number, h: number) {
-    initialSize.width = w;
-    initialSize.height = h;
-
-    // size is abnormal, destroy chart
-    if (!canRender()) {
-      await destroy();
-
-      return;
+    await destroy(chartInstance, true);
+    if (!chartInstance.value) {
+      const tmp = await render();
+      if (!chartInstance.value) {
+        chartInstance.value = tmp;
+      }
     }
-
-    // resize chart
-    if (isRendered()) {
-      resize();
-    }
-
-    // render chart
-    await render();
+    await onUpdated?.(chartInstance.value!);
   }
 
   scope.run(() => {
-    watch([width, height], ([newWidth, newHeight]) => {
-      renderChartBySize(newWidth, newHeight);
-    });
-
     watch(darkMode, () => {
       changeTheme();
     });
   });
 
   onScopeDispose(() => {
-    destroy();
     scope.stop();
   });
 

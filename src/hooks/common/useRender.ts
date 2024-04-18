@@ -1,9 +1,10 @@
+import type { ShallowRef } from 'vue';
 import { useElementSize } from '@vueuse/core';
 
 interface renderCallbacks<T> {
   render?: () => T | Promise<T>;
-  resize?: (instance?: T) => void | Promise<void>;
-  destroy?: (instance?: T) => void | Promise<void>;
+  resize?: (instance?: ShallowRef<T | null>) => void | Promise<void>;
+  destroy?: (instance?: ShallowRef<T | null>, isForce?: boolean) => void | Promise<void>;
 }
 
 export default function useRender<T>(domRef: Ref<HTMLElement | null>, callbacks: renderCallbacks<T> = {}) {
@@ -14,7 +15,7 @@ export default function useRender<T>(domRef: Ref<HTMLElement | null>, callbacks:
 
   const instance = shallowRef<T | null>(null);
 
-  const { render, resize = () => {}, destroy = () => {} } = callbacks;
+  const { render = () => instance.value, resize = () => {}, destroy = () => {} } = callbacks;
 
   /**
    * whether can render
@@ -42,14 +43,14 @@ export default function useRender<T>(domRef: Ref<HTMLElement | null>, callbacks:
 
     // size is abnormal, destroy
     if (!canRender()) {
-      await destroy?.(instance.value);
+      await destroy?.(instance);
 
       return;
     }
 
     // resize
     if (isRendered()) {
-      resize?.(instance.value);
+      resize?.(instance);
 
       return;
     }
@@ -65,12 +66,14 @@ export default function useRender<T>(domRef: Ref<HTMLElement | null>, callbacks:
   });
 
   onScopeDispose(() => {
-    destroy();
+    destroy(instance);
     scope.stop();
   });
 
   return {
     instance,
-    isRendered
+    isRendered,
+    render,
+    destroy
   };
 }
