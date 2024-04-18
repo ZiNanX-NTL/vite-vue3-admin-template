@@ -341,17 +341,25 @@ const mapData = [
     userID: 0
   }
 ];
-const { domRef: threeMapRef, ThreeMap, loading } = useThreeMap(mapData);
+const { domRef: threeMapRef, loading, instance, update } = useThreeMap(mapData);
+console.log(instance);
+async function mockData1() {
+  await new Promise(resolve => {
+    setTimeout(resolve, 1000);
+  });
+
+  update(i => {
+    console.log('12123', i);
+  });
+}
 
 async function init() {
   mockData();
+  mockData1();
 }
 init();
 
-onMounted(() => {
-  const threeMap = new ThreeMap();
-  threeMap.render();
-});
+onMounted(() => {});
 </script>
 
 <style lang="scss" scoped>

@@ -7,6 +7,7 @@ import { useThemeStore } from '@/store';
 import { instantiatedComponent, getColorPalettes } from '@/utils';
 import HLJZone from '@/assets/json/HLJZone.json';
 import mapTitleBg from '@/assets/images/map_title_bg.png';
+import { useRender } from '../../common';
 import { useThree } from './useThree';
 import { LightSweepMaterial } from './shaders/lightSweep';
 
@@ -228,9 +229,29 @@ export function useThreeMap(mapData: any) {
     }
   }
 
+  const { instance, isRendered } = useRender(domRef, {
+    render: () => {
+      const ins = new ThreeMap();
+      ins.render();
+      return ins;
+    }
+  });
+  /**
+   * update
+   *
+   * @param callback callback function
+   */
+  async function update(callback: (instance: ThreeMap | null) => void = () => {}) {
+    if (!isRendered()) return;
+
+    callback(instance.value);
+  }
+
   return {
     domRef,
     loading,
-    ThreeMap
+    ThreeMap,
+    instance,
+    update
   };
 }

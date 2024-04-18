@@ -114,7 +114,9 @@ export function useThree() {
     }
 
     render() {
-      useEventListener(window, 'resize', this.update);
+      useEventListener(window, 'resize', () => {
+        this.update();
+      });
 
       this.exeRender();
     }
