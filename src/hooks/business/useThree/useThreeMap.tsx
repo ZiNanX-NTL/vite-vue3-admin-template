@@ -7,12 +7,16 @@ import { useThemeStore } from '@/store';
 import { instantiatedComponent, getColorPalettes } from '@/utils';
 import HLJZone from '@/assets/json/HLJZone.json';
 import mapTitleBg from '@/assets/images/map_title_bg.png';
-import { useRender } from '../../common';
-import { useThree } from './useThree';
+import { useLoading, useRender } from '../../common';
 import { LightSweepMaterial } from './shaders/lightSweep';
+import type { ThreeBaseOptions } from './three';
+import { ThreeBase } from './three';
 
 export function useThreeMap(mapData: any) {
-  const { domRef, loading, ThreeBase } = useThree();
+  const domRef = ref<HTMLElement | null>(null);
+
+  const { loading, startLoading, endLoading } = useLoading(true);
+
   const theme = useThemeStore();
 
   /** ThreeMap类 */
@@ -25,8 +29,11 @@ export function useThreeMap(mapData: any) {
 
     HIGHT_COLOR: string;
 
-    constructor() {
-      super();
+    constructor(dom: HTMLElement | null) {
+      super(dom, {
+        taskLoadStart: startLoading,
+        taskLoadEnd: endLoading
+      });
       this.threeMap = new THREE.Group();
       // 墨卡托投影转换
       this.projection = geoMercator().center([127.84, 47.44]).scale(250).translate([0, 0]);
@@ -224,14 +231,14 @@ export function useThreeMap(mapData: any) {
       this.camera?.lookAt(0, 0, 0);
       this.loadLights();
       // 当全部加载任务完成时完毕触发
-      await ThreeMap.loadTasks([this.loadThreeMap(), this.loadPointLabels(), this.loadLightSweep()]);
+      await this.loadTasks([this.loadThreeMap(), this.loadPointLabels(), this.loadLightSweep()]);
       super.render();
     }
   }
 
   const { instance, isRendered } = useRender(domRef, {
     render: () => {
-      const ins = new ThreeMap();
+      const ins = new ThreeMap(domRef.value);
       ins.render();
       return ins;
     }
