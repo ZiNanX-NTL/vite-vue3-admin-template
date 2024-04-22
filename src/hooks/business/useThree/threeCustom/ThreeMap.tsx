@@ -3,6 +3,7 @@ import { CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 import type { GeoProjection } from 'd3';
 import { geoMercator } from 'd3';
 import { gsap } from 'gsap';
+import { useEventListener } from '@vueuse/core';
 import { instantiatedComponent, getColorPalettes } from '@/utils';
 import HLJZone from '@/assets/json/HLJZone.json';
 import mapTitleBg from '@/assets/images/map_title_bg.png';
@@ -75,7 +76,7 @@ export class ThreeMap extends ThreeBase {
 
   /** 加载3D地图 */
   async loadThreeMap() {
-    HLJZone.features.forEach((elem, _index) => {
+    HLJZone.features.forEach((elem, index) => {
       // 定一个省份3D对象
       const province = new THREE.Group() as THREE.Group<THREE.Object3DEventMap> & {
         properties: typeof elem.properties;
@@ -120,6 +121,7 @@ export class ThreeMap extends ThreeBase {
           });
 
           const mesh = new THREE.Mesh(geometry, [material, material1]);
+          mesh.name = `block${index}`;
 
           // mesh.castShadow = true;
           // mesh.receiveShadow = true;
@@ -220,6 +222,7 @@ export class ThreeMap extends ThreeBase {
     const groundGeometry = new THREE.PlaneGeometry(120, 120);
     const groundMaterial = new LightSweepMaterial();
     const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+    ground.name = 'lightSweep';
     // ground.rotation.x = -Math.PI / 2;
     ground.position.z = 0;
     const ringWidth = 0.075;
@@ -239,6 +242,110 @@ export class ThreeMap extends ThreeBase {
     this.scene?.add(ground);
   }
 
+  /** 创建一个tag标签 */
+  tag(name?: string) {
+    // 创建div元素(作为标签)
+    const tagContent = defineComponent(
+      () => {
+        return () => {
+          return (
+            <div class="pointer-events-none absolute block rounded-5px bg-[rgba(25,25,25,0.5)] px-10px py-5px text-16px text-#fff">
+              {{ name }}
+            </div>
+          );
+        };
+      },
+      {
+        name: 'TagContent'
+      }
+    );
+    const el = instantiatedComponent(tagContent).el as HTMLElement;
+    // div元素包装为CSS2模型对象CSS2DObject
+    const label = new CSS2DObject(el);
+    this.scene?.add(label);
+    return label; // 返回CSS2模型标签
+  }
+
+  /** 鼠标事件 */
+  onMapHover() {
+    let activeIntersect: THREE.Intersection<THREE.Object3D<THREE.Object3DEventMap>> | null = null;
+    const mapLabel = this.tag();
+
+    const onPointerMove = (event: PointerEvent) => {
+      const intersects = this.intersect(event);
+      // 获取被识别的对象
+      const identifiedObject = intersects.find(item => {
+        return item.object.name.startsWith('block');
+      }) as THREE.Intersection<THREE.Object3D<THREE.Object3DEventMap>>;
+      if (identifiedObject && activeIntersect?.object.name === identifiedObject.object.name) {
+        const vector3 = new THREE.Vector3(
+          identifiedObject.point.x,
+          identifiedObject.point.y + 2,
+          identifiedObject.point.z + 1
+        );
+        mapLabel.position.copy(vector3);
+        return;
+      }
+      if (activeIntersect) {
+        // 将上一次选中的恢复颜色
+        const { object } = activeIntersect as THREE.Intersection<THREE.Object3D<THREE.Object3DEventMap>>;
+        const { material } = object as THREE.Mesh<
+          THREE.ExtrudeGeometry,
+          THREE.MeshStandardMaterial[],
+          THREE.Object3DEventMap
+        >;
+        material[0].color.set(this.colorArr[0]);
+        // 添加地块动效
+        gsap.to(object.parent!.position, {
+          z: 0,
+          duration: 0.3,
+          ease: 'power1.inOut'
+        });
+        // material[1].color.set(_color);
+        mapLabel.element.style.visibility = 'hidden';
+      }
+      // 没有选中,隐藏label
+
+      activeIntersect = null; // 设置为空
+      if (identifiedObject) {
+        activeIntersect = identifiedObject;
+        (
+          identifiedObject.object as THREE.Mesh<
+            THREE.ExtrudeGeometry,
+            THREE.MeshStandardMaterial[],
+            THREE.Object3DEventMap
+          >
+        ).material[0].color.set(this.HIGHT_COLOR);
+        // 添加地块动效
+        gsap.to(identifiedObject.object.parent!.position, {
+          z: 1,
+          duration: 0.3,
+          ease: 'power1.inOut'
+        });
+        // identifiedObject.object.material[1].color.set(HIGHT_COLOR);
+
+        // 显示label
+        const properties = (
+          identifiedObject.object.parent as THREE.Group<THREE.Object3DEventMap> & {
+            properties: any;
+          }
+        ).properties;
+        const vector3 = new THREE.Vector3(
+          identifiedObject.point.x,
+          identifiedObject.point.y + 2,
+          identifiedObject.point.z + 1
+        );
+        mapLabel.position.copy(vector3);
+        mapLabel.element.innerHTML = properties.name;
+        mapLabel.element.style.visibility = 'visible';
+      }
+    };
+
+    useEventListener(this.dom, 'pointermove', e => {
+      onPointerMove(e);
+    });
+  }
+
   async render() {
     this.scene?.add(this.threeMap);
     this.camera?.position.set(0, -40, 70);
@@ -247,5 +354,6 @@ export class ThreeMap extends ThreeBase {
     // 当全部加载任务完成时完毕触发
     await this.loadTasks([this.loadThreeMap(), this.loadPointLabels(), this.loadLightSweep()]);
     super.render();
+    this.onMapHover();
   }
 }
