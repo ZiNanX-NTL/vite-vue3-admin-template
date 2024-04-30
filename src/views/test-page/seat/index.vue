@@ -1,185 +1,242 @@
 <template>
   <div>
-    <div class="seat-plan">
-      <canvas ref="canvas" class="cursor-pointer" :width="canvasWidth" :height="canvasHeight"></canvas>
-    </div>
+    <canvas id="canvas" style="border: 1px solid #ccc"></canvas>
   </div>
 </template>
 
 <script setup>
-import { useEventListener } from '@vueuse/core';
+import { fabric } from 'fabric';
+import freeSeat from '@/assets/images/seat_free_2x.png';
+import selectedSeat from '@/assets/images/seat_selected_2x.png';
 
-const canvas = ref(null);
-const ctx = ref(null);
-const seatLayout = [
-  [1, 2, 3, 4, 5],
-  [6, 7, 8, 9],
-  [10, 11, 12],
-  [13, 14, 15, 16, 17, 18, 19]
-]; // 用于表示每一行的座位数量
-const seatData = seatLayout.map((row, rowIndex) =>
-  row.map((_col, colIndex) => ({
-    id: `${rowIndex}-${colIndex}`,
-    row: rowIndex,
-    col: colIndex,
-    status: false
-  }))
-);
+/**
+ * 组的方法
+ * getObjects() 返回一组中所有对象的数组
+ * size() 所有对象的数量
+ * contains() 检查特定对象是否在group中
+ * item() 组中元素
+ * forEachObject() 遍历组中对象
+ * add() 添加元素对象
+ * remove() 删除元素对象
+ * fabric.util.object.clone() 克隆，详情可看https://blog.csdn.net/qq_43759079/article/details/115357084?spm=1001.2014.3001.5501
+ */
 
-const canvasWidth = 800; // 画布宽度
-const canvasHeight = 400; // 画布高度
-let seatSize = 30; // 座位大小
-const seatGap = 10; // 座位间隙
-let layoutOffsetX = 10; // 座位布局的水平偏移值
-let layoutOffsetY = 10; // 座位布局的垂直偏移值
-let isDragging = false;
+let canvas = null;
 
-// 用于记录选中的座位
-const selectedSeats = ref([]);
+async function init() {
+  canvas = new fabric.Canvas('canvas');
+  canvas.selection = false;
+  canvas.set('hoverCursor', 'pointer');
+  canvas.setDimensions({
+    width: 1000,
+    height: 600
+  });
+  const canvasDpr = 2;
+  canvas.zoomToPoint(canvas.getVpCenter(), 1 / canvasDpr);
 
-// 优化：将座位绘制的样式参数化
-const seatStyle = {
-  fillColor: '#999',
-  selectedFillColor: 'red',
-  strokeColor: '#000',
-  lineWidth: 1
-};
+  const seatLayout = [
+    [1, 0, 1, 1, 0, 1, 1, 1, 1],
+    [0, 0, 1, 1, 1, 1, 1, 0, 0],
+    [0, 0, 1, 1, 1, 1, 1, 0, 0],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1]
+  ];
+  const seatData = [
+    {
+      id: 1,
+      row: 1,
+      col: 1,
+      status: '1'
+    }
+  ];
+  const renderMap = seatLayout.map((row, rowIndex) =>
+    row.map((col, colIndex) => {
+      if (!col) {
+        return null;
+      }
+      const rowId = rowIndex + 1;
+      const colId = colIndex + 1;
+      const seat = seatData.find(seatItem => seatItem.row === rowId && seatItem.col === colId);
+      if (seat) {
+        return {
+          id: `${rowId}-${colId}`,
+          row: rowId,
+          col: colId,
+          status: seat.status
+        };
+      }
+      return {
+        id: `${rowId}-${colId}`,
+        row: rowId,
+        col: colId,
+        status: 'free'
+      };
+    })
+  );
+
+  // 异步加载图片
+  function asyncLoadImg(imgURL) {
+    return new Promise((resolve, reject) => {
+      fabric.util.loadImage(imgURL, img => {
+        if (img) {
+          resolve(img);
+        } else {
+          const errorMsg = '图片加载出错啦~';
+          reject(errorMsg);
+        }
+      });
+    });
+  }
+
+  const img = await asyncLoadImg(freeSeat);
+  const img1 = await asyncLoadImg(selectedSeat);
+  const pattern = new fabric.Pattern({
+    source: img,
+    repeat: 'no-repeat'
+  });
+  const pattern1 = new fabric.Pattern({
+    source: img1,
+    repeat: 'no-repeat'
+  });
+
+  // 绘制座位
+  function drawSeats(drawMap) {
+    const seatList = [];
+    // 座位大小
+    const seatSize = 30 * canvasDpr;
+    // 座位间隔
+    const seatGap = 10 * canvasDpr;
+
+    let currentY = 0;
+    drawMap.forEach(row => {
+      let currentX = 0;
+      row.forEach(seat => {
+        if (seat) {
+          const seatRect = drawSeat({ x: currentX, y: currentY, seatSize }, seat);
+          seatList.push(seatRect);
+        }
+        currentX += seatSize + seatGap;
+      });
+      currentY += seatSize + seatGap;
+    });
+
+    return seatList;
+  }
+
+  function drawSeat(drawOptions, seat) {
+    const rect = new fabric.Rect({
+      left: drawOptions.x,
+      top: drawOptions.y,
+      width: drawOptions.seatSize,
+      height: drawOptions.seatSize,
+      backgroundColor: '#f6f9f8',
+      fill: seat.status === '1' ? pattern1 : pattern,
+      perPixelTargetFind: false,
+      seat
+    });
+    return rect;
+  }
+
+  const seatList = drawSeats(renderMap);
+
+  // 建组
+  const group1 = new fabric.Group(seatList, {
+    top: 50, // 整组距离顶部100
+    left: 100, // 整组距离左侧100
+    perPixelTargetFind: true,
+    hasBorders: false,
+    hasControls: false,
+    subTargetCheck: true,
+    lockMovementX: true,
+    lockMovementY: true
+  });
+
+  canvas.centerObject(group1);
+
+  group1.on('mousedown', options => {
+    if (options.e.altKey !== true) {
+      group1.isClick = true;
+    }
+  });
+  group1.on('mouseup', options => {
+    if (!group1.isClick) return;
+    group1.isClick = false;
+
+    const target = options.subTargets[0];
+    if (target.seat.status === 'free') {
+      target.seat.status = '1';
+      target.set('fill', pattern1);
+      seatData.push(target.seat);
+    } else {
+      target.seat.status = 'free';
+      target.set('fill', pattern);
+      seatData.splice(
+        seatData.findIndex(item => target.seat.row === item.row && target.seat.col === item.col),
+        1
+      );
+    }
+    canvas.renderAll();
+    console.log(seatData);
+  });
+
+  canvas.add(group1);
+
+  // 监听鼠标滚轮事件
+  canvas.on('mouse:wheel', opt => {
+    if (opt.e.altKey !== true) return;
+    const delta = opt.e.deltaY; // 滚轮向上滚一下是 -100，向下滚一下是 100
+    let zoom = canvas.getZoom(); // 获取画布当前缩放值
+
+    // 控制缩放范围在 0.01~20 的区间内
+    zoom *= 0.999 ** delta;
+    if (zoom > 20) zoom = 20;
+    if (zoom < 0.01) zoom = 0.01;
+
+    // 设置画布缩放比例
+    // 关键点！！！
+    // 参数1：将画布的所放点设置成鼠标当前位置
+    // 参数2：传入缩放值
+    canvas.zoomToPoint(
+      {
+        x: opt.e.offsetX, // 鼠标x轴坐标
+        y: opt.e.offsetY // 鼠标y轴坐标
+      },
+      zoom // 最后要缩放的值
+    );
+  });
+
+  // 按下鼠标事件
+  canvas.on('mouse:down', opt => {
+    const evt = opt.e;
+    if (evt.altKey === true) {
+      canvas.isDragging = true;
+      canvas.lastPosX = evt.clientX;
+      canvas.lastPosY = evt.clientY;
+    }
+  });
+
+  // 移动鼠标事件
+  canvas.on('mouse:move', opt => {
+    if (canvas.isDragging) {
+      const e = opt.e;
+      const vpt = canvas.viewportTransform;
+      vpt[4] += e.clientX - canvas.lastPosX;
+      vpt[5] += e.clientY - canvas.lastPosY;
+      canvas.requestRenderAll();
+      canvas.lastPosX = e.clientX;
+      canvas.lastPosY = e.clientY;
+    }
+  });
+
+  // 松开鼠标事件
+  canvas.on('mouse:up', () => {
+    canvas.setViewportTransform(canvas.viewportTransform);
+    canvas.isDragging = false;
+  });
+}
 
 onMounted(() => {
-  const canvasElement = canvas.value;
-  try {
-    ctx.value = canvasElement.getContext('2d');
-    drawSeats();
-
-    setupEventListeners();
-  } catch (error) {
-    console.error("Failed to getContext('2d') for canvas:", error);
-  }
+  init();
 });
-
-function setupEventListeners() {
-  useEventListener(ctx.value.canvas, 'click', handleSeatClick);
-  useEventListener(ctx.value.canvas, 'wheel', handleWheelZoom);
-  useEventListener(ctx.value.canvas, 'mousedown', handleMouseDown);
-  useEventListener(ctx.value.canvas, 'mousemove', handleMouseMove);
-  useEventListener(window, 'mouseup', handleMouseUp);
-}
-
-function handleSeatClick(event) {
-  const rect = ctx.value.canvas.getBoundingClientRect();
-  const clickX = event.clientX - rect.left;
-  const clickY = event.clientY - rect.top;
-
-  if (isSeatClicked(clickX, clickY)) {
-    const rowIndex = Math.floor((clickY - layoutOffsetY) / (seatSize + seatGap));
-    const colIndex = Math.floor((clickX - layoutOffsetX) / (seatSize + seatGap));
-    seatData[rowIndex][colIndex].status = !seatData[rowIndex][colIndex].status;
-    selectedSeats.value = seatData
-      .flat()
-      .filter(seat => seat.status)
-      .map(seat => seat.id);
-    // 重新绘制
-    drawSeats();
-    // 座位点击逻辑
-    console.log('Seat clicked', selectedSeats.value);
-  }
-}
-
-function handleWheelZoom(event) {
-  event.preventDefault(); // 阻止默认的滚轮滚动行为（如页面滚动）
-
-  const delta = Math.max(-1, Math.min(1, event.deltaY)); // 取得滚轮滚动方向（-1：向上，1：向下）
-  const sizeChange = delta > 0 ? -1 : 1; // 根据滚轮滚动方向设置缩放变化量
-
-  seatSize += sizeChange; // 更新缩放比例
-  drawSeats(); // 重绘座位以应用缩放
-}
-
-// 布局顶点其实位置
-let layoutX = layoutOffsetX;
-let layoutY = layoutOffsetY;
-// 鼠标按下起始位置
-let startX = 0;
-let startY = 0;
-
-function handleMouseDown(event) {
-  if (event.button === 0) {
-    // 检查是否是左键按下
-    isDragging = true;
-    const rect = ctx.value.canvas.getBoundingClientRect();
-    startX = event.clientX - rect.left;
-    startY = event.clientY - rect.top;
-  }
-}
-
-function handleMouseMove(event) {
-  if (isDragging) {
-    const rect = ctx.value.canvas.getBoundingClientRect();
-    const endX = event.clientX - rect.left;
-    const endY = event.clientY - rect.top;
-
-    layoutOffsetX = layoutX + endX - startX;
-    layoutOffsetY = layoutY + endY - startY;
-
-    requestAnimationFrame(drawSeats);
-  }
-}
-
-function handleMouseUp() {
-  isDragging = false;
-  layoutX = layoutOffsetX;
-  layoutY = layoutOffsetY;
-}
-
-function drawSeats() {
-  const context = ctx.value;
-  if (!context) return; // 异常处理
-
-  renderSeats();
-}
-
-// 优化：拆分绘制逻辑，提高代码的可维护性
-function renderSeats() {
-  const context = ctx.value;
-  context.clearRect(0, 0, canvasWidth, canvasHeight);
-
-  let currentY = layoutOffsetY;
-  seatData.forEach(row => {
-    let currentX = layoutOffsetX;
-    row.forEach(seat => {
-      drawSeat(currentX, currentY, seat);
-      currentX += seatSize + seatGap;
-    });
-    currentY += seatSize + seatGap;
-  });
-}
-
-function drawSeat(x, y, seat) {
-  const context = ctx.value;
-  context.fillStyle = seat.status ? seatStyle.selectedFillColor : seatStyle.fillColor;
-  context.strokeStyle = seatStyle.strokeColor;
-  context.lineWidth = seatStyle.lineWidth;
-  context.fillRect(x, y, seatSize, seatSize);
-  context.strokeRect(x, y, seatSize, seatSize);
-}
-
-// 辅助函数：判断点击是否在座位上
-function isSeatClicked(x, y) {
-  const seatWidth = seatSize;
-  return seatLayout.some((row, rowIndex) => {
-    const start = layoutOffsetY + rowIndex * (seatSize + seatGap);
-    return row.some((_, colIndex) => {
-      const seatStartX = layoutOffsetX + colIndex * (seatSize + seatGap);
-      return x >= seatStartX && x <= seatStartX + seatWidth && y >= start && y <= start + seatSize;
-    });
-  });
-}
 </script>
 
-<style>
-.seat-plan {
-  overflow: auto;
-  position: relative;
-  border: 1px solid #ccc;
-}
-</style>
+<style lang="scss" scoped></style>
