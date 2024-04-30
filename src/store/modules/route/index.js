@@ -1,3 +1,4 @@
+import { nextTick } from 'vue';
 import { defineStore } from 'pinia';
 import {
   constantRoutes,
@@ -164,6 +165,13 @@ export const useRouteStore = defineStore('route-store', {
         router.addRoute(rootVueRoute);
       }
     },
+    /** 添加某个缓存路由 */
+    addCacheRoute(name) {
+      const index = this.cacheRoutes.indexOf(name);
+      if (index === -1) {
+        this.cacheRoutes.push(name);
+      }
+    },
     /** 从缓存路由中去除某个路由 */
     removeCacheRoute(name) {
       const index = this.cacheRoutes.indexOf(name);
@@ -171,11 +179,11 @@ export const useRouteStore = defineStore('route-store', {
         this.cacheRoutes.splice(index, 1);
       }
     },
-    /** 添加某个缓存路由 */
-    addCacheRoute(name) {
-      const index = this.cacheRoutes.indexOf(name);
-      if (index === -1) {
-        this.cacheRoutes.push(name);
+    /** 重新刷新某个缓存路由 */
+    async removeCacheEntry(name) {
+      if (this.removeCacheRoute(name)) {
+        await nextTick();
+        this.addCacheRoute(name);
       }
     },
     /**
