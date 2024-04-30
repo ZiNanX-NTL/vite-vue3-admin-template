@@ -6,8 +6,8 @@
 
 <script setup>
 import { fabric } from 'fabric';
-import freeSeat from '@/assets/images/free_seat.png';
-import selectedSeat from '@/assets/images/selected_seat.png';
+import freeSeat from '@/assets/images/seat_free_2x.png';
+import selectedSeat from '@/assets/images/seat_selected_2x.png';
 
 /**
  * 组的方法
@@ -31,6 +31,8 @@ async function init() {
     width: 1000,
     height: 600
   });
+  const canvasDpr = 2;
+  canvas.zoomToPoint(canvas.getVpCenter(), 1 / canvasDpr);
 
   const seatLayout = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -100,9 +102,9 @@ async function init() {
   function drawSeats(drawMap) {
     const seatList = [];
     // 座位大小
-    const seatSize = 30;
+    const seatSize = 30 * canvasDpr;
     // 座位间隔
-    const seatGap = 10;
+    const seatGap = 10 * canvasDpr;
 
     let currentY = 0;
     drawMap.forEach(row => {
