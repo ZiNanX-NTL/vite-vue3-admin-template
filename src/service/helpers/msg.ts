@@ -3,13 +3,13 @@ import { ERROR_MSG_DURATION, NO_ERROR_MSG_CODE } from '@/config';
 /** 错误消息栈，防止同一错误同时出现 */
 const errorMsgStack = new Map([]);
 
-function addErrorMsg(error) {
+function addErrorMsg(error: Service.RequestError) {
   errorMsgStack.set(error.code, error.msg);
 }
-function removeErrorMsg(error) {
+function removeErrorMsg(error: Service.RequestError) {
   errorMsgStack.delete(error.code);
 }
-function hasErrorMsg(error) {
+function hasErrorMsg(error: Service.RequestError) {
   return errorMsgStack.has(error.code);
 }
 
@@ -17,7 +17,7 @@ function hasErrorMsg(error) {
  * 显示错误信息
  * @param error
  */
-export function showErrorMsg(error) {
+export function showErrorMsg(error: Service.RequestError) {
   if (!error.msg || NO_ERROR_MSG_CODE.includes(error.code) || hasErrorMsg(error)) return;
 
   addErrorMsg(error);

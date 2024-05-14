@@ -7,7 +7,7 @@ import { isArray, isFile } from '@/utils';
  * @param requestData - 请求数据
  * @param contentType - 请求头的Content-Type
  */
-export async function transformRequestData(requestData, contentType) {
+export async function transformRequestData(requestData: any, contentType: Service.ContentType) {
   // application/json类型不处理
   let data = requestData;
   // form类型转换
@@ -22,7 +22,7 @@ export async function transformRequestData(requestData, contentType) {
   return data;
 }
 
-async function handleFormData(data) {
+async function handleFormData(data: Record<string, any>) {
   const formData = new FormData();
   const entries = Object.entries(data);
 
@@ -44,11 +44,11 @@ async function handleFormData(data) {
  * @param key - 文件的属性名
  * @param file - 单文件或多文件
  */
-async function transformFile(formData, key, file) {
+async function transformFile(formData: FormData, key: string, file: File[] | File) {
   if (isArray(file)) {
     // 多文件
     await Promise.all(
-      file.map(item => {
+      (file as File[]).map(item => {
         formData.append(key, item);
         return true;
       })

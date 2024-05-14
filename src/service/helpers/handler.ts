@@ -1,13 +1,13 @@
 /** 统一失败和成功的请求结果的数据类型 */
-export async function handleServiceResult(error, data) {
+export async function handleServiceResult<T = any>(error: Service.RequestError | null, data: any) {
   if (error) {
-    const fail = {
+    const fail: Service.FailedResult = {
       error,
       data: null
     };
     return fail;
   }
-  const success = {
+  const success: Service.SuccessResult<T> = {
     error: null,
     data
   };
@@ -15,9 +15,12 @@ export async function handleServiceResult(error, data) {
 }
 
 /** 请求结果的适配器：用于接收适配器函数和请求结果 */
-export function adapter(adapterFun, ...args) {
+export function adapter<T extends Service.ServiceAdapter>(
+  adapterFun: T,
+  ...args: Service.MultiRequestResult<Parameters<T>>
+): Promise<Service.RequestResult<ReturnType<T>>> {
   return new Promise((resolve, _reject) => {
-    let result;
+    let result: Service.RequestResult | undefined;
 
     const hasError = args.some(item => {
       const flag = Boolean(item.error);
@@ -38,6 +41,6 @@ export function adapter(adapterFun, ...args) {
       };
     }
 
-    resolve(result);
+    resolve(result!);
   });
 }

@@ -6,7 +6,7 @@ import { adapterOfFetchUserList } from './userList.adapter';
  * 获取分页用户列表数据
  * @param { Object } params - 负载参数
  */
-export const fetchUserList = async params => {
+export async function fetchUserList(params: any) {
   const data = await mockInstance.post({ url: '/userList', data: params });
   return adapter(adapterOfFetchUserList, data);
 };
@@ -14,7 +14,7 @@ export const fetchUserList = async params => {
  * 获取所有用户列表数据
  * @param { Object } params - 负载参数
  */
-export const fetchAllUserList = async () => {
+export async function fetchAllUserList() {
   const data = await mockInstance.get({ url: '/allUserList' });
   return adapter(adapterOfFetchUserList, data);
 };

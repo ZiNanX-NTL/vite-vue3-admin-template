@@ -1,17 +1,36 @@
+import type { AxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse, AxiosError, AxiosInstance } from 'axios';
 import axios from 'axios';
 import { handleAxiosError, handleBackendError, handleResponseError, handleServiceResult } from '../helpers';
 
+interface InstanceInterceptors {
+  requestInterceptor?: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig | Promise<InternalAxiosRequestConfig>;
+  requestInterceptorCatch?: (error: any) => any;
+  responseInterceptor?: (res: any) => any;
+  responseInterceptorCatch?: (error: any) => any;
+}
+/** 单一请求拦截器配置 */
+interface SingleRequestInterceptors {
+	requestInterceptor?: (config: SingleRequestAxiosRequestConfig) => SingleRequestAxiosRequestConfig,
+	responseInterceptor?: (res: any) => any;
+}
+interface InstanceAxiosRequestConfig extends AxiosRequestConfig {
+  interceptors?: InstanceInterceptors;
+}
+interface SingleRequestAxiosRequestConfig extends AxiosRequestConfig {
+  interceptors?: SingleRequestInterceptors;
+}
+
 class ZNRequest {
-  instance;
+  instance: AxiosInstance;
 
   // 该属性从实例中获取
-  interceptors;
+  interceptors: InstanceInterceptors | undefined;
 
   // 后端数据字段配置
   backendConfig;
 
   constructor(
-    axiosConfig,
+    axiosConfig: InstanceAxiosRequestConfig,
     backendConfig = {
       codeKey: 'code',
       dataKey: 'data',
@@ -35,7 +54,7 @@ class ZNRequest {
         console.log('全局请求拦截');
         return config;
       },
-      axiosError => {
+      (axiosError: AxiosError) => {
         console.log('全局请求失败拦截', axiosError);
         const error = handleAxiosError(axiosError);
         return handleServiceResult(error, null);
@@ -43,7 +62,7 @@ class ZNRequest {
     );
     // 全局响应拦截
     this.instance.interceptors.response.use(
-      async response => {
+      (async response => {
         console.log('全局响应拦截');
         const { status } = response;
         if (status === 200 || status < 300 || status === 304) {
@@ -59,8 +78,8 @@ class ZNRequest {
         }
         const error = handleResponseError(response);
         return handleServiceResult(error, null);
-      },
-      axiosError => {
+      }) as (response: AxiosResponse<any, any>) => any,
+      (axiosError: AxiosError) => {
         console.log('全局响应失败拦截', axiosError);
         const error = handleAxiosError(axiosError);
         return handleServiceResult(error, null);
@@ -78,21 +97,21 @@ class ZNRequest {
     );
   }
 
-  get(config) {
-    return this.request({
+  get<T>(config: SingleRequestAxiosRequestConfig) {
+    return this.request<T>({
       ...config,
       method: 'GET'
     });
   }
 
-  post(config) {
-    return this.request({
+  post<T>(config: SingleRequestAxiosRequestConfig) {
+    return this.request<T>({
       ...config,
       method: 'POST'
     });
   }
 
-  request(config) {
+  request<T>(config: SingleRequestAxiosRequestConfig): Promise<Service.RequestResult<T>> {
     let resConfig = config;
     return new Promise((resolve, reject) => {
       // 请求拦截设置位置
@@ -108,7 +127,7 @@ class ZNRequest {
           if (resConfig.interceptors?.responseInterceptor) {
             res = resConfig.interceptors.responseInterceptor(res);
           }
-          resolve(res);
+          resolve(res as unknown as Service.RequestResult<T>);
         })
         .catch(err => {
           console.log('=====', err);
