@@ -95,7 +95,7 @@
   </n-flex>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useElementSize } from '@vueuse/core';
 import { userStatusEnum, genderEnum } from '@/constants';
 import { useFormRules, useNaiveForm } from '@/hooks';
@@ -104,11 +104,15 @@ defineOptions({
   name: 'TableSearch'
 });
 
-const emit = defineEmits(['reset', 'search']);
+interface Emits {
+  (e: 'reset'): void;
+  (e: 'search'): void;
+}
+const emit = defineEmits<Emits>();
 
 const { formRef, validate, restoreValidation } = useNaiveForm();
 
-const model = defineModel('model', { required: true });
+const model = defineModel<Record<string, any>>('model', { required: true });
 
 const collapsed = ref(false);
 
@@ -223,7 +227,7 @@ const searchTreeData = [
   }
 ];
 const defaultExpandedKeys = ref(['0']);
-function handleCheckedKeysChange(checkedKeys) {
+function handleCheckedKeysChange(checkedKeys: Array<string | number>) {
   model.value.checkedKeys = checkedKeys;
 }
 </script>

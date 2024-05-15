@@ -17,14 +17,14 @@
   </n-popover>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { VueDraggable } from 'vue-draggable-plus';
 
 defineOptions({
   name: 'TableColumnSetting'
 });
 
-const columns = defineModel('columns', {
+const columns = defineModel<NaiveUI.TableColumnCheck[]>('columns', {
   required: true
 });
 </script>

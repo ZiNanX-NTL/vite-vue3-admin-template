@@ -14,29 +14,28 @@
   </n-flex>
 </template>
 
-<script setup>
+<script setup lang="ts">
 defineOptions({
   name: 'TagSelect'
 });
 
-const props = defineProps({
-  label: {
-    type: String,
-    default: ''
-  },
-  labelClass: {
-    type: String,
-    default: ''
-  },
-  options: {
-    type: Array,
-    default: () => []
-  }
+interface Props {
+  label?: string;
+  labelClass?: string;
+  options: Array<{
+    value: any;
+    label: string;
+  }>;
+}
+const props = withDefaults(defineProps<Props>(), {
+  label: '',
+  labelClass: '',
+  options: () => []
 });
-const modelValue = defineModel({
-  type: Array,
-  required: true
-});
+
+// 拿到options所有选项的value属性的值的类型
+type OperationalKey = (typeof props.options)[number]['value'][];
+const modelValue = defineModel<OperationalKey>({ required: true });
 
 const resultLabel = computed(() => {
   return props.label ? `${props.label}：` : '';
@@ -57,7 +56,8 @@ function createTagOption() {
 const tagOptions = ref(createTagOption());
 
 // 更新值
-function updateValue(item) {
+type tagOption = ReturnType<typeof createTagOption>[number];
+function updateValue(item: tagOption) {
   if (item.checked) {
     if (!modelValue.value.includes(item.value)) {
       modelValue.value.push(item.value);
@@ -75,7 +75,7 @@ function handleCheck() {
   modelValue.value = [];
 }
 
-function handleUpdateValue(item) {
+function handleUpdateValue(item: tagOption) {
   updateValue(item);
 }
 

@@ -20,24 +20,24 @@
   </n-space>
 </template>
 
-<script setup>
+<script setup lang="ts">
 defineOptions({
   name: 'TableHeaderOperation'
 });
 
-defineProps({
-  loading: { type: Boolean },
-  itemAlign: {
-    validator(value) {
-      return ['start', 'end', 'center', 'baseline', 'stretch', undefined].includes(value);
-    },
-    default: undefined
-  }
-});
+interface Props {
+  itemAlign?: NaiveUI.Align;
+  loading?: boolean;
+}
+defineProps<Props>();
 
-const emit = defineEmits(['add', 'refresh']);
+interface Emits {
+  (e: 'add'): void;
+  (e: 'refresh'): void;
+}
+const emit = defineEmits<Emits>();
 
-const columns = defineModel('columns', {
+const columns = defineModel<NaiveUI.TableColumnCheck[]>('columns', {
   default: () => []
 });
 
