@@ -1,5 +1,7 @@
 import { isString } from '@/utils';
-import { getLayoutComponent, getViewComponent, setViewComponentName } from './component';
+import { getLayout, getViewComponent, setViewComponentName } from './component';
+
+const { layoutTypes, getLayoutComponent } = getLayout();
 
 /**
  * 将权限路由转换成vue路由
@@ -33,12 +35,6 @@ export function transformAuthRouteToVueRoute(item) {
   if (hasComponent(item)) {
     if (isAutoComponent(item)) {
       const action = {
-        basic() {
-          itemRoute.component = getLayoutComponent('basic');
-        },
-        blank() {
-          itemRoute.component = getLayoutComponent('blank');
-        },
         multi() {
           // 多级路由一定有子路由
           if (hasChildren(item)) {
@@ -52,6 +48,9 @@ export function transformAuthRouteToVueRoute(item) {
           itemRoute.component = getViewComponent(item.name);
         }
       };
+      layoutTypes.forEach(type => {
+        action[type] = () => (itemRoute.component = getLayoutComponent(type));
+      });
       try {
         if (item.component) {
           action[item.component]();
@@ -84,7 +83,10 @@ export function transformAuthRouteToVueRoute(item) {
     } else {
       const parentPath = `${itemRoute.path}-parent`;
 
-      const layout = item.meta.singleLayout === 'basic' ? getLayoutComponent('basic') : getLayoutComponent('blank');
+      const layout =
+        item.meta.singleLayout && layoutTypes.includes(item.meta.singleLayout)
+          ? getLayoutComponent(item.meta.singleLayout)
+          : getLayoutComponent('blank');
 
       const parentRoute = {
         path: parentPath,

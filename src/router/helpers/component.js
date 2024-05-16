@@ -3,15 +3,29 @@ import { isFunction } from '@/utils';
 import { views } from './autoRegister';
 
 /**
- * 获取布局的vue文件(懒加载的方式)
- * @param layoutType - 布局类型
+ * 获取布局相关方法
  */
-export function getLayoutComponent(layoutType) {
+export function getLayout() {
   const layoutComponent = {
     basic: BasicLayout,
     blank: BlankLayout
   };
-  return layoutComponent[layoutType];
+  /**
+   * 布局的所有名称
+   */
+  const layoutTypes = Object.keys(layoutComponent);
+  /**
+   * 获取布局的vue文件(懒加载的方式)
+   * @param layoutType - 布局类型
+   */
+  function getLayoutComponent(layoutType) {
+    return layoutComponent[layoutType];
+  }
+
+  return {
+    layoutTypes,
+    getLayoutComponent
+  };
 }
 
 /**
