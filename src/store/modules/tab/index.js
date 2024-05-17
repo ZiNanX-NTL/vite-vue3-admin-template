@@ -161,12 +161,12 @@ export const useTabStore = defineStore('tab-store', {
      * @param fullPath - 路由fullPath
      */
     async removeTab(fullPath) {
-      const { reCacheRoute } = useRouteStore();
+      const { removeCacheEntry } = useRouteStore();
       const { routerPush } = useRouterPush();
 
       const tabName = this.tabs.find(tab => tab.fullPath === fullPath)?.name;
       if (tabName) {
-        await reCacheRoute(tabName);
+        await removeCacheEntry(tabName);
       }
 
       const isActive = this.activeTab === fullPath;

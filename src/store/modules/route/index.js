@@ -176,15 +176,17 @@ export const useRouteStore = defineStore('route-store', {
     removeCacheRoute(name) {
       const index = this.cacheRoutes.indexOf(name);
       if (index > -1) {
-        return this.cacheRoutes.splice(index, 1);
+        this.cacheRoutes.splice(index, 1);
       }
-      return undefined;
     },
     /** 重新刷新某个缓存路由 */
     async removeCacheEntry(name) {
-      if (this.removeCacheRoute(name)) {
-        await nextTick();
-        this.addCacheRoute(name);
+      const isCached = this.cacheRoutes.includes(name);
+      if (isCached) {
+        this.removeCacheRoute(name);
+        setTimeout(() => {
+          this.addCacheRoute(name);
+        }, 0);
       }
     },
     /**

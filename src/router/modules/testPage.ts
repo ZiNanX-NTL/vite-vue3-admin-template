@@ -22,7 +22,7 @@ const pageRoute: AuthRoute.Route = {
       meta: {
         title: '选座',
         requiresAuth: true,
-        keepAlive: false,
+        keepAlive: true,
         permissions: ['super', 'admin', 'user'],
         icon: 'ic:round-tab'
       }
