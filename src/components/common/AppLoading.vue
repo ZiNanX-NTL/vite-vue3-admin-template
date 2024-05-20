@@ -20,7 +20,7 @@
 
 <script setup>
 import { getThemeSettings } from '@/settings';
-import { localStg, getAppInfo, getRgbOfColor } from '@/utils';
+import { getAppInfo, getRgbOfColor, sessionStg } from '@/utils';
 
 const { title: appTitle } = getAppInfo();
 
@@ -48,7 +48,7 @@ const loadingClasses = [
 
 function addThemeColorCssVars() {
   const defaultColor = getThemeSettings().themeColor;
-  const themeColor = localStg.get('themeColor') || defaultColor;
+  const themeColor = sessionStg.get('themeColor') || defaultColor;
 
   const { r, g, b } = getRgbOfColor(themeColor);
 
