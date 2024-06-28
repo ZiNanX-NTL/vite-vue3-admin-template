@@ -119,7 +119,7 @@ const {
       align: 'center',
       render: row => {
         if (row.gender) {
-          return <NTag type={genderEnum[row.gender].type}>{genderEnum[row.gender].label}</NTag>;
+          return <NTag type={genderEnum.get(row.gender).type}>{genderEnum.get(row.gender).label}</NTag>;
         }
 
         return <span></span>;
@@ -141,7 +141,7 @@ const {
       align: 'center',
       render: row => {
         if (row.userStatus) {
-          return <NTag type={userStatusEnum[row.userStatus].type}>{userStatusEnum[row.userStatus].label}</NTag>;
+          return <NTag type={userStatusEnum.get(row.userStatus).type}>{userStatusEnum.get(row.userStatus).label}</NTag>;
         }
         return <span></span>;
       }

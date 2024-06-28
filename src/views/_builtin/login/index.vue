@@ -47,8 +47,8 @@ const { title } = getAppInfo();
 
 const modules = [
   {
-    value: loginModuleEnum['pwd-login'].value,
-    label: loginModuleEnum['pwd-login'].label,
+    value: loginModuleEnum.get('pwd-login').value,
+    label: loginModuleEnum.get('pwd-login').label,
     component: PwdLogin
   }
 ];
