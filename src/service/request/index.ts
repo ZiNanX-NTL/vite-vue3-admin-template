@@ -3,15 +3,17 @@ import axios from 'axios';
 import { handleAxiosError, handleBackendError, handleResponseError, handleServiceResult } from '../helpers';
 
 interface InstanceInterceptors {
-  requestInterceptor?: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig | Promise<InternalAxiosRequestConfig>;
+  requestInterceptor?: (
+    config: InternalAxiosRequestConfig
+  ) => InternalAxiosRequestConfig | Promise<InternalAxiosRequestConfig>;
   requestInterceptorCatch?: (error: any) => any;
   responseInterceptor?: (res: any) => any;
   responseInterceptorCatch?: (error: any) => any;
 }
 /** 单一请求拦截器配置 */
 interface SingleRequestInterceptors {
-	requestInterceptor?: (config: SingleRequestAxiosRequestConfig) => SingleRequestAxiosRequestConfig,
-	responseInterceptor?: (res: any) => any;
+  requestInterceptor?: (config: SingleRequestAxiosRequestConfig) => SingleRequestAxiosRequestConfig;
+  responseInterceptor?: (res: any) => any;
 }
 interface InstanceAxiosRequestConfig extends AxiosRequestConfig {
   interceptors?: InstanceInterceptors;

@@ -3,7 +3,7 @@ import { isObject } from './typeof';
 /**
  * 合并对象
  */
-export const merge = (...objs) =>
+export const merge = (...objs: any[]) =>
   [...objs].reduce(
     (acc, obj) =>
       Object.keys(obj).reduce((_a, k) => {

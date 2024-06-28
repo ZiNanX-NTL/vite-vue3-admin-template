@@ -1,26 +1,63 @@
 import { isBoolean, isNumber, isRegExp, isString } from './typeof';
 
+interface EnumFactoryOptions {
+  /**
+   * key 的转换函数，默认 undefined，如果 key 为整数则传 parseInt
+   */
+  keyParseFunc?: (key: any) => any;
+  /**
+   * label 的 key，默认 'label'
+   */
+  labelKey?: string;
+  /**
+   * value 的 key，默认 'value'
+   */
+  valueKey?: string;
+  /**
+   * 允许 text 为空，默认 false
+   */
+  allowNullText?: boolean;
+}
+
 /**
  * EnumFactory 类用于创建枚举工厂，扩展枚举对象：keys、values(含 key 值的[{key,text,type}])、formatter。
  */
-export class EnumFactory {
+export class EnumFactory<T extends Record<any, any> = Record<string, any>> {
+  enumObj: T;
+
+  options: EnumFactoryOptions;
+
+  keyParseFunc?: (key: any) => any;
+
+  labelKey: string;
+
+  valueKey: string;
+
+  keys: (keyof T)[];
+
+  values: any[];
+
+	valuesMap = new Map<keyof T, any>();
+
   /**
    * 创建一个枚举工厂实例。
    * @param {Object} enumObj 枚举值，支持标准模式 {key:{text,type},}，简单模式 {key:text,}（会自动转换为标准模式）
    * @param {Object} options 额外的选项，例如 { allowNullText: true } 允许 text 为空
-   * @param {Function} options.keyParseFunc key 的转换函数，默认 null，如果 key 为整数则传 parseInt
+   * @param {Function} options.keyParseFunc key 的转换函数，默认 undefined，如果 key 为整数则传 parseInt
    */
-  constructor(enumObj, options) {
+  constructor(enumObj: T, options: EnumFactoryOptions = {}) {
     if (!enumObj || typeof enumObj !== 'object') {
       throw new Error('enumObj must be a valid object.');
     }
 
-    const defaultOptions = { keyParseFunc: null, labelKey: 'label', valueKey: 'value' };
+    const defaultOptions = { keyParseFunc: undefined, labelKey: 'label', valueKey: 'value', allowNullText: false };
     this.enumObj = enumObj;
     this.options = { ...defaultOptions, ...options };
     this.keyParseFunc = this.options.keyParseFunc;
-    this.labelKey = this.options.labelKey;
-    this.valueKey = this.options.valueKey;
+    this.labelKey = this.options.labelKey!;
+    this.valueKey = this.options.valueKey!;
+		this.keys = []
+		this.values = []
 
     this.generateEnumProperties();
     this.freezeEnum();
@@ -31,13 +68,13 @@ export class EnumFactory {
    */
   generateEnumProperties() {
     const { keyParseFunc, options, labelKey, valueKey } = this;
-    const keys = [];
+    const keys = [] as (keyof T)[];
     const values = [];
 
     for (const key in this.enumObj) {
       if (Object.hasOwn(this.enumObj, key)) {
-        const parsedKey = keyParseFunc ? keyParseFunc(key) : key;
-        const text = EnumFactory.extractTextFromItem(this.enumObj[key], key, options);
+        const parsedKey: keyof T = keyParseFunc ? keyParseFunc(key) : String(key);
+        const text = this.extractTextFromItem(this.enumObj[key], key, options);
         const value = {
           [valueKey]: parsedKey,
           [labelKey]: text,
@@ -47,7 +84,7 @@ export class EnumFactory {
         keys.push(parsedKey);
         values.push(value);
 
-        this[parsedKey] = value;
+        this.valuesMap.set(parsedKey, value);
       }
     }
 
@@ -62,7 +99,7 @@ export class EnumFactory {
    * @param {Object} options 额外的选项
    * @returns {string} 枚举项的文本
    */
-  static extractTextFromItem(item, key, options) {
+  extractTextFromItem(item: any, key: string, options: EnumFactoryOptions) {
     if (isString(item) || isBoolean(item) || isNumber(item) || isRegExp(item)) {
       return item;
     } else if (item && item[this.labelKey]) {
@@ -73,13 +110,18 @@ export class EnumFactory {
     return key;
   }
 
+	get(key: keyof T): any | undefined {
+		const parseKey = this.keyParseFunc ? this.keyParseFunc(key) : String(key)
+		return this.valuesMap.get(parseKey);
+	}
+
   /**
    * 根据 key 获取对应的文本值，如果不存在则返回默认值
    * @param {string} key 枚举的 key
    * @param {string} defaultValue 默认值
    * @returns {string} 枚举项的文本值或默认值
    */
-  getTextByKey(key, defaultValue = '') {
+  getTextByKey(key: any, defaultValue = '') {
     const enumItem = this.getEnumByKey(key);
     return enumItem ? enumItem.text : defaultValue;
   }
@@ -90,7 +132,7 @@ export class EnumFactory {
    * @param {string} defaultValue 默认值
    * @returns {string} 枚举项的 key 或默认值
    */
-  getKeyByText(text, defaultValue = '') {
+  getKeyByText(text: any, defaultValue = '') {
     const enumItem = this.getEnumByText(text);
     return enumItem ? enumItem.key : defaultValue;
   }
@@ -100,8 +142,8 @@ export class EnumFactory {
    * @param {string} key 枚举的 key
    * @returns {Object|null} 包含 key 和 text 的枚举项，或者 null
    */
-  getEnumByKey(key) {
-    return this.values.find(v => v[this.valueKey] === key) || null;
+  getEnumByKey(key: any) {
+    return this.values!.find(v => v[this.valueKey] === key) || null;
   }
 
   /**
@@ -109,8 +151,8 @@ export class EnumFactory {
    * @param {string} text 枚举项的文本值
    * @returns {Object|null} 包含 key 和 text 的枚举项，或者 null
    */
-  getEnumByText(text) {
-    return this.values.find(v => v[this.labelKey] === text) || null;
+  getEnumByText(text: any) {
+    return this.values!.find(v => v[this.labelKey] === text) || null;
   }
 
   /**
