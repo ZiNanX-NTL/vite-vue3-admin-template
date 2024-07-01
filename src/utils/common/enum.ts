@@ -121,7 +121,7 @@ export class EnumFactory<T extends Record<any, any> = Record<string, any>> {
    * @param {string} defaultValue 默认值
    * @returns {string} 枚举项的文本值或默认值
    */
-  getTextByKey(key: any, defaultValue = '') {
+  getTextByKey(key: keyof T, defaultValue = ''): string {
     const enumItem = this.getEnumByKey(key);
     return enumItem ? enumItem.text : defaultValue;
   }
@@ -132,7 +132,7 @@ export class EnumFactory<T extends Record<any, any> = Record<string, any>> {
    * @param {string} defaultValue 默认值
    * @returns {string} 枚举项的 key 或默认值
    */
-  getKeyByText(text: any, defaultValue = '') {
+  getKeyByText(text: string, defaultValue = ''): keyof T {
     const enumItem = this.getEnumByText(text);
     return enumItem ? enumItem.key : defaultValue;
   }
@@ -142,7 +142,7 @@ export class EnumFactory<T extends Record<any, any> = Record<string, any>> {
    * @param {string} key 枚举的 key
    * @returns {Object|null} 包含 key 和 text 的枚举项，或者 null
    */
-  getEnumByKey(key: any) {
+  getEnumByKey(key: keyof T): T[keyof T] | null {
     return this.values!.find(v => v[this.valueKey] === key) || null;
   }
 
@@ -151,7 +151,7 @@ export class EnumFactory<T extends Record<any, any> = Record<string, any>> {
    * @param {string} text 枚举项的文本值
    * @returns {Object|null} 包含 key 和 text 的枚举项，或者 null
    */
-  getEnumByText(text: any) {
+  getEnumByText(text: string): T[keyof T] | null {
     return this.values!.find(v => v[this.labelKey] === text) || null;
   }
 
