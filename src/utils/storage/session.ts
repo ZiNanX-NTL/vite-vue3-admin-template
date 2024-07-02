@@ -1,18 +1,25 @@
 import { decrypto, encrypto } from '../crypto';
 
-function createSessionStorage(isEncryption) {
-  function set(key, value) {
+/** localStorage的存储数据的类型 */
+interface Session {
+	/** 主题颜色 */
+	themeColor: string;
+	/** 主题配置 */
+	themeSettings: any;
+}
+function createSessionStorage<T extends Session = Session>(isEncryption = false) {
+  function set<K extends keyof T>(key: K, value: T[K]) {
     let json;
     if (isEncryption) {
       json = encrypto(value);
     } else {
       json = JSON.stringify(value);
     }
-    sessionStorage.setItem(key, json);
+    sessionStorage.setItem(key as string, json);
   }
-  function get(key) {
-    const json = sessionStorage.getItem(key);
-    let data = null;
+  function get<K extends keyof T>(key: K) {
+    const json = sessionStorage.getItem(key as string);
+    let data: T[K] | null = null;
     if (json) {
       try {
         if (isEncryption) {
@@ -26,8 +33,8 @@ function createSessionStorage(isEncryption) {
     }
     return data;
   }
-  function remove(key) {
-    window.sessionStorage.removeItem(key);
+  function remove(key: keyof T) {
+    window.sessionStorage.removeItem(key as string);
   }
   function clear() {
     window.sessionStorage.clear();

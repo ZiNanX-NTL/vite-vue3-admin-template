@@ -1,6 +1,6 @@
 import { ref, reactive, computed, watch } from 'vue';
 import { cloneDeep } from 'lodash-es';
-import { useBasicLayout } from '@/utils';
+import { useIsMobile } from '@/utils';
 import { useBoolean, useLoading } from '../common';
 
 /**
@@ -34,7 +34,7 @@ export function useTable(config) {
 
   const data = ref([]);
 
-  const { isMobile } = useBasicLayout();
+  const isMobile = useIsMobile();
   const pagination = reactive({
     page: 1,
     pageSize: 10,

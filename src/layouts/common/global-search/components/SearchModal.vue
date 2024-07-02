@@ -31,7 +31,7 @@
 <script setup>
 import { onKeyStroke, useDebounceFn } from '@vueuse/core';
 import { useRouteStore } from '@/store';
-import { useBasicLayout } from '@/utils';
+import { useIsMobile } from '@/utils';
 import SearchResult from './SearchResult.vue';
 import SearchFooter from './SearchFooter.vue';
 
@@ -44,7 +44,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:value']);
 
-const { isMobile } = useBasicLayout();
+const isMobile = useIsMobile();
 const router = useRouter();
 const routeStore = useRouteStore();
 

@@ -35,7 +35,7 @@
 <script setup>
 import { useFullscreen } from '@vueuse/core';
 import { useAppStore, useThemeStore } from '@/store';
-import { useBasicLayout } from '@/utils';
+import { useBasicLayout, useIsMobile } from '@/utils';
 import { GlobalContent, GlobalSider, GlobalHeader, SettingDrawer, GlobalTab } from '../common';
 
 defineOptions({ name: 'BasicLayout' });
@@ -43,7 +43,8 @@ defineOptions({ name: 'BasicLayout' });
 const theme = useThemeStore();
 const app = useAppStore();
 
-const { mode, isMobile, layoutProps, headerProps, siderProps } = useBasicLayout();
+const { mode, layoutProps, headerProps, siderProps } = useBasicLayout();
+const isMobile = useIsMobile()
 
 const contentMounted = ref(false);
 const contentRef = ref();

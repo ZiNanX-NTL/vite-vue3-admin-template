@@ -25,7 +25,7 @@
 
 <script setup>
 import { useThemeStore } from '@/store';
-import { useBasicLayout } from '@/utils';
+import { useBasicLayout, useIsMobile } from '@/utils';
 import GlobalLogo from '../global-logo/index.vue';
 import GlobalSearch from '../global-search/index.vue';
 import {
@@ -49,7 +49,8 @@ defineProps({
 });
 
 const theme = useThemeStore();
-const { mode, isMobile } = useBasicLayout();
+const { mode } = useBasicLayout();
+const isMobile = useIsMobile()
 
 const showButton = import.meta.env.DEV;
 

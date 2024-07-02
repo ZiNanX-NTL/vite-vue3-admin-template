@@ -34,11 +34,11 @@
 import { NSpace, NPopconfirm, NButton } from 'naive-ui';
 import { genderEnum, userStatusEnum } from '@/constants';
 import { useTable, useTableOperate } from '@/hooks';
-import { useBasicLayout } from '@/utils';
+import { useIsMobile } from '@/utils';
 import { fetchAllUserList } from '@/api';
 import TableActionModal from './components/TableActionModal.vue';
 
-const { isMobile } = useBasicLayout();
+const isMobile = useIsMobile();
 
 const tableRef = ref(null);
 

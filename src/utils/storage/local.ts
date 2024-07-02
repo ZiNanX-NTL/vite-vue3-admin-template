@@ -1,12 +1,28 @@
 import localforage from 'localforage';
 import { decrypto, encrypto } from '../crypto';
 
-function createLocalStorage(isEncryption) {
+interface StorageData<T> {
+  value: T;
+  expire: number | null;
+}
+/** localStorage的存储数据的类型 */
+interface Local {
+	/** 用户token */
+	token: string;
+	/** 用户刷新token */
+	refreshToken: string;
+	/** 用户信息 */
+	userInfo: any;
+	/** 多页签路由信息 */
+	multiTabRoutes: App.GlobalTabRoute[];
+}
+
+function createLocalStorage<T extends Local = Local>(isEncryption = false) {
   /** 默认缓存期限为7天 */
   const DEFAULT_CACHE_TIME = 60 * 60 * 24 * 7;
 
-  function set(key, value, expire = DEFAULT_CACHE_TIME) {
-    const storageData = {
+  function set<K extends keyof T>(key: K, value: T[K], expire: number | null = DEFAULT_CACHE_TIME) {
+    const storageData: StorageData<T[K]> = {
       value,
       expire: expire !== null ? new Date().getTime() + expire * 1000 : null
     };
@@ -16,13 +32,13 @@ function createLocalStorage(isEncryption) {
     } else {
       json = JSON.stringify(storageData);
     }
-    window.localStorage.setItem(key, json);
+    window.localStorage.setItem(key as string, json);
   }
 
-  function get(key) {
-    const json = window.localStorage.getItem(key);
+  function get<K extends keyof T>(key: K) {
+    const json = window.localStorage.getItem(key as string);
     if (json) {
-      let storageData = null;
+      let storageData: StorageData<T[K]> | null = null;
       try {
         if (isEncryption) {
           storageData = decrypto(json);
@@ -36,7 +52,7 @@ function createLocalStorage(isEncryption) {
         const { value, expire } = storageData;
         // 在有效期内直接返回
         if (expire === null || expire >= Date.now()) {
-          return value;
+          return value as T[K];
         }
       }
       remove(key);
@@ -45,8 +61,8 @@ function createLocalStorage(isEncryption) {
     return null;
   }
 
-  function remove(key) {
-    window.localStorage.removeItem(key);
+  function remove(key: keyof T) {
+    window.localStorage.removeItem(key as string);
   }
   function clear() {
     window.localStorage.clear();
@@ -62,7 +78,8 @@ function createLocalStorage(isEncryption) {
 
 export const localStg = createLocalStorage(false);
 
-export function createLocalforage(driver) {
+type Driver = 'local' | 'indexedDB' | 'webSQL'
+export function createLocalforage(driver: Driver) {
   const driverMap = {
     local: localforage.LOCALSTORAGE,
     indexedDB: localforage.INDEXEDDB,

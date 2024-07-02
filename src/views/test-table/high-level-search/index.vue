@@ -35,12 +35,12 @@
 import { NSpace, NPopconfirm, NButton } from 'naive-ui';
 import { genderEnum, userStatusEnum } from '@/constants';
 import { useTable, useTableOperate } from '@/hooks';
-import { useBasicLayout } from '@/utils';
+import { useIsMobile } from '@/utils';
 import { fetchUserList } from '@/api';
 import TableActionModal from './components/TableActionModal.vue';
 import TableSearch from './components/TableSearch.vue';
 
-const { isMobile } = useBasicLayout();
+const isMobile = useIsMobile();
 
 const {
   columns,
