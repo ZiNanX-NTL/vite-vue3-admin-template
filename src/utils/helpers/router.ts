@@ -1,4 +1,5 @@
 import { router } from '@/router';
+import type { RouteLocationRaw } from 'vue-router';
 
 /**
  * 路由跳转
@@ -11,7 +12,7 @@ export function useRouterPush() {
    * @param to - 需要跳转的路由
    * @param newTab - 是否在新的浏览器Tab标签打开
    */
-  function routerPush(to, newTab = false) {
+  function routerPush(to: RouteLocationRaw, newTab = false) {
     if (newTab) {
       const routerData = router.resolve(to);
       window.open(routerData.href, '_blank');
@@ -38,9 +39,9 @@ export function useRouterPush() {
    * @param loginModule - 展示的登录模块
    * @param redirectUrl - 重定向地址(登录成功后跳转的地址),默认undefined表示取当前地址为重定向地址
    */
-  function toLogin(loginModule, redirectUrl) {
-    const module = loginModule || 'pwd-login';
-    const routeLocation = {
+  function toLogin(loginModule?: UnionKey.LoginModule, redirectUrl?: string) {
+    const module: UnionKey.LoginModule = loginModule || 'pwd-login';
+    const routeLocation: RouteLocationRaw = {
       name: 'login',
       params: { module }
     };
@@ -55,7 +56,7 @@ export function useRouterPush() {
    * 登录页切换其他模块
    * @param module - 切换后的登录模块
    */
-  function toLoginModule(module) {
+  function toLoginModule(module: UnionKey.LoginModule) {
     const { query } = route.value;
     routerPush({ name: 'login', params: { module }, query });
   }
@@ -66,7 +67,7 @@ export function useRouterPush() {
   function toLoginRedirect() {
     const { query } = route.value;
     if (query?.redirect) {
-      routerPush(query.redirect);
+      routerPush(query.redirect as string);
     } else {
       toHome();
     }

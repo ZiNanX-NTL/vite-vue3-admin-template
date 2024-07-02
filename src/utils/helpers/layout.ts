@@ -2,15 +2,37 @@ import { computed, watch } from "vue";
 import { breakpointsTailwind, useBreakpoints } from "@vueuse/core";
 import { useAppStore, useThemeStore } from "@/store";
 
+interface Props {
+	layoutProps: {
+		showHeader: boolean,
+		showMixHeader: boolean,
+		showSider: boolean,
+		showMixSider: boolean,
+	},
+	headerProps: {
+		showLogo: boolean,
+		showHeaderMenu: boolean,
+		showMenuCollapse: boolean,
+	},
+	siderProps: {
+		showLogo: boolean,
+	}
+}
+interface Layout {
+	vertical: Props,
+	'vertical-mix': Props,
+	horizontal: Props,
+}
+
 export function useBasicLayout() {
 	const theme = useThemeStore();
 
-	const mode = computed(() => {
+	const mode = computed<'vertical' | 'vertical-mix' | 'horizontal'>(() => {
 		return theme.layout.mode;
 	});
 
 	// 各种布局的布局参数
-	const layout = {
+	const layout: Layout = {
 		vertical: {
 			layoutProps: {
 				showHeader: false,
@@ -60,9 +82,9 @@ export function useBasicLayout() {
 			},
 		},
 	};
-	const layoutProps = computed(() => layout[theme.layout.mode].layoutProps);
-	const headerProps = computed(() => layout[theme.layout.mode].headerProps);
-	const siderProps = computed(() => layout[theme.layout.mode].siderProps);
+	const layoutProps = computed<Props['layoutProps']>(() => layout[mode.value].layoutProps);
+	const headerProps = computed<Props['headerProps']>(() => layout[mode.value].headerProps);
+	const siderProps = computed<Props['siderProps']>(() => layout[mode.value].siderProps);
 
 	return {
 		mode,

@@ -5,7 +5,7 @@ import { getTopLevelMenu } from '@/router';
  * @param menus - 菜单数据
  * @param rootPath - 根路由路径
  */
-export function getBreadcrumbByRouteKey(activeKey, menus, rootPath) {
+export function getBreadcrumbByRouteKey(activeKey: string, menus: App.GlobalMenuOption[], rootPath: string) {
   const breadcrumbMenu = getBreadcrumbMenu(activeKey, menus);
   const breadcrumb = breadcrumbMenu.map(item => transformBreadcrumbMenuToBreadcrumb(item, rootPath));
   return breadcrumb;
@@ -16,10 +16,10 @@ export function getBreadcrumbByRouteKey(activeKey, menus, rootPath) {
  * @param activeKey - 当前页面路由的key
  * @param menus - 菜单数据
  */
-function getBreadcrumbMenu(activeKey, menus) {
-  const breadcrumbMenu = [];
+function getBreadcrumbMenu(activeKey: string, menus: App.GlobalMenuOption[]) {
+  const breadcrumbMenu: App.GlobalMenuOption[] = [];
   const topLevelMenu = getTopLevelMenu(activeKey, menus);
-  const options = topLevelMenu ? getBreadcrumbMenuItem(activeKey, topLevelMenu) : [];
+  const options = topLevelMenu ? getBreadcrumbMenuItem(activeKey, topLevelMenu as App.GlobalMenuOption) : [];
   breadcrumbMenu.push(...options);
   return breadcrumbMenu;
 }
@@ -29,14 +29,14 @@ function getBreadcrumbMenu(activeKey, menus) {
  * @param activeKey - 当前页面路由的key
  * @param menu - 单个菜单数据
  */
-function getBreadcrumbMenuItem(activeKey, menu) {
-  const breadcrumbMenu = [];
+function getBreadcrumbMenuItem(activeKey: string, menu: App.GlobalMenuOption) {
+  const breadcrumbMenu: App.GlobalMenuOption[] = [];
   if (activeKey === menu.routeName) {
     breadcrumbMenu.push(menu);
   }
   if (activeKey.includes(menu.routeName) && menu.children && menu.children.length) {
     breadcrumbMenu.push(menu);
-    breadcrumbMenu.push(...menu.children.map(item => getBreadcrumbMenuItem(activeKey, item)).flat(1));
+    breadcrumbMenu.push(...menu.children.map(item => getBreadcrumbMenuItem(activeKey, item as App.GlobalMenuOption)).flat(1));
   }
 
   return breadcrumbMenu;
@@ -47,9 +47,9 @@ function getBreadcrumbMenuItem(activeKey, menu) {
  * @param menu - 单个菜单数据
  * @param rootPath - 根路由路径
  */
-function transformBreadcrumbMenuToBreadcrumb(menu, rootPath) {
+function transformBreadcrumbMenuToBreadcrumb(menu: App.GlobalMenuOption, rootPath: string) {
   const hasChildren = Boolean(menu.children && menu.children.length);
-  const breadcrumb = {
+  const breadcrumb: App.GlobalBreadcrumb = {
     key: menu.routeName,
     label: menu.label,
     routeName: menu.routeName,
@@ -61,7 +61,7 @@ function transformBreadcrumbMenuToBreadcrumb(menu, rootPath) {
     breadcrumb.icon = menu.icon;
   }
   if (hasChildren) {
-    breadcrumb.options = menu.children?.map(item => transformBreadcrumbMenuToBreadcrumb(item, rootPath));
+    breadcrumb.options = menu.children?.map(item => transformBreadcrumbMenuToBreadcrumb(item as App.GlobalMenuOption, rootPath)) as NonNullable<App.GlobalBreadcrumb['options']>;
   }
   return breadcrumb;
 }

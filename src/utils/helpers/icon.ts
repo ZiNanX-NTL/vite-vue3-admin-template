@@ -1,6 +1,27 @@
 import { h } from 'vue';
 import SvgIcon from '@/components/common/SvgIcon.vue';
 
+interface IconConfig {
+	/**
+	 * 图标名称(iconify图标的名称)
+	 * - 例如：mdi-account 或者 mdi:account
+	 */
+	icon?: string;
+	/**
+	 * 本地svg图标文件名(assets/svg-icon文件夹下)
+	 */
+	localIcon?: string;
+	/** 图标颜色 */
+	color?: string;
+	/** 图标大小 */
+	fontSize?: number;
+}
+
+interface IconStyle {
+	color?: string;
+	fontSize?: string;
+}
+
 /**
  * 图标渲染
  * - 用于vue的render函数
@@ -14,10 +35,10 @@ export const useIconRender = () => {
    * @property color - 图标颜色
    * @property fontSize - 图标大小
    */
-  const iconRender = config => {
+  const iconRender = (config: IconConfig) => {
     const { color, fontSize, icon, localIcon } = config;
 
-    const style = {};
+    const style: IconStyle = {};
 
     if (color) {
       style.color = color;
