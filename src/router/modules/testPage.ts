@@ -26,6 +26,18 @@ const pageRoute: AuthRoute.Route = {
         permissions: ['super', 'admin', 'user'],
         icon: 'ic:round-tab'
       }
+    },
+    {
+      name: 'test-page_seat2',
+      path: '/test-page/seat2',
+      component: 'self',
+      meta: {
+        title: '选座2',
+        requiresAuth: true,
+        keepAlive: false,
+        permissions: ['super', 'admin', 'user'],
+        icon: 'ic:round-tab'
+      }
     }
   ],
   meta: {
