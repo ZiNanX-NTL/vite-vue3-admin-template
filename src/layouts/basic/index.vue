@@ -44,7 +44,7 @@ const theme = useThemeStore();
 const app = useAppStore();
 
 const { mode, layoutProps, headerProps, siderProps } = useBasicLayout();
-const isMobile = useIsMobile()
+const isMobile = useIsMobile();
 
 const contentMounted = ref(false);
 const contentRef = ref();

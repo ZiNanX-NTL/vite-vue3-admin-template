@@ -50,7 +50,7 @@ defineProps({
 
 const theme = useThemeStore();
 const { mode } = useBasicLayout();
-const isMobile = useIsMobile()
+const isMobile = useIsMobile();
 
 const showButton = import.meta.env.DEV;
 

@@ -14,8 +14,12 @@ import '@leafer-in/editor';
 import '@leafer-in/view';
 import '@leafer-in/state';
 import { ScrollBar } from '@leafer-in/scroll';
+import { useThemeStore } from '@/store';
 import freeSeat from '@/assets/images/seat_free_2x.png';
 import selectedSeat from '@/assets/images/seat_selected_2x.png';
+
+const themeStore = useThemeStore();
+let scroll: ScrollBar;
 function init() {
   const app = new App({
     view: 'leafer-view',
@@ -23,7 +27,7 @@ function init() {
       selector: false
     }
   });
-  app.sky.add(new ScrollBar(app.tree));
+  scroll = new ScrollBar(app, { theme: themeStore.darkMode ? 'dark' : 'light' });
 
   const seatLayout = [
     [1, 0, 1, 1, 0, 1, 1, 1, 1],
@@ -146,6 +150,17 @@ function init() {
     app.tree.zoom(group, 0, true);
   });
 }
+
+watch(
+  () => themeStore.darkMode,
+  newValue => {
+    if (newValue) {
+      scroll?.changeTheme('dark');
+    } else {
+      scroll?.changeTheme('light');
+    }
+  }
+);
 
 onMounted(() => {
   init();
