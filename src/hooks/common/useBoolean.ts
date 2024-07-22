@@ -7,7 +7,7 @@ import { ref } from 'vue';
 export default function useBoolean(initValue = false) {
   const bool = ref(initValue);
 
-  function setBool(value) {
+  function setBool(value: boolean) {
     bool.value = value;
   }
   function setTrue() {

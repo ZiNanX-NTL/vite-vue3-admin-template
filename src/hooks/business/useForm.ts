@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+import type { FormInst, FormItemRule } from 'naive-ui';
 import { REG_PWD, REG_PHONE, REG_USER_NAME, REG_EMAIL } from '@/config';
 
 export function useFormRules() {
@@ -28,11 +29,11 @@ export function useFormRules() {
     userName: [createRequiredRule('请输入用户名'), patternRules.userName],
     phone: [createRequiredRule('请输入手机号'), patternRules.phone],
     pwd: [createRequiredRule('请输入密码'), patternRules.pwd],
-    email: [createRequiredRule('请输入邮箱'), patternRules.email]
+    email: [patternRules.email]
   };
   /** the default required rule */
   const defaultRequiredRule = createRequiredRule('不能为空');
-  function createRequiredRule(message) {
+  function createRequiredRule(message = '不能为空'): FormItemRule {
     return {
       required: true,
       message
@@ -47,7 +48,7 @@ export function useFormRules() {
 }
 
 export function useNaiveForm() {
-  const formRef = ref(null);
+  const formRef = ref<FormInst | null>(null);
   async function validate() {
     await formRef.value?.validate();
   }

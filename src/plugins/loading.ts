@@ -7,6 +7,6 @@ export function setupLoading() {
   const app = document.getElementById('app');
 
   if (app) {
-    app.innerHTML = loading.outerHTML;
+    app.innerHTML = loading?.outerHTML;
   }
 }

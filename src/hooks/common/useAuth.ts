@@ -5,7 +5,7 @@ export default function useAuth() {
   const authStore = useAuthStore();
   const routeStore = useRouteStore();
 
-  function hasAuth(codes) {
+  function hasAuth(codes: string | string[]) {
     if (!authStore.isLogin) {
       return false;
     }
