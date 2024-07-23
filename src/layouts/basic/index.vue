@@ -24,7 +24,7 @@
         </template>
         <!-- 不需要滚动时,view外层设置h-full,继承父级100%高度,需要滚动时外层不能继承父级100%高度 -->
         <div class="w-full flex bg-#f6f9f8 dark:bg-#101014" :style="contentStyle">
-          <global-content />
+          <global-content class="w-full" />
         </div>
       </n-layout-content>
     </n-layout>

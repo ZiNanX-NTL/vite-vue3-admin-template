@@ -4,6 +4,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 import unocss from '@unocss/vite';
 import progress from 'vite-plugin-progress';
 import VueDevtools from 'vite-plugin-vue-devtools';
+import { templateCompilerOptions } from '@tresjs/core';
 import icons from './unpluginIcons';
 import components from './unpluginVueComponents';
 import autoImport from './unpluginAutoImport';
@@ -13,7 +14,9 @@ import mock from './vitePluginMock';
 
 export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | PluginOption[])[] {
   return [
-    vue(),
+    vue({
+      ...templateCompilerOptions
+    }),
     vueJsx(),
     unocss(),
     // 打包进度条
