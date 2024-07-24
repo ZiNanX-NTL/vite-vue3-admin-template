@@ -2,24 +2,24 @@ import { h } from 'vue';
 import SvgIcon from '@/components/common/SvgIcon.vue';
 
 interface IconConfig {
-	/**
-	 * 图标名称(iconify图标的名称)
-	 * - 例如：mdi-account 或者 mdi:account
-	 */
-	icon?: string;
-	/**
-	 * 本地svg图标文件名(assets/svg-icon文件夹下)
-	 */
-	localIcon?: string;
-	/** 图标颜色 */
-	color?: string;
-	/** 图标大小 */
-	fontSize?: number;
+  /**
+   * 图标名称(iconify图标的名称)
+   * - 例如：mdi-account 或者 mdi:account
+   */
+  icon?: string;
+  /**
+   * 本地svg图标文件名(assets/svg-icon文件夹下)
+   */
+  localIcon?: string;
+  /** 图标颜色 */
+  color?: string;
+  /** 图标大小 */
+  fontSize?: number;
 }
 
 interface IconStyle {
-	color?: string;
-	fontSize?: string;
+  color?: string;
+  fontSize?: string;
 }
 
 /**

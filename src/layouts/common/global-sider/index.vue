@@ -54,7 +54,7 @@
 <script setup>
 import { getActiveKeyPathsOfMenus } from '@/router';
 import { useAppStore, useRouteStore, useThemeStore } from '@/store';
-import { useBasicLayout,useIsMobile, useRouterPush } from '@/utils';
+import { useBasicLayout, useIsMobile, useRouterPush } from '@/utils';
 import GlobalLogo from '../global-logo/index.vue';
 
 defineOptions({ name: 'GlobalSider' });
@@ -68,7 +68,7 @@ const routeStore = useRouteStore();
 const { routerPush } = useRouterPush();
 const theme = useThemeStore();
 const { mode } = useBasicLayout();
-const isMobile = useIsMobile()
+const isMobile = useIsMobile();
 
 const activeKey = computed(() => (route.meta?.activeMenu ? route.meta.activeMenu : route.name));
 const expandedKeys = ref([]);
