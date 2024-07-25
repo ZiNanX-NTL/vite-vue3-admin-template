@@ -3,14 +3,14 @@
     <n-card v-if="!collapsed" title="高级搜索" :bordered="false" size="small" class="w-350px card-wrapper">
       <n-scrollbar :style="{ height: treeHeight + 'px' }">
         <n-tree
-          block-line
-          cascade
           check-strategy="parent"
           :selectable="false"
           :data="searchTreeData"
           :default-expanded-keys="defaultExpandedKeys"
-          check-on-click
           checkable
+          cascade
+          check-on-click
+          block-line
           :checked-keys="model.checkedKeys"
           @update:checked-keys="handleCheckedKeysChange"
         />

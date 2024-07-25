@@ -7,14 +7,14 @@ interface StorageData<T> {
 }
 /** localStorage的存储数据的类型 */
 interface Local {
-	/** 用户token */
-	token: string;
-	/** 用户刷新token */
-	refreshToken: string;
-	/** 用户信息 */
-	userInfo: any;
-	/** 多页签路由信息 */
-	multiTabRoutes: App.GlobalTabRoute[];
+  /** 用户token */
+  token: string;
+  /** 用户刷新token */
+  refreshToken: string;
+  /** 用户信息 */
+  userInfo: any;
+  /** 多页签路由信息 */
+  multiTabRoutes: App.GlobalTabRoute[];
 }
 
 function createLocalStorage<T extends Local = Local>(isEncryption = false) {
@@ -78,7 +78,7 @@ function createLocalStorage<T extends Local = Local>(isEncryption = false) {
 
 export const localStg = createLocalStorage(false);
 
-type Driver = 'local' | 'indexedDB' | 'webSQL'
+type Driver = 'local' | 'indexedDB' | 'webSQL';
 export function createLocalforage(driver: Driver) {
   const driverMap = {
     local: localforage.LOCALSTORAGE,

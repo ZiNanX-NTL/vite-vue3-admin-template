@@ -27,7 +27,7 @@ interface Layout {
 export function useBasicLayout() {
   const theme = useThemeStore();
 
-  const mode = computed<'vertical' | 'vertical-mix' | 'horizontal'>(() => {
+  const mode = computed<keyof Layout>(() => {
     return theme.layout.mode;
   });
 

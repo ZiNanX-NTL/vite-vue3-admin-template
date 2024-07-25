@@ -36,7 +36,9 @@ function getBreadcrumbMenuItem(activeKey: string, menu: App.GlobalMenuOption) {
   }
   if (activeKey.includes(menu.routeName) && menu.children && menu.children.length) {
     breadcrumbMenu.push(menu);
-    breadcrumbMenu.push(...menu.children.map(item => getBreadcrumbMenuItem(activeKey, item as App.GlobalMenuOption)).flat(1));
+    breadcrumbMenu.push(
+      ...menu.children.map(item => getBreadcrumbMenuItem(activeKey, item as App.GlobalMenuOption)).flat(1)
+    );
   }
 
   return breadcrumbMenu;
@@ -61,7 +63,9 @@ function transformBreadcrumbMenuToBreadcrumb(menu: App.GlobalMenuOption, rootPat
     breadcrumb.icon = menu.icon;
   }
   if (hasChildren) {
-    breadcrumb.options = menu.children?.map(item => transformBreadcrumbMenuToBreadcrumb(item as App.GlobalMenuOption, rootPath)) as NonNullable<App.GlobalBreadcrumb['options']>;
+    breadcrumb.options = menu.children?.map(item =>
+      transformBreadcrumbMenuToBreadcrumb(item as App.GlobalMenuOption, rootPath)
+    ) as NonNullable<App.GlobalBreadcrumb['options']>;
   }
   return breadcrumb;
 }

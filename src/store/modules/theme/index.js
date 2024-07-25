@@ -52,7 +52,19 @@ export const useThemeStore = defineStore('theme-store', {
     },
     /** 设置布局模式 */
     setLayoutMode(mode) {
+      // 重置菜单左上分离
+      if (mode === 'horizontal') {
+        this.layout.isMenuSeparation = false;
+      }
       this.layout.mode = mode;
+    },
+    /** 设置菜单左上分离 */
+    setMenuSeparation(isSeparation) {
+      this.layout.isMenuSeparation = isSeparation;
+    },
+    /** 设置菜单左上反转 */
+    setMenuInverted(isMenuInverted) {
+      this.layout.isMenuInverted = isMenuInverted;
     },
     /** 设置系统主题颜色 */
     setThemeColor(themeColor) {

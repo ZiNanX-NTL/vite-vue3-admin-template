@@ -2,10 +2,10 @@ import { decrypto, encrypto } from '../crypto';
 
 /** localStorage的存储数据的类型 */
 interface Session {
-	/** 主题颜色 */
-	themeColor: string;
-	/** 主题配置 */
-	themeSettings: any;
+  /** 主题颜色 */
+  themeColor: string;
+  /** 主题配置 */
+  themeSettings: any;
 }
 function createSessionStorage<T extends Session = Session>(isEncryption = false) {
   function set<K extends keyof T>(key: K, value: T[K]) {

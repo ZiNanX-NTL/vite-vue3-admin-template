@@ -37,7 +37,7 @@ export class EnumFactory<T extends Record<any, any> = Record<string, any>> {
 
   values: any[];
 
-	valuesMap = new Map<keyof T, any>();
+  valuesMap = new Map<keyof T, any>();
 
   /**
    * 创建一个枚举工厂实例。
@@ -56,8 +56,8 @@ export class EnumFactory<T extends Record<any, any> = Record<string, any>> {
     this.keyParseFunc = this.options.keyParseFunc;
     this.labelKey = this.options.labelKey!;
     this.valueKey = this.options.valueKey!;
-		this.keys = []
-		this.values = []
+    this.keys = [];
+    this.values = [];
 
     this.generateEnumProperties();
     this.freezeEnum();
@@ -110,10 +110,10 @@ export class EnumFactory<T extends Record<any, any> = Record<string, any>> {
     return key;
   }
 
-	get(key: keyof T): any | undefined {
-		const parseKey = this.keyParseFunc ? this.keyParseFunc(key) : String(key)
-		return this.valuesMap.get(parseKey);
-	}
+  get(key: keyof T): any | undefined {
+    const parseKey = this.keyParseFunc ? this.keyParseFunc(key) : String(key);
+    return this.valuesMap.get(parseKey);
+  }
 
   /**
    * 根据 key 获取对应的文本值，如果不存在则返回默认值

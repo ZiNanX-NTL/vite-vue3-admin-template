@@ -7,12 +7,22 @@
     >
       <div class="h-full flex-y-center">
         <n-menu
+          v-if="!theme.layout.isMenuSeparation"
           :value="activeKey"
           mode="horizontal"
           responsive
           :options="routeStore.menus"
           :inverted="theme.header.inverted"
           @update:value="handleUpdateMenu"
+        />
+        <n-menu
+          v-else
+          :value="theme.layout.isMenuInverted ? activeRootKey : activeKey"
+          mode="horizontal"
+          responsive
+          :options="theme.layout.isMenuInverted ? routeStore.rootMenus : routeStore.childrenMenus"
+          :inverted="theme.header.inverted"
+          @update:value="handleUpdateRootMenu"
         />
       </div>
     </n-scrollbar>
@@ -21,21 +31,14 @@
 
 <script setup>
 import { useRouteStore, useThemeStore } from '@/store';
-import { useRouterPush } from '@/utils';
+import { useMenu } from '@/utils';
 
 defineOptions({ name: 'HeaderMenu' });
 
-const route = useRoute();
 const routeStore = useRouteStore();
 const theme = useThemeStore();
-const { routerPush } = useRouterPush();
 
-const activeKey = computed(() => (route.meta?.activeMenu ? route.meta.activeMenu : route.name));
-
-function handleUpdateMenu(_key, item) {
-  const menuItem = item;
-  routerPush(menuItem.routePath);
-}
+const { activeKey, activeRootKey, handleUpdateMenu, handleUpdateRootMenu } = useMenu();
 </script>
 
 <style scoped>

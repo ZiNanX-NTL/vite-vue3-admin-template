@@ -1,5 +1,5 @@
-import { router } from '@/router';
 import type { RouteLocationRaw } from 'vue-router';
+import { router } from '@/router';
 
 /**
  * 路由跳转

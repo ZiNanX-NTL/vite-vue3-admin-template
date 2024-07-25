@@ -10,6 +10,7 @@ import {
   filterAuthRoutesByUserPermission,
   filterAuthRoutesByUserRole,
   transformAuthRouteToMenu,
+  transformAuthRouteToRootMenu,
   transformAuthRouteToVueRoutes,
   getCacheRoutes,
   transformAuthRouteToSearchMenus,
@@ -30,6 +31,8 @@ export const useRouteStore = defineStore('route-store', {
     removeRouteFns: [],
     routeHomeName: transformRoutePathToRouteName(import.meta.env.VITE_ROUTE_HOME_PATH),
     menus: [],
+    rootMenus: [],
+    childrenMenus: [],
     cacheRoutes: [],
     searchMenus: []
   }),
@@ -115,9 +118,19 @@ export const useRouteStore = defineStore('route-store', {
       this.addRoutesToVueRouter(vueRoutes);
 
       this.menus = transformAuthRouteToMenu(routes);
+      this.rootMenus = transformAuthRouteToRootMenu(routes);
       this.searchMenus = transformAuthRouteToSearchMenus(routes);
       this.cacheRoutes = getCacheRoutes(vueRoutes);
     },
+
+    /**
+     * 设置childrenMenus
+     * @param routes - 权限路由
+     */
+    setChildrenMenus(routes) {
+      this.childrenMenus = routes;
+    },
+
     /**
      * Add routes to vue router
      *

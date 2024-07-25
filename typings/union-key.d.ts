@@ -22,11 +22,10 @@ declare namespace UnionKey {
   /**
    * 布局模式
    * - vertical: 左侧菜单模式
-   * - horizontal: 顶部菜单模式
    * - vertical-mix: 左侧菜单混合模式
-   * - horizontal-mix: 顶部菜单混合模式
+   * - horizontal: 顶部菜单模式
    */
-  type ThemeLayoutMode = 'vertical' | 'horizontal' | 'vertical-mix' | 'horizontal-mix';
+  type ThemeLayoutMode = 'vertical' | 'horizontal' | 'vertical-mix';
 
   /**
    * 内容溢出时的出现滚动条的方式

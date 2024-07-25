@@ -14,8 +14,16 @@
             <icon-material-symbols-chevron-right-rounded class="text-30px" />
           </hover-container>
         </template>
-        <n-scrollbar ref="scrollbarRef" x-scrollable :theme-overrides="scrollbarThemeOverrides">
-          <div ref="navScroll" class="relative h-full flex-1 py-10px">
+        <n-scrollbar
+          ref="scrollbarRef"
+          x-scrollable
+          :theme-overrides="scrollbarThemeOverrides"
+          :class="
+            isOverflow &&
+            'shadow-[inset_5px_0_5px_-5px_rgba(204,204,204,0.8),inset_-5px_0_5px_-5px_rgba(204,204,204,0.8)]'
+          "
+        >
+          <div ref="navScroll" class="relative h-full flex-1 p-10px">
             <TabDetail @scroll="handleScroll" />
           </div>
         </n-scrollbar>

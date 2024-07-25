@@ -34,6 +34,41 @@ export function transformAuthRouteToMenu(routes) {
   return globalMenu;
 }
 
+/**
+ * 将权限路由转换成一级菜单
+ * @param routes - 路由
+ */
+export function transformAuthRouteToRootMenu(routes, isRoot = true) {
+  const globalMenu = [];
+  routes.forEach(route => {
+    const { name, path, meta } = route;
+    const routeName = name;
+    // let menuChildren;
+    // if (route.children && route.children.length > 0) {
+    //   menuChildren = transformAuthRouteToRootMenu(route.children, false);
+    // }
+    const menuItem = addPartialProps({
+      menu: {
+        key: routeName,
+        label: meta.title,
+        routeName,
+        routePath: path,
+        i18nTitle: meta.i18nTitle,
+        show: isRoot
+      },
+      icon: meta.icon,
+      localIcon: meta.localIcon
+      // children: menuChildren
+    });
+
+    if (!hideInMenu(route)) {
+      globalMenu.push(menuItem);
+    }
+  });
+
+  return globalMenu;
+}
+
 /** 路由不转换菜单 */
 function hideInMenu(route) {
   return Boolean(route.meta.hide);

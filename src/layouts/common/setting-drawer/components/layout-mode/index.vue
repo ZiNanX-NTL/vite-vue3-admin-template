@@ -31,15 +31,26 @@
       </template>
     </layout-card>
   </n-space>
+  <n-space v-if="mode === 'vertical' || mode === 'vertical-mix'" vertical size="large" class="mt-12px">
+    <setting-menu label="菜单左上分离">
+      <n-switch :value="theme.layout.isMenuSeparation" @update:value="theme.setMenuSeparation" />
+    </setting-menu>
+    <setting-menu v-if="theme.layout.isMenuSeparation" label="菜单左上反转">
+      <n-switch :value="theme.layout.isMenuInverted" @update:value="theme.setMenuInverted" />
+    </setting-menu>
+  </n-space>
 </template>
 
 <script setup>
 import { useThemeStore } from '@/store';
+import { useBasicLayout } from '@/utils';
+import SettingMenu from '../setting-menu/index.vue';
 import { LayoutCard } from './components';
 
 defineOptions({ name: 'LayoutMode' });
 
 const theme = useThemeStore();
+const { mode } = useBasicLayout();
 </script>
 
 <style scoped>

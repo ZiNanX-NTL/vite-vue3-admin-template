@@ -27,6 +27,7 @@
       @expand="app.setSiderCollapse(false)"
     >
       <n-menu
+        v-if="!theme.layout.isMenuSeparation"
         :value="activeKey"
         :inverted="!theme.darkMode && theme.sider.inverted"
         :collapsed="app.siderCollapse"
@@ -36,6 +37,18 @@
         :expanded-keys="expandedKeys"
         @update:value="handleUpdateMenu"
         @update:expanded-keys="handleUpdateExpandedKeys"
+      />
+      <n-menu
+        v-else
+        :value="theme.layout.isMenuInverted ? activeKey : activeRootKey"
+        :inverted="!theme.darkMode && theme.sider.inverted"
+        :collapsed="app.siderCollapse"
+        :collapsed-width="collapsedWidth"
+        :collapsed-icon-size="22"
+        :options="theme.layout.isMenuInverted ? routeStore.childrenMenus : routeStore.rootMenus"
+        :expanded-keys="expandedKeys"
+        :expand-icon="expandIcon"
+        @update:value="handleUpdateRootMenu"
       />
     </n-layout-sider>
     <!-- siderBar 遮罩 -->
@@ -54,7 +67,7 @@
 <script setup>
 import { getActiveKeyPathsOfMenus } from '@/router';
 import { useAppStore, useRouteStore, useThemeStore } from '@/store';
-import { useBasicLayout, useIsMobile, useRouterPush } from '@/utils';
+import { useBasicLayout, useIsMobile, useMenu } from '@/utils';
 import GlobalLogo from '../global-logo/index.vue';
 
 defineOptions({ name: 'GlobalSider' });
@@ -65,21 +78,20 @@ defineProps({
 const route = useRoute();
 const app = useAppStore();
 const routeStore = useRouteStore();
-const { routerPush } = useRouterPush();
 const theme = useThemeStore();
 const { mode } = useBasicLayout();
 const isMobile = useIsMobile();
 
-const activeKey = computed(() => (route.meta?.activeMenu ? route.meta.activeMenu : route.name));
 const expandedKeys = ref([]);
 
-function handleUpdateMenu(_key, item) {
-  const menuItem = item;
-  routerPush(menuItem.routePath);
-}
+const { activeKey, activeRootKey, handleUpdateMenu, handleUpdateRootMenu } = useMenu();
 
 function handleUpdateExpandedKeys(keys) {
   expandedKeys.value = keys;
+}
+
+function expandIcon() {
+  return null;
 }
 
 const showTitle = computed(() => !app.siderCollapse);
