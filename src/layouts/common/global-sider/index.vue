@@ -20,7 +20,7 @@
       :collapse-mode="theme.sider.showTrigger === 'bar' ? 'transform' : 'width'"
       :collapsed="app.siderCollapse"
       :collapsed-width="collapsedWidth"
-      :width="theme.sider.width"
+      :width="siderWidth"
       :native-scrollbar="false"
       :inverted="!theme.darkMode && theme.sider.inverted"
       @collapse="app.setSiderCollapse(true)"
@@ -100,12 +100,19 @@ const showTitle = computed(() => !app.siderCollapse);
 const collapsedWidth = computed(() =>
   isMobile.value || theme.sider.showTrigger === 'bar' ? 0 : theme.sider.collapsedWidth
 );
+/** sider的宽度 */
+const siderWidth = computed(() => {
+  if (theme.layout.isMenuSeparation && theme.layout.isMenuInverted) {
+    return theme.sider.menuInvertedWidth;
+  }
+  return theme.sider.width;
+});
 /** logo的宽度 */
 const logoWidth = computed(() => {
   if (theme.logo.isCustomizeWidth && mode.value !== 'vertical') {
     return `${theme.logo.width}px`;
   }
-  return app.siderCollapse ? `${collapsedWidth.value}px` : `${theme.sider.width}px`;
+  return app.siderCollapse ? `${collapsedWidth.value}px` : `${siderWidth.value}px`;
 });
 
 watch(

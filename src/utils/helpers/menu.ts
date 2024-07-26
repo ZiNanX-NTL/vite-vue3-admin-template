@@ -1,16 +1,14 @@
 import type { MenuOption } from 'naive-ui';
 import { getTopLevelMenu } from '@/router';
-import { useRouteStore } from '@/store';
+import { useRouteStore, useThemeStore } from '@/store';
 import { useRouterPush } from './router';
 
 export function useMenu() {
+  const scope = effectScope();
   const route = useRoute();
   const routeStore = useRouteStore();
+  const theme = useThemeStore();
   const { routerPush } = useRouterPush();
-
-  // 默认设置上子菜单
-  const defaultTopLevelMenu = getTopLevelMenu(route.name, routeStore.menus);
-  routeStore.setChildrenMenus(defaultTopLevelMenu.children);
 
   const activeKey = computed(() => (route.meta?.activeMenu ? route.meta.activeMenu : route.name));
   const activeRootKey = computed(() => {
@@ -40,6 +38,32 @@ export function useMenu() {
     const menuItem = item;
     routerPush(menuItem.routePath as string);
   }
+
+  scope.run(() => {
+    watch(
+      () => routeStore.childrenMenus,
+      val => {
+        if (theme.layout.isMenuSeparation && theme.layout.isMenuInverted) {
+          if (val && val.length) {
+            theme.setSiderMenuInvertedWidth(theme.sider.width);
+          } else {
+            theme.setSiderMenuInvertedWidth(0);
+          }
+        } else {
+          theme.setSiderMenuInvertedWidth(theme.sider.width);
+        }
+      }
+    );
+    watch([() => theme.layout.isMenuSeparation, () => theme.layout.isMenuInverted], ([val1, val2]) => {
+      if (val1 && val2) {
+        // 默认设置上子菜单
+        const defaultTopLevelMenu = getTopLevelMenu(route.name, routeStore.menus);
+        routeStore.setChildrenMenus(defaultTopLevelMenu.children);
+      } else {
+        routeStore.setChildrenMenus([]);
+      }
+    });
+  });
   return {
     activeKey,
     activeRootKey,
