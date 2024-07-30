@@ -97,9 +97,12 @@ function expandIcon() {
 const showTitle = computed(() => !app.siderCollapse);
 
 /** 折叠后的宽度 */
-const collapsedWidth = computed(() =>
-  isMobile.value || theme.sider.showTrigger === 'bar' ? 0 : theme.sider.collapsedWidth
-);
+const collapsedWidth = computed(() => {
+  const width = isMobile.value || theme.sider.showTrigger === 'bar' ? 0 : theme.sider.collapsedWidth;
+  if (!(theme.layout.isMenuSeparation && theme.layout.isMenuInverted)) return width;
+  if (routeStore.childrenMenus && routeStore.childrenMenus.length) return width;
+  return 0;
+});
 /** sider的宽度 */
 const siderWidth = computed(() => {
   if (!(theme.layout.isMenuSeparation && theme.layout.isMenuInverted)) return theme.sider.width;
