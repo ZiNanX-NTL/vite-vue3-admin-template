@@ -24,8 +24,9 @@ export function useMenu() {
     if (menuItem) {
       if (!(menuItem.children && menuItem.children.length)) {
         routerPush(menuItem.routePath as string);
+      } else {
+        routeStore.setChildrenMenus(menuItem?.children);
       }
-      routeStore.setChildrenMenus(menuItem.children);
     } else {
       routerPush(item.routePath as string);
     }
@@ -41,14 +42,25 @@ export function useMenu() {
 
   scope.run(() => {
     watch(
+      () => route.name,
+      () => {
+        if (theme.layout.isMenuSeparation) {
+          // 默认设置上子菜单
+          const defaultTopLevelMenu = getTopLevelMenu(route.name, routeStore.menus);
+          routeStore.setChildrenMenus(defaultTopLevelMenu?.children);
+        }
+      }
+    );
+
+    watch(
       () => theme.layout.isMenuSeparation,
       val => {
         if (val) {
           // 默认设置上子菜单
           const defaultTopLevelMenu = getTopLevelMenu(route.name, routeStore.menus);
-          routeStore.setChildrenMenus(defaultTopLevelMenu.children);
+          routeStore.setChildrenMenus(defaultTopLevelMenu?.children);
         } else {
-          routeStore.setChildrenMenus([]);
+          routeStore.setChildrenMenus();
         }
       }
     );

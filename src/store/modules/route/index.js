@@ -127,8 +127,8 @@ export const useRouteStore = defineStore('route-store', {
      * 设置childrenMenus
      * @param routes - 权限路由
      */
-    setChildrenMenus(routes) {
-      this.childrenMenus = routes;
+    setChildrenMenus(routes = []) {
+      this.childrenMenus = routes || [];
     },
 
     /**

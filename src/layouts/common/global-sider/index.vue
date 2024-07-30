@@ -100,13 +100,13 @@ const showTitle = computed(() => !app.siderCollapse);
 const collapsedWidth = computed(() => {
   const width = isMobile.value || theme.sider.showTrigger === 'bar' ? 0 : theme.sider.collapsedWidth;
   if (!(theme.layout.isMenuSeparation && theme.layout.isMenuInverted)) return width;
-  if (routeStore.childrenMenus && routeStore.childrenMenus.length) return width;
+  if (routeStore.childrenMenus.length) return width;
   return 0;
 });
 /** sider的宽度 */
 const siderWidth = computed(() => {
   if (!(theme.layout.isMenuSeparation && theme.layout.isMenuInverted)) return theme.sider.width;
-  if (routeStore.childrenMenus && routeStore.childrenMenus.length) return theme.sider.width;
+  if (routeStore.childrenMenus.length) return theme.sider.width;
   return 0;
 });
 /** logo的宽度 */

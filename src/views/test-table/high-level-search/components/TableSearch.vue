@@ -96,6 +96,7 @@
 </template>
 
 <script setup lang="ts">
+import type { MaybeElement } from '@vueuse/core';
 import { useElementSize } from '@vueuse/core';
 import { userStatusEnum, genderEnum } from '@/constants';
 import { useFormRules, useNaiveForm } from '@/hooks';
@@ -117,7 +118,7 @@ const model = defineModel<Record<string, any>>('model', { required: true });
 const collapsed = ref(false);
 
 // 获取n-tree滚动区高度
-const { height: treeHeight } = useElementSize(formRef);
+const { height: treeHeight } = useElementSize(formRef as Ref<MaybeElement>);
 
 const rules = computed(() => {
   const { patternRules } = useFormRules(); // inside computed to make locale reactive
