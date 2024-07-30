@@ -24,9 +24,8 @@ export function useMenu() {
     if (menuItem) {
       if (!(menuItem.children && menuItem.children.length)) {
         routerPush(menuItem.routePath as string);
-      } else {
-        routeStore.setChildrenMenus(menuItem?.children);
       }
+      routeStore.setChildrenMenus(menuItem?.children);
     } else {
       routerPush(item.routePath as string);
     }
