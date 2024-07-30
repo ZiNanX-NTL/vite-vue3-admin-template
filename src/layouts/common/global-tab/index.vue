@@ -1,5 +1,5 @@
 <template>
-  <dark-mode-container class="h-52px w-full pl-6px shadow-[0_1px_2px_rgba(0,21,41,0.08)]">
+  <dark-mode-container class="h-52px w-full shadow-[0_1px_2px_rgba(0,21,41,0.08)]" :class="flippable && 'pl-16px'">
     <div class="h-full flex flex-y-center transition-base">
       <div
         ref="navWrap"
@@ -23,7 +23,7 @@
             'shadow-[inset_5px_0_5px_-5px_rgba(204,204,204,0.8),inset_-5px_0_5px_-5px_rgba(204,204,204,0.8)]'
           "
         >
-          <div ref="navScroll" class="relative h-full flex-1 p-10px">
+          <div ref="navScroll" class="relative h-full flex-1 px-16px py-10px">
             <TabDetail @scroll="handleScroll" />
           </div>
         </n-scrollbar>
