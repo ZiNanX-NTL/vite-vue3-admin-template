@@ -90,11 +90,9 @@ export const useThemeStore = defineStore('theme-store', {
     },
     /** 侧边栏宽度 */
     setSiderWidth(width) {
-      this.sider.width = width;
-    },
-    /** 分离式反转侧边栏宽度 */
-    setSiderMenuInvertedWidth(width) {
-      this.sider.menuInvertedWidth = width;
+      if (width) {
+        this.sider.width = width;
+      }
     },
     /** 设置是否自定义logo宽度 */
     setIsCustomizeWidth(isCustomize) {

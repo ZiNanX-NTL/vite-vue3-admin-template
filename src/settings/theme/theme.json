@@ -73,7 +73,6 @@
   "sider": {
     "inverted": false,
     "width": 220,
-    "menuInvertedWidth": 220,
     "collapsedWidth": 64,
     "showTrigger": "headerIcon",
     "showTriggerList": [

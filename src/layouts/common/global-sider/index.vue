@@ -102,10 +102,9 @@ const collapsedWidth = computed(() =>
 );
 /** sider的宽度 */
 const siderWidth = computed(() => {
-  if (theme.layout.isMenuSeparation && theme.layout.isMenuInverted) {
-    return theme.sider.menuInvertedWidth;
-  }
-  return theme.sider.width;
+  if (!(theme.layout.isMenuSeparation && theme.layout.isMenuInverted)) return theme.sider.width;
+  if (routeStore.childrenMenus && routeStore.childrenMenus.length) return theme.sider.width;
+  return 0;
 });
 /** logo的宽度 */
 const logoWidth = computed(() => {

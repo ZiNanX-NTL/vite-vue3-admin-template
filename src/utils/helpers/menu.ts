@@ -41,28 +41,17 @@ export function useMenu() {
 
   scope.run(() => {
     watch(
-      () => routeStore.childrenMenus,
+      () => theme.layout.isMenuSeparation,
       val => {
-        if (theme.layout.isMenuSeparation && theme.layout.isMenuInverted) {
-          if (val && val.length) {
-            theme.setSiderMenuInvertedWidth(theme.sider.width);
-          } else {
-            theme.setSiderMenuInvertedWidth(0);
-          }
+        if (val) {
+          // 默认设置上子菜单
+          const defaultTopLevelMenu = getTopLevelMenu(route.name, routeStore.menus);
+          routeStore.setChildrenMenus(defaultTopLevelMenu.children);
         } else {
-          theme.setSiderMenuInvertedWidth(theme.sider.width);
+          routeStore.setChildrenMenus([]);
         }
       }
     );
-    watch([() => theme.layout.isMenuSeparation, () => theme.layout.isMenuInverted], ([val1, val2]) => {
-      if (val1 && val2) {
-        // 默认设置上子菜单
-        const defaultTopLevelMenu = getTopLevelMenu(route.name, routeStore.menus);
-        routeStore.setChildrenMenus(defaultTopLevelMenu.children);
-      } else {
-        routeStore.setChildrenMenus([]);
-      }
-    });
   });
   return {
     activeKey,
