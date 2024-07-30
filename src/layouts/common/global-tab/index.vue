@@ -1,5 +1,5 @@
 <template>
-  <dark-mode-container class="h-52px w-full pl-16px shadow-[0_1px_2px_rgba(0,21,41,0.08)]">
+  <dark-mode-container class="h-52px w-full pl-6px shadow-[0_1px_2px_rgba(0,21,41,0.08)]">
     <div class="h-full flex flex-y-center transition-base">
       <div
         ref="navWrap"
