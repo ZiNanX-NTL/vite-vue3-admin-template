@@ -19,7 +19,7 @@
       <span>{{ item.meta.title }}</span>
       <icon-ic-round-close
         v-if="!(item.name === tab.homeTab.name || item.meta.affix)"
-        class="ml-12px h-16px w-16px rounded-50% text-14px hover:bg-#808695 hover:text-#fff dark:hover:bg-primary dark:hover:text-dark"
+        class="ml-12px h-16px w-16px rounded-50% text-14px transition-base hover:bg-#808695 hover:text-#fff dark:hover:bg-primary dark:hover:text-dark"
         @click.stop="tab.removeTab(item.fullPath)"
       />
     </div>

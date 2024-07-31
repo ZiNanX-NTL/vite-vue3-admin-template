@@ -20,7 +20,7 @@
           :theme-overrides="scrollbarThemeOverrides"
           :class="
             isOverflow &&
-            'shadow-[inset_5px_0_5px_-5px_rgba(204,204,204,0.8),inset_-5px_0_5px_-5px_rgba(204,204,204,0.8)]'
+            'shadow-[inset_5px_0_5px_-5px_rgba(204,204,204,0.8),inset_-5px_0_5px_-5px_rgba(204,204,204,0.8)] dark:shadow-[inset_5px_0_5px_-5px_rgba(204,204,204,0.3),inset_-5px_0_5px_-5px_rgba(204,204,204,0.3)]'
           "
         >
           <div ref="navScroll" class="relative h-full flex-1 px-16px py-10px">
