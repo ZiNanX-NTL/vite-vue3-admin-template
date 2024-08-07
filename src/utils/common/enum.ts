@@ -110,7 +110,12 @@ export class EnumFactory<T extends Record<any, any> = Record<string, any>> {
     return key;
   }
 
-  get(key: keyof T): any | undefined {
+  /**
+   * 根据 key 获取对应的枚举项
+   * @param {keyof T} key 枚举的 key
+   * @returns {Object|null} 包含 key 和 text 的枚举项，或者 null
+   */
+  get(key: keyof T): T[keyof T] | null {
     const parseKey = this.keyParseFunc ? this.keyParseFunc(key) : String(key);
     return this.valuesMap.get(parseKey);
   }
@@ -143,7 +148,8 @@ export class EnumFactory<T extends Record<any, any> = Record<string, any>> {
    * @returns {Object|null} 包含 key 和 text 的枚举项，或者 null
    */
   getEnumByKey(key: keyof T): T[keyof T] | null {
-    return this.values!.find(v => v[this.valueKey] === key) || null;
+    const parseKey = this.keyParseFunc ? this.keyParseFunc(key) : String(key);
+    return this.values!.find(v => v[this.valueKey] === parseKey) || null;
   }
 
   /**
