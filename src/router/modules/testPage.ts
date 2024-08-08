@@ -16,6 +16,18 @@ const pageRoute: AuthRoute.Route = {
       }
     },
     {
+      name: 'test-page_leaflet',
+      path: '/test-page/leaflet',
+      component: 'self',
+      meta: {
+        title: 'leaflet',
+        requiresAuth: true,
+        keepAlive: false,
+        permissions: ['super', 'admin', 'user'],
+        icon: 'ic:round-tab'
+      }
+    },
+    {
       name: 'test-page_seat',
       path: '/test-page/seat',
       component: 'self',
