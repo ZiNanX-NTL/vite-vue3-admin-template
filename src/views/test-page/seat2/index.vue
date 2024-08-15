@@ -9,6 +9,7 @@
 </template>
 
 <script setup lang="ts">
+import type { Text } from 'leafer-ui';
 import { App, Group, Image, Rect, Box, PointerEvent, ZoomEvent, MoveEvent } from 'leafer-ui';
 import '@leafer-in/editor';
 import '@leafer-in/view';
@@ -94,7 +95,41 @@ function init() {
 
   // 绘制编号标尺
   function drawRuler() {
+    const rulerBg = drawRulerBg();
+    const rulerBgGroup = new Group({
+      id: 'rulerBgGroup',
+      children: rulerBg
+    });
+    app.ground.add(rulerBgGroup);
+
+    const [xRulerList, yRulerList] = drawRulerScale();
+    const xRulerGroup = new Group({
+      id: 'xRulerGroup',
+      children: xRulerList
+    });
+    const yRulerGroup = new Group({
+      id: 'yRulerGroup',
+      children: yRulerList
+    });
+    app.ground.add(xRulerGroup);
+    app.ground.add(yRulerGroup);
+  }
+  /** 绘制标尺背景 */
+  function drawRulerBg() {
     const rulerBg: Rect[] = [];
+    seatLayout.forEach((_row, rowIndex) => {
+      if (rowIndex === 0) {
+        const colRulerBg = createRulerBg('xBg', app.ground.width, rulerItemHeight);
+        rulerBg.push(colRulerBg);
+      }
+    });
+    const rowRulerBg = createRulerBg('yBg', rulerItemWidth, app.ground.height);
+    rulerBg.push(rowRulerBg);
+    return rulerBg;
+  }
+
+  /** 绘制标尺刻度 */
+  function drawRulerScale(fillCallback?: (type: 'row' | 'col', index: number) => string) {
     const xRulerList: Rect[] = [];
     const yRulerList: Rect[] = [];
     let startY = (seatSize - rulerItemHeight) / 2;
@@ -102,48 +137,56 @@ function init() {
     seatLayout.forEach((row, rowIndex) => {
       if (rowIndex === 0) {
         row.forEach((_col, colIndex) => {
-          const colRuler = createRuler(startX, 0, String(colIndex + 1));
+          const colRuler = createScale(
+            { id: `col${colIndex}`, x: startX, y: 0 },
+            { text: String(colIndex + 1) },
+            () => {
+              return fillCallback && fillCallback('col', colIndex);
+            }
+          );
           xRulerList.push(colRuler);
           startX += seatSize + seatGap;
         });
-        const colRulerBg = createRulerBg('xBg', app.ground.width, rulerItemHeight);
-        rulerBg.push(colRulerBg);
       }
-      const rowRuler = createRuler(0, startY, String(rowIndex + 1));
+      const rowRuler = createScale({ id: `row${rowIndex}`, x: 0, y: startY }, { text: String(rowIndex + 1) }, () => {
+        return fillCallback && fillCallback('row', rowIndex);
+      });
       yRulerList.push(rowRuler);
       startY += seatSize + seatGap;
     });
-    const rowRulerBg = createRulerBg('yBg', rulerItemWidth, app.ground.height);
-    rulerBg.push(rowRulerBg);
-
-    return [rulerBg, xRulerList, yRulerList];
+    return [xRulerList, yRulerList];
   }
 
   /** 创建标尺刻度项 */
-  function createRuler(x?: number, y?: number, text?: string) {
+  function createScale(
+    boxOptions?: ConstructorParameters<typeof Box>[0],
+    textOptions?: ConstructorParameters<typeof Text>[0],
+    fillCallback: () => string | undefined = () => undefined
+  ) {
     const ruler = new Box({
-      x,
-      y,
-      fill: 'rgb(50,205,121)',
+      x: 0,
+      y: 0,
+      fill: fillCallback() || 'rgb(50,205,121)',
       cornerRadius: 5,
       width: rulerItemWidth,
       height: rulerItemHeight,
+      ...boxOptions,
       children: [
         {
           x: rulerItemWidth / 2,
           y: rulerItemHeight / 2,
           tag: 'Text',
-          text,
           fontSize: 10,
           fill: 'black',
           textAlign: 'center',
-          verticalAlign: 'middle'
+          verticalAlign: 'middle',
+          ...textOptions
         }
       ]
     });
     return ruler;
   }
-  /** 绘制标尺背景 */
+  /** 创建标尺背景 */
   function createRulerBg(id?: string, width?: number, height?: number) {
     const rulerBg = new Rect({
       id,
@@ -197,19 +240,7 @@ function init() {
   }
 
   // 绘制标尺
-  const [rulerBg, xRulerList, yRulerList] = drawRuler();
-  const rulerBgGroup = new Group({
-    children: rulerBg
-  });
-  const xRulerGroup = new Group({
-    children: xRulerList
-  });
-  const yRulerGroup = new Group({
-    children: yRulerList
-  });
-  app.ground.add(rulerBgGroup);
-  app.ground.add(xRulerGroup);
-  app.ground.add(yRulerGroup);
+  drawRuler();
 
   // 绘制座位
   const seatList = drawSeats(renderMap);
@@ -226,6 +257,8 @@ function init() {
       seat.status = '1';
       (e.target as Image).url = selectedSeat;
       seatData.push(seat);
+      // 选中重新渲染标尺
+      updateRulerScale(e.target.data?.seat);
     } else {
       seat.status = 'free';
       (e.target as Image).url = freeSeat;
@@ -233,36 +266,66 @@ function init() {
         seatData.findIndex(item => seat.row === item.row && seat.col === item.col),
         1
       );
+      updateRulerScale();
     }
     console.log(seatData);
   });
 
   // 自定义ground移动缩放操作
+  const xRulerGroup = app.ground.findId('xRulerGroup') as Group;
+  const yRulerGroup = app.ground.findId('yRulerGroup') as Group;
   app.ground.on(ZoomEvent.BEFORE_ZOOM, (e: ZoomEvent) => {
-    const xBg = rulerBgGroup.findId('xBg');
-    const yBg = rulerBgGroup.findId('yBg');
+    const xBg = app.ground.findId('xBg');
+    const yBg = app.ground.findId('yBg');
     if (xBg && yBg) {
       xBg.height! *= e.scale;
       yBg.width! *= e.scale;
     }
-    const centerX = { x: e.x, y: 0 };
-    xRulerGroup.scaleOfWorld(centerX, e.scale);
-    const centerY = { x: 0, y: e.y };
-    yRulerGroup.scaleOfWorld(centerY, e.scale);
+    if (xRulerGroup) {
+      const centerX = { x: e.x, y: 0 };
+      xRulerGroup.scaleOfWorld(centerX, e.scale);
+    }
+    if (yRulerGroup) {
+      const centerY = { x: 0, y: e.y };
+      yRulerGroup.scaleOfWorld(centerY, e.scale);
+    }
   });
   app.ground.on(MoveEvent.BEFORE_MOVE, (e: MoveEvent) => {
-    xRulerGroup.moveWorld(e.moveX, 0);
-    yRulerGroup.moveWorld(0, e.moveY);
+    if (xRulerGroup) xRulerGroup.moveWorld(e.moveX, 0);
+    if (yRulerGroup) yRulerGroup.moveWorld(0, e.moveY);
   });
+
+  /** 更新选中刻度尺刻度 */
+  function updateRulerScale(seat?: NonNullable<(typeof renderMap)[0][0]>) {
+    const [xRulerList, yRulerList] = drawRulerScale((type, index) => {
+      if (!seat) return '';
+      if (type === 'row' && index === seat.row - 1) return 'rgb(255, 0, 0)';
+      if (type === 'col' && index === seat.col - 1) return 'rgb(255, 0, 0)';
+      return '';
+    });
+    if (xRulerGroup) {
+      xRulerGroup.clear();
+      xRulerGroup.addMany(...xRulerList);
+    }
+    if (yRulerGroup) {
+      yRulerGroup.clear();
+      yRulerGroup.addMany(...yRulerList);
+    }
+  }
 
   // 更新ruler位置
   function updateRulerPosition() {
     const groupBoundsData = group.getBounds();
-    rulerBgGroup.scale = app.tree.scale!;
-    xRulerGroup.x = groupBoundsData.x;
-    yRulerGroup.y = groupBoundsData.y;
-    xRulerGroup.scale = app.tree.scale!;
-    yRulerGroup.scale = app.tree.scale!;
+    const rulerBgGroup = app.ground.findId('rulerBgGroup');
+    if (rulerBgGroup) rulerBgGroup.scale = app.tree.scale!;
+    if (xRulerGroup) {
+      xRulerGroup.x = groupBoundsData.x;
+      xRulerGroup.scale = app.tree.scale!;
+    }
+    if (yRulerGroup) {
+      yRulerGroup.y = groupBoundsData.y;
+      yRulerGroup.scale = app.tree.scale!;
+    }
   }
 
   setTimeout(() => {
@@ -272,6 +335,7 @@ function init() {
   setTimeout(() => {
     app.tree.zoom('in');
     updateRulerPosition();
+    updateRulerScale(seatData[0]);
   }, 3000);
 }
 
