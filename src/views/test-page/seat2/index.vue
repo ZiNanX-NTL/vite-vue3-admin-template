@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import type { Text } from 'leafer-ui';
-import { App, Group, Image, Rect, Box, PointerEvent, ZoomEvent, MoveEvent } from 'leafer-ui';
+import { App, Group, Image, Box, PointerEvent, ZoomEvent, MoveEvent } from 'leafer-ui';
 import '@leafer-in/editor';
 import '@leafer-in/view';
 import '@leafer-in/state';
@@ -116,22 +116,30 @@ function init() {
   }
   /** 绘制标尺背景 */
   function drawRulerBg() {
-    const rulerBg: Rect[] = [];
+    const rulerBg: Box[] = [];
     seatLayout.forEach((_row, rowIndex) => {
       if (rowIndex === 0) {
-        const colRulerBg = createRulerBg('xBg', app.ground.width, rulerItemHeight);
+        const colRulerBg = createRulerBg({
+          id: 'xBg',
+          width: app.ground.width,
+          height: rulerItemHeight
+        });
         rulerBg.push(colRulerBg);
       }
     });
-    const rowRulerBg = createRulerBg('yBg', rulerItemWidth, app.ground.height);
+    const rowRulerBg = createRulerBg({
+      id: 'yBg',
+      width: rulerItemWidth,
+      height: app.ground.height
+    });
     rulerBg.push(rowRulerBg);
     return rulerBg;
   }
 
   /** 绘制标尺刻度 */
   function drawRulerScale(fillCallback?: (type: 'row' | 'col', index: number) => string) {
-    const xRulerList: Rect[] = [];
-    const yRulerList: Rect[] = [];
+    const xRulerList: Box[] = [];
+    const yRulerList: Box[] = [];
     let startY = (seatSize - rulerItemHeight) / 2;
     let startX = (seatSize - rulerItemWidth) / 2;
     seatLayout.forEach((row, rowIndex) => {
@@ -187,14 +195,13 @@ function init() {
     return ruler;
   }
   /** 创建标尺背景 */
-  function createRulerBg(id?: string, width?: number, height?: number) {
-    const rulerBg = new Rect({
-      id,
+  function createRulerBg(boxOptions?: ConstructorParameters<typeof Box>[0]) {
+    const rulerBg = new Box({
       x: 0,
       y: 0,
-      width,
-      height,
-      fill: '#fff'
+      fill: '#fff',
+      overflow: 'hide',
+      ...boxOptions
     });
     return rulerBg;
   }
