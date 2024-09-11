@@ -336,14 +336,15 @@ function init() {
   }
 
   setTimeout(() => {
-    app.tree.zoom(group, 0, true);
-    updateRulerPosition();
-  });
-  setTimeout(() => {
-    app.tree.zoom('in');
+    app.tree.zoom(group, [250, 100]);
     updateRulerPosition();
     updateRulerScale(seatData[0]);
-  }, 3000);
+  });
+  // setTimeout(() => {
+  //   app.tree.zoom('in');
+  //   updateRulerPosition();
+  //   updateRulerScale(seatData[0]);
+  // }, 3000);
 }
 
 watch(
