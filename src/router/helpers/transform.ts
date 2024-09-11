@@ -1,6 +1,6 @@
+import type { RouteRecordRaw, RouteComponent } from 'vue-router';
 import { isString } from '@/utils';
 import { getLayout, getViewComponent, setViewComponentName } from './component';
-import type { RouteRecordRaw, RouteComponent } from 'vue-router';
 
 const { layoutTypes, getLayoutComponent } = getLayout();
 
@@ -246,11 +246,16 @@ function getConstantRouteName(route: AuthRoute.Route) {
  * @param routeName - 当前页面路由的key
  * @param menus - 菜单数据
  */
-export function getTopLevelMenu(routeName: string, menus: App.GlobalMenuOption[]): App.GlobalMenuOption | undefined {
+export function getTopLevelMenu(
+  routeName: string,
+  menus: App.GlobalMenuOption[],
+  depth = 0
+): App.GlobalMenuOption | undefined {
+  if (depth > 10) return undefined; // 设置最大递归深度为10
   return menus.find(item => {
     if (item.routeName === routeName) return true;
     if (Array.isArray(item.children)) {
-      return getTopLevelMenu(routeName, item.children);
+      return getTopLevelMenu(routeName, item.children, depth + 1);
     }
     return false;
   });

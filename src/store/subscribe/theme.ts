@@ -1,4 +1,5 @@
 import { effectScope, onScopeDispose, watch } from 'vue';
+import type { GlobalThemeOverrides } from 'naive-ui';
 import { useOsTheme } from 'naive-ui';
 import { kebabCase } from 'lodash-es';
 import { sessionStg, getColorPalettes, getRgbOfColor } from '@/utils';
@@ -77,10 +78,13 @@ function handleCssDarkMode() {
   };
 }
 
+type ThemeVars = Exclude<GlobalThemeOverrides['common'], undefined>;
+type ThemeVarsKeys = keyof ThemeVars;
+
 /** 添加css vars至html */
-function addThemeCssVarsToHtml(themeVars) {
-  const keys = Object.keys(themeVars);
-  const style = [];
+function addThemeCssVarsToHtml(themeVars: ThemeVars) {
+  const keys = Object.keys(themeVars) as ThemeVarsKeys[];
+  const style: string[] = [];
   keys.forEach(key => {
     const styleValue = themeVars[key];
 

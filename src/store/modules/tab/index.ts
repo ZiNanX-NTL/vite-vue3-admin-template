@@ -1,3 +1,4 @@
+import type { RouteLocationNormalizedLoaded } from 'vue-router';
 import { defineStore } from 'pinia';
 import { router } from '@/router';
 import { localStg, useRouterPush } from '@/utils';
@@ -11,8 +12,17 @@ import {
   isInTabRoutes
 } from './helpers';
 
+interface TabState {
+  /** 多页签数据 */
+  tabs: App.GlobalTabRoute[];
+  /** 多页签首页 */
+  homeTab: App.GlobalTabRoute;
+  /** 当前激活状态的页签(路由fullPath) */
+  activeTab: string;
+}
+
 export const useTabStore = defineStore('tab-store', {
-  state: () => ({
+  state: (): TabState => ({
     tabs: [],
     homeTab: {
       name: 'root',
@@ -57,7 +67,7 @@ export const useTabStore = defineStore('tab-store', {
      * @param fullPath - 路由fullPath
      * @param position - tab当前页的滚动位置
      */
-    recordTabScrollPosition(fullPath, position) {
+    recordTabScrollPosition(fullPath: string, position: { left: number; top: number }) {
       const index = getIndexInTabRoutes(this.tabs, fullPath);
       if (index > -1) {
         this.tabs[index].scrollPosition = position;
@@ -67,7 +77,7 @@ export const useTabStore = defineStore('tab-store', {
      * 获取tab滚动位置
      * @param fullPath - 路由fullPath
      */
-    getTabScrollPosition(fullPath) {
+    getTabScrollPosition(fullPath: string) {
       const position = {
         left: 0,
         top: 0
@@ -82,22 +92,22 @@ export const useTabStore = defineStore('tab-store', {
      * 设置当前路由对应的页签为激活状态
      * @param fullPath - 路由fullPath
      */
-    setActiveTab(fullPath) {
+    setActiveTab(fullPath: string) {
       this.activeTab = fullPath;
     },
     /** 初始化Tab状态 */
-    iniTabStore(currentRoute) {
+    iniTabStore(currentRoute: RouteLocationNormalizedLoaded) {
       const theme = useThemeStore();
 
       const tabs = theme.tab.isCache ? getTabRoutes() : [];
 
-      const hasHome = getIndexInTabRoutesByRouteName(tabs, this.homeTab.name) > -1;
+      const hasHome = getIndexInTabRoutesByRouteName(tabs, this.homeTab.name as string) > -1;
       if (!hasHome && this.homeTab.name !== 'root') {
         tabs.unshift(this.homeTab);
       }
 
       const isHome = currentRoute.fullPath === this.homeTab.fullPath;
-      const index = getIndexInTabRoutesByRouteName(tabs, currentRoute.name);
+      const index = getIndexInTabRoutesByRouteName(tabs, currentRoute.name as string);
       if (!isHome) {
         const currentTab = getTabRouteByVueRoute(currentRoute);
         if (!currentRoute.meta.multiTab) {
@@ -121,14 +131,14 @@ export const useTabStore = defineStore('tab-store', {
      * 添加多页签
      * @param route - 路由
      */
-    addTab(route) {
+    addTab(route: RouteLocationNormalizedLoaded) {
       const tab = getTabRouteByVueRoute(route);
 
       if (isInTabRoutes(this.tabs, tab.fullPath)) {
         return;
       }
 
-      const index = getIndexInTabRoutesByRouteName(this.tabs, route.name);
+      const index = getIndexInTabRoutesByRouteName(this.tabs, route.name as string);
 
       if (index === -1) {
         this.tabs.push(tab);
@@ -147,7 +157,7 @@ export const useTabStore = defineStore('tab-store', {
      * 点击单个tab
      * @param fullPath - 路由fullPath
      */
-    async handleClickTab(fullPath) {
+    async handleClickTab(fullPath: string) {
       const { routerPush } = useRouterPush();
 
       const isActive = this.activeTab === fullPath;
@@ -160,11 +170,11 @@ export const useTabStore = defineStore('tab-store', {
      * 删除多页签
      * @param fullPath - 路由fullPath
      */
-    async removeTab(fullPath) {
+    async removeTab(fullPath: string) {
       const { removeCacheEntry } = useRouteStore();
       const { routerPush } = useRouterPush();
 
-      const tabName = this.tabs.find(tab => tab.fullPath === fullPath)?.name;
+      const tabName = this.tabs.find(tab => tab.fullPath === fullPath)?.name as string | undefined;
       if (tabName) {
         await removeCacheEntry(tabName);
       }
@@ -187,7 +197,7 @@ export const useTabStore = defineStore('tab-store', {
      * 清空多页签(多页签首页保留)
      * @param excludes - 保留的多页签path
      */
-    async clearTab(excludes = []) {
+    async clearTab(excludes: string[] = []) {
       const { routerPush } = useRouterPush();
 
       const homePath = this.homeTab.fullPath;
@@ -208,7 +218,7 @@ export const useTabStore = defineStore('tab-store', {
      * 清除左边多页签
      * @param fullPath - 路由fullPath
      */
-    clearLeftTab(fullPath) {
+    clearLeftTab(fullPath: string) {
       const index = getIndexInTabRoutes(this.tabs, fullPath);
       if (index > -1) {
         const excludes = this.tabs.slice(index).map(item => item.fullPath);
@@ -219,7 +229,7 @@ export const useTabStore = defineStore('tab-store', {
      * 清除右边多页签
      * @param fullPath - 路由fullPath
      */
-    clearRightTab(fullPath) {
+    clearRightTab(fullPath: string) {
       const index = getIndexInTabRoutes(this.tabs, fullPath);
       if (index > -1) {
         const excludes = this.tabs.slice(0, index + 1).map(item => item.fullPath);
@@ -234,7 +244,7 @@ export const useTabStore = defineStore('tab-store', {
      * 设置当前路由对应的页签title
      * @param title - tab名称
      */
-    setActiveTabTitle(title) {
+    setActiveTabTitle(title: string) {
       const item = this.tabs.find(tab => tab.fullPath === this.activeTab);
       if (item) {
         item.meta.title = title;

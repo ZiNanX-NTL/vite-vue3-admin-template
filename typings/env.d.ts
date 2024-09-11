@@ -21,8 +21,8 @@ interface ImportMetaEnv {
    * - MAC - MAC权限模型
    */
   readonly VITE_PERMISSION_MODE: 'RBAC' | 'MAC';
-  /** 权限字段-角色 */
-  readonly VITE_PERMISSION_MODE: string;
+  /** 角色权限字段 */
+  readonly VITE_ROLE_KEY: string;
   /** 权限字段-权限 */
   readonly VITE_PERMISSION_KEY: string;
   /** 路由首页的路径 */

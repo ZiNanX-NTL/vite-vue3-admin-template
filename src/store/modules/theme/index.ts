@@ -29,29 +29,29 @@ export const useThemeStore = defineStore('theme-store', {
       }
     },
     /** 设置暗黑模式 */
-    setDarkMode(darkMode) {
+    setDarkMode(darkMode: boolean) {
       this.darkMode = darkMode;
     },
     /** 设置自动跟随系统主题 */
-    setFollowSystemTheme(visible) {
+    setFollowSystemTheme(visible: boolean) {
       this.followSystemTheme = visible;
     },
     /** 自动跟随系统主题 */
-    setAutoFollowSystemMode(darkMode) {
+    setAutoFollowSystemMode(darkMode: boolean) {
       if (this.followSystemTheme) {
         this.darkMode = darkMode;
       }
     },
     /** 设置侧边栏反转色 */
-    setSiderInverted(isInverted) {
+    setSiderInverted(isInverted: boolean) {
       this.sider.inverted = isInverted;
     },
     /** 设置头部反转色 */
-    setHeaderInverted(isInverted) {
+    setHeaderInverted(isInverted: boolean) {
       this.header.inverted = isInverted;
     },
     /** 设置布局模式 */
-    setLayoutMode(mode) {
+    setLayoutMode(mode: UnionKey.ThemeLayoutMode) {
       // 重置菜单左上分离
       if (mode === 'horizontal') {
         this.layout.isMenuSeparation = false;
@@ -59,75 +59,75 @@ export const useThemeStore = defineStore('theme-store', {
       this.layout.mode = mode;
     },
     /** 设置菜单左上分离 */
-    setMenuSeparation(isSeparation) {
+    setMenuSeparation(isSeparation: boolean) {
       this.layout.isMenuSeparation = isSeparation;
     },
     /** 设置菜单左上反转 */
-    setMenuInverted(isMenuInverted) {
+    setMenuInverted(isMenuInverted: boolean) {
       this.layout.isMenuInverted = isMenuInverted;
     },
     /** 设置系统主题颜色 */
-    setThemeColor(themeColor) {
+    setThemeColor(themeColor: string) {
       this.themeColor = themeColor;
     },
     /** 设置滚动模式 */
-    setScrollMode(mode) {
+    setScrollMode(mode: UnionKey.ThemeScrollMode) {
       this.scrollMode = mode;
     },
     /** 设置水平模式的菜单的位置 */
-    setHorizontalMenuPosition(position) {
+    setHorizontalMenuPosition(position: UnionKey.ThemeHorizontalMenuPosition) {
       this.headerMenu.horizontalPosition = position;
     },
     /** 设置水平模式的菜单溢出的处理方式 */
-    setHorizontalMenuOverflowMode(mode) {
+    setHorizontalMenuOverflowMode(mode: UnionKey.ThemeOverflowMode) {
       this.headerMenu.overflowMode = mode;
     },
     /** 设置头部高度 */
-    setHeaderHeight(height) {
+    setHeaderHeight(height: number) {
       if (height) {
         this.header.height = height;
       }
     },
     /** 侧边栏宽度 */
-    setSiderWidth(width) {
+    setSiderWidth(width: number) {
       if (width) {
         this.sider.width = width;
       }
     },
     /** 设置是否自定义logo宽度 */
-    setIsCustomizeWidth(isCustomize) {
+    setIsCustomizeWidth(isCustomize: boolean) {
       this.logo.isCustomizeWidth = isCustomize;
     },
     /** 设置自定义logo宽度 */
-    setLogoWidth(width) {
+    setLogoWidth(width: number) {
       this.logo.width = width;
     },
     /** 设置头部面包屑可见 */
-    setHeaderCrumbVisible(visible) {
+    setHeaderCrumbVisible(visible: boolean) {
       this.header.crumb.visible = visible;
     },
     /** 设置头部面包屑图标可见 */
-    setHeaderCrumbIconVisible(visible) {
+    setHeaderCrumbIconVisible(visible: boolean) {
       this.header.crumb.showIcon = visible;
     },
     /** 设置多页签可见 */
-    setTabVisible(visible) {
+    setTabVisible(visible: boolean) {
       this.tab.visible = visible;
     },
     /** 设置多页签翻页风格 */
-    setTabMode(mode) {
+    setTabMode(mode: UnionKey.TabScrollMode) {
       this.tab.scrollMode = mode;
     },
     /** 设置切换页面时是否过渡动画 */
-    setPageIsAnimate(animate) {
+    setPageIsAnimate(animate: boolean) {
       this.page.animate = animate;
     },
     /** 设置页面过渡动画类型 */
-    setPageAnimateMode(mode) {
+    setPageAnimateMode(mode: UnionKey.ThemeAnimateMode) {
       this.page.animateMode = mode;
     },
     /** 设置菜单折叠方式 */
-    setSiderShowTrigger(mode) {
+    setSiderShowTrigger(mode: UnionKey.SiderShowTrigger) {
       this.sider.showTrigger = mode;
     }
   }

@@ -21,7 +21,7 @@ export function initThemeSettings() {
 }
 
 /** 获取初始naive主题配置与响应主题配置结合的配置 */
-export function getOverrides(state) {
+export function getOverrides(state: any) {
   const initialOverrides = getNaiveThemeOverrides();
   const settingOverrides = getSettingThemeOverrides(state);
   const overrides = merge(initialOverrides, settingOverrides);
@@ -29,7 +29,7 @@ export function getOverrides(state) {
 }
 
 /** 获取设置的主题配置 */
-function getSettingThemeOverrides(state) {
+function getSettingThemeOverrides(state: any) {
   const colors = { primary: state.themeColor, ...state.otherColor };
   const { primary, success, warning, error } = colors;
   const info = state.isCustomizeInfoColor ? colors.info : getColorPalette(primary, 7);
@@ -55,9 +55,18 @@ function getSettingThemeOverrides(state) {
   return settingOverrides;
 }
 
+type ColorType = 'primary' | 'info' | 'success' | 'warning' | 'error';
+type ColorScene = '' | 'Suppl' | 'Hover' | 'Pressed' | 'Active';
+type ColorKey = `${ColorType}Color${ColorScene}`;
+type ThemeColor = Partial<Record<ColorKey, string>>;
+
+interface ColorAction {
+  scene: ColorScene;
+  handler: (color: string) => string;
+}
 /** 获取主题颜色的各种场景对应的颜色 */
-function getThemeColors(colors) {
-  const colorActions = [
+function getThemeColors(colors: [ColorType, string][]) {
+  const colorActions: ColorAction[] = [
     { scene: '', handler: color => color },
     { scene: 'Suppl', handler: color => color },
     { scene: 'Hover', handler: color => getColorPalette(color, 5) },
@@ -65,12 +74,12 @@ function getThemeColors(colors) {
     { scene: 'Active', handler: color => addColorAlpha(color, 0.1) }
   ];
 
-  const themeColor = {};
+  const themeColor: ThemeColor = {};
 
   colors.forEach(color => {
     colorActions.forEach(action => {
       const [colorType, colorValue] = color;
-      const colorKey = `${colorType}Color${action.scene}`;
+      const colorKey: ColorKey = `${colorType}Color${action.scene}`;
       themeColor[colorKey] = action.handler(colorValue);
     });
   });

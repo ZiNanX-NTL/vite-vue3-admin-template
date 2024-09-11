@@ -7,6 +7,11 @@
             <NTag>{{ authStore.userInfo.userRole }}</NTag>
           </NSpace>
         </NDescriptionsItem>
+        <NDescriptionsItem label="用户权限">
+          <NSpace>
+            <NTag>{{ authStore.userInfo.userPermissions }}</NTag>
+          </NSpace>
+        </NDescriptionsItem>
         <NDescriptionsItem ions-item label="切换账号">
           <NSpace>
             <NButton
@@ -22,7 +27,14 @@
         </NDescriptionsItem>
       </NDescriptions>
     </NCard>
-    <NCard title="权限钩子函数 `hasAuth`" :bordered="false" size="small" segmented class="card-wrapper">
+    <NCard title="MAC权限钩子函数 `hasAuth`" :bordered="false" size="small" segmented class="card-wrapper">
+      <NSpace>
+        <NButton v-if="hasAuth(['super'])">超级管理员可见</NButton>
+        <NButton v-if="hasAuth(['super', 'admin'])">管理员可见</NButton>
+        <NButton v-if="hasAuth(['super', 'admin', 'user'])">用户可见</NButton>
+      </NSpace>
+    </NCard>
+    <NCard title="RBAC权限钩子函数 `hasAuth`" :bordered="false" size="small" segmented class="card-wrapper">
       <NSpace>
         <NButton v-if="hasAuth('B_CODE1')">超级管理员可见</NButton>
         <NButton v-if="hasAuth('B_CODE2')">管理员可见</NButton>

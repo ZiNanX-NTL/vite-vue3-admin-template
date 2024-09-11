@@ -20,13 +20,13 @@ export const useAppStore = defineStore('app-store', {
   }),
   getters: {},
   actions: {
-    setContentRef(contentRef) {
+    setContentRef(contentRef: any) {
       this.contentRef = contentRef;
     },
-    setLoadingVisible(visible) {
+    setLoadingVisible(visible: boolean) {
       this.loadingVisible = visible;
     },
-    setLoadingTitle(title) {
+    setLoadingTitle(title: string) {
       this.loadingTitle = title;
     },
     /**
@@ -45,7 +45,7 @@ export const useAppStore = defineStore('app-store', {
       }
     },
     /** 设置侧边栏折叠状态 */
-    setSiderCollapse(collapse) {
+    setSiderCollapse(collapse: boolean) {
       this.siderCollapse = collapse;
     },
     /** 折叠/展开 侧边栏折叠状态 */
@@ -65,7 +65,7 @@ export const useAppStore = defineStore('app-store', {
       this.settingDrawerVisible = !this.settingDrawerVisible;
     },
     /** 设置主体内容全屏 */
-    setContentFull(full) {
+    setContentFull(full: boolean) {
       this.contentFull = full;
     }
   }

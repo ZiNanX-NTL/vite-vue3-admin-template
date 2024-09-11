@@ -12,7 +12,7 @@ export function useMenu() {
 
   const activeKey = computed(() => (route.meta?.activeMenu ? route.meta.activeMenu : route.name));
   const activeRootKey = computed(() => {
-    const topLevelMenu = getTopLevelMenu(route.name, routeStore.menus);
+    const topLevelMenu = getTopLevelMenu(route.name as string, routeStore.menus);
     return topLevelMenu?.routeName;
   });
 
@@ -25,7 +25,7 @@ export function useMenu() {
       if (!(menuItem.children && menuItem.children.length)) {
         routerPush(menuItem.routePath as string);
       }
-      routeStore.setChildrenMenus(menuItem?.children);
+      routeStore.setChildrenMenus(menuItem?.children as App.GlobalMenuOption[]);
     } else {
       routerPush(item.routePath as string);
     }
@@ -45,7 +45,7 @@ export function useMenu() {
       () => {
         if (theme.layout.isMenuSeparation) {
           // 默认设置上子菜单
-          const defaultTopLevelMenu = getTopLevelMenu(route.name, routeStore.menus);
+          const defaultTopLevelMenu = getTopLevelMenu(route.name as string, routeStore.menus);
           routeStore.setChildrenMenus(defaultTopLevelMenu?.children);
         }
       }
@@ -56,7 +56,7 @@ export function useMenu() {
       val => {
         if (val) {
           // 默认设置上子菜单
-          const defaultTopLevelMenu = getTopLevelMenu(route.name, routeStore.menus);
+          const defaultTopLevelMenu = getTopLevelMenu(route.name as string, routeStore.menus);
           routeStore.setChildrenMenus(defaultTopLevelMenu?.children);
         } else {
           routeStore.setChildrenMenus();

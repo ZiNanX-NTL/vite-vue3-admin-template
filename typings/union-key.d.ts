@@ -50,6 +50,13 @@ declare namespace UnionKey {
   type ThemeHorizontalMenuPosition = 'flex-start' | 'center' | 'flex-end';
 
   /**
+   * 水平模式的菜单溢出的处理方式
+   * - hidden: 隐藏
+   * - scroll: 滚动
+   */
+  type ThemeOverflowMode = 'hidden' | 'scroll';
+
+  /**
    * 过渡动画类型
    * - zoom-fade: 渐变
    * - zoom-out: 闪现
@@ -59,4 +66,19 @@ declare namespace UnionKey {
    * - fade-scale: 缩放消退
    */
   type ThemeAnimateMode = 'zoom-fade' | 'zoom-out' | 'fade-slide' | 'fade' | 'fade-bottom' | 'fade-scale';
+
+  /**
+   * 多页签溢出时的处理方式
+   * - scrollBar: 滚动条
+   * - button: 按钮风格
+   */
+  type TabScrollMode = 'scrollBar' | 'button';
+
+  /**
+   * 多页签溢出时的处理方式
+   * - headerIcon: 顶部图标切换
+   * - arrow-circle: 圆形箭头切换
+   * - bar: 条形箭头切换
+   */
+  type SiderShowTrigger = 'headerIcon' | 'arrow-circle' | 'bar';
 }

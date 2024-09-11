@@ -41,7 +41,7 @@ export const useAuthStore = defineStore('auth-store', {
      * @param {LoginParams['userName']} userName - 用户名
      * @param {LoginParams['password']} password - 密码
      */
-    async login(userName, password, redirect = true) {
+    async login(userName: string, password: string, redirect = true) {
       this.loginLoading = true;
       const { data: loginToken, error } = await fetchLogin({ userName, password });
       if (!error) {
@@ -55,7 +55,7 @@ export const useAuthStore = defineStore('auth-store', {
      * 处理登录后成功或失败的逻辑
      * @param backendToken - 返回的token
      */
-    async handleActionAfterLogin(backendToken, redirect = true) {
+    async handleActionAfterLogin(backendToken: any, redirect = true) {
       const route = useRouteStore();
       const { toLoginRedirect } = useRouterPush();
 
@@ -88,7 +88,7 @@ export const useAuthStore = defineStore('auth-store', {
      * 根据token进行登录
      * @param backendToken - 返回的token
      */
-    async loginByToken(backendToken) {
+    async loginByToken(backendToken: any) {
       // 先把token存储到缓存中(后面接口的请求头需要token)
       const { token, refreshToken } = backendToken;
       localStg.set('token', token);
