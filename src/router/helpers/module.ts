@@ -2,7 +2,7 @@
  * 权限路由排序
  * @param routes - 权限路由
  */
-export function sortRoutesByOrder(routes) {
+export function sortRoutesByOrder(routes: AuthRoute.Route[]) {
   return routes
     .sort((next, pre) => Number(next.meta?.order) - Number(pre.meta?.order))
     .map(i => {
@@ -15,8 +15,8 @@ export function sortRoutesByOrder(routes) {
  * 处理全部导入的路由模块
  * @param modules - 路由模块
  */
-export function handleModuleRoutes(modules) {
-  const routes = [];
+export function handleModuleRoutes(modules: AuthRoute.RouteModule) {
+  const routes: AuthRoute.Route[] = [];
 
   Object.keys(modules).forEach(key => {
     const item = modules[key].default;

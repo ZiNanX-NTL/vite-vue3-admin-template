@@ -3,7 +3,7 @@
  * @param routes - 权限路由
  * @param permission - 权限
  */
-export function filterAuthRoutesByUserRole(routes, role) {
+export function filterAuthRoutesByUserRole(routes: AuthRoute.Route[], role: string) {
   return routes.map(route => filterAuthRouteByUserRole(route, role)).flat(1);
 }
 
@@ -12,7 +12,7 @@ export function filterAuthRoutesByUserRole(routes, role) {
  * @param route - 单个权限路由
  * @param role - 权限
  */
-function filterAuthRouteByUserRole(route, role) {
+function filterAuthRouteByUserRole(route: AuthRoute.Route, role: string): AuthRoute.Route[] {
   const filterRoute = { ...route };
   const hasPermission = !route.meta.permissions || role === 'super' || route.meta.permissions.includes(role);
 
@@ -28,7 +28,7 @@ function filterAuthRouteByUserRole(route, role) {
  * @param routes - 权限路由
  * @param permission - 权限
  */
-export function filterAuthRoutesByUserPermission(routes, permissions) {
+export function filterAuthRoutesByUserPermission(routes: AuthRoute.Route[], permissions: string[]) {
   return routes.map(route => filterAuthRouteByUserPermission(route, permissions)).flat(1);
 }
 
@@ -37,12 +37,12 @@ export function filterAuthRoutesByUserPermission(routes, permissions) {
  * @param route - 单个权限路由
  * @param permission - 权限
  */
-function filterAuthRouteByUserPermission(route, permissions) {
+function filterAuthRouteByUserPermission(route: AuthRoute.Route, permissions: string[]): AuthRoute.Route[] {
   const filterRoute = { ...route };
   const hasPermission =
     !route.meta.permissions ||
     permissions.some(permission => {
-      return route.meta.permissions.includes(permission);
+      return route.meta.permissions?.includes(permission);
     });
 
   if (filterRoute.children) {

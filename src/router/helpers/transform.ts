@@ -1,5 +1,6 @@
 import { isString } from '@/utils';
 import { getLayout, getViewComponent, setViewComponentName } from './component';
+import type { RouteRecordRaw, RouteComponent } from 'vue-router';
 
 const { layoutTypes, getLayoutComponent } = getLayout();
 
@@ -8,18 +9,23 @@ const { layoutTypes, getLayoutComponent } = getLayout();
  * @param routes - 权限路由
  * @description 所有多级路由都会被转换成二级路由
  */
-export function transformAuthRouteToVueRoutes(routes) {
+export function transformAuthRouteToVueRoutes(routes: AuthRoute.Route[]) {
   return routes.map(route => transformAuthRouteToVueRoute(route)).flat(1);
+}
+
+type Lazy<T> = () => Promise<T>;
+interface ModuleComponent {
+  default: RouteComponent;
 }
 
 /**
  * 将单个权限路由转换成vue路由
  * @param item - 单个权限路由
  */
-export function transformAuthRouteToVueRoute(item) {
-  const resultRoute = [];
+export function transformAuthRouteToVueRoute(item: AuthRoute.Route) {
+  const resultRoute: RouteRecordRaw[] = [];
 
-  const itemRoute = { ...item };
+  const itemRoute = { ...item } as unknown as RouteRecordRaw;
 
   // 动态path
   if (hasDynamicPath(item)) {
@@ -34,7 +40,7 @@ export function transformAuthRouteToVueRoute(item) {
   // 路由组件
   if (hasComponent(item)) {
     if (isAutoComponent(item)) {
-      const action = {
+      const action: any = {
         multi() {
           // 多级路由一定有子路由
           if (hasChildren(item)) {
@@ -61,7 +67,7 @@ export function transformAuthRouteToVueRoute(item) {
         window.console.error('路由组件解析失败: ', item);
       }
     } else {
-      itemRoute.component = setViewComponentName(itemRoute.component, item.name);
+      itemRoute.component = setViewComponentName(itemRoute.component as Lazy<ModuleComponent>, item.name);
     }
   }
 
@@ -88,7 +94,7 @@ export function transformAuthRouteToVueRoute(item) {
           ? getLayoutComponent(item.meta.singleLayout)
           : getLayoutComponent('blank');
 
-      const parentRoute = {
+      const parentRoute: RouteRecordRaw = {
         path: parentPath,
         component: layout,
         redirect: item.path,
@@ -101,7 +107,7 @@ export function transformAuthRouteToVueRoute(item) {
 
   // 子路由
   if (hasChildren(item)) {
-    const children = item.children.map(child => transformAuthRouteToVueRoute(child)).flat();
+    const children = (item.children as AuthRoute.Route[]).map(child => transformAuthRouteToVueRoute(child)).flat();
 
     // 找出第一个不为多级路由中间级的子路由路径作为重定向路径
     const redirectPath = children.find(v => !v.meta?.multi)?.path || '/';
@@ -130,7 +136,7 @@ export function transformAuthRouteToVueRoute(item) {
  * @param routes - 权限路由
  * @param treeMap
  */
-export function transformAuthRouteToSearchMenus(routes, treeMap = []) {
+export function transformAuthRouteToSearchMenus(routes: AuthRoute.Route[], treeMap: AuthRoute.Route[] = []) {
   if (routes && routes.length === 0) return [];
   return routes.reduce((acc, cur) => {
     if (!cur.meta?.hide) {
@@ -144,7 +150,7 @@ export function transformAuthRouteToSearchMenus(routes, treeMap = []) {
 }
 
 /** 将路由名字转换成路由路径 */
-export function transformRouteNameToRoutePath(name) {
+export function transformRouteNameToRoutePath(name: string) {
   const rootPath = '/';
   if (name === 'root') return rootPath;
 
@@ -156,7 +162,7 @@ export function transformRouteNameToRoutePath(name) {
 }
 
 /** 将路由路径转换成路由名字 */
-export function transformRoutePathToRouteName(path) {
+export function transformRoutePathToRouteName(path: string) {
   if (path === '/') return 'root';
 
   const pathSplitMark = '/';
@@ -171,7 +177,7 @@ export function transformRoutePathToRouteName(path) {
  * 是否有外链
  * @param item - 权限路由
  */
-function hasHref(item) {
+function hasHref(item: AuthRoute.Route) {
   return Boolean(item.meta.href);
 }
 
@@ -179,7 +185,7 @@ function hasHref(item) {
  * 是否有动态路由path
  * @param item - 权限路由
  */
-function hasDynamicPath(item) {
+function hasDynamicPath(item: AuthRoute.Route) {
   return Boolean(item.meta.dynamicPath);
 }
 
@@ -187,7 +193,7 @@ function hasDynamicPath(item) {
  * 是否有路由组件
  * @param item - 权限路由
  */
-function hasComponent(item) {
+function hasComponent(item: AuthRoute.Route) {
   return Boolean(item.component);
 }
 
@@ -195,7 +201,7 @@ function hasComponent(item) {
  * 是否是自动加载路由组件
  * @param item - 权限路由
  */
-function isAutoComponent(item) {
+function isAutoComponent(item: AuthRoute.Route) {
   return isString(item.component);
 }
 
@@ -203,7 +209,7 @@ function isAutoComponent(item) {
  * 是否有子路由
  * @param item - 权限路由
  */
-function hasChildren(item) {
+function hasChildren(item: AuthRoute.Route) {
   return Boolean(item.children && item.children.length);
 }
 
@@ -211,7 +217,7 @@ function hasChildren(item) {
  * 是否是单层级路由
  * @param item - 权限路由
  */
-function isSingleRoute(item) {
+function isSingleRoute(item: AuthRoute.Route) {
   return Boolean(item.meta.singleLayout);
 }
 
@@ -219,7 +225,7 @@ function isSingleRoute(item) {
  * 获取所有固定路由的名称集合
  * @param routes - 固定路由
  */
-export function getConstantRouteNames(routes) {
+export function getConstantRouteNames(routes: AuthRoute.Route[]) {
   return routes.map(route => getConstantRouteName(route)).flat(1);
 }
 
@@ -227,7 +233,7 @@ export function getConstantRouteNames(routes) {
  * 获取所有固定路由的名称集合
  * @param route - 固定路由
  */
-function getConstantRouteName(route) {
+function getConstantRouteName(route: AuthRoute.Route) {
   const names = [route.name];
   if (route.children?.length) {
     names.push(...route.children.map(item => getConstantRouteName(item)).flat(1));
@@ -240,7 +246,7 @@ function getConstantRouteName(route) {
  * @param routeName - 当前页面路由的key
  * @param menus - 菜单数据
  */
-export function getTopLevelMenu(routeName, menus) {
+export function getTopLevelMenu(routeName: string, menus: App.GlobalMenuOption[]): App.GlobalMenuOption | undefined {
   return menus.find(item => {
     if (item.routeName === routeName) return true;
     if (Array.isArray(item.children)) {

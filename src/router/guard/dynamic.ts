@@ -1,10 +1,15 @@
+import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
 import { useRouteStore } from '@/store';
 import { localStg } from '@/utils';
 
 /**
  * 动态路由
  */
-export async function createDynamicRouteGuard(to, _from, next) {
+export async function createDynamicRouteGuard(
+  to: RouteLocationNormalized,
+  _from: RouteLocationNormalized,
+  next: NavigationGuardNext
+) {
   const route = useRouteStore();
   const isLogin = Boolean(localStg.get('token'));
 

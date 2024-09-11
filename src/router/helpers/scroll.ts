@@ -1,6 +1,7 @@
+import type { RouterScrollBehavior } from 'vue-router';
 import { useAppStore, useTabStore } from '@/store';
 
-export const scrollBehavior = async (to, from) => {
+export const scrollBehavior: RouterScrollBehavior = async (to, from) => {
   return new Promise(resolve => {
     const app = useAppStore();
     const tab = useTabStore();
@@ -15,7 +16,7 @@ export const scrollBehavior = async (to, from) => {
       }
     }
 
-    const { contentRef } = app;
+    const { contentRef }: { contentRef: any } = app;
     const { containerScrollTop = 0, containerScrollLeft = 0 } = contentRef?.scrollbarInstRef || {};
     const [scrollLeft, scrollTop] = [containerScrollLeft, containerScrollTop];
 

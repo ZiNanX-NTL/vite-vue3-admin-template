@@ -1,3 +1,4 @@
+import type { App } from 'vue';
 import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router';
 import { constantRoutes } from './routes';
 import { transformAuthRouteToVueRoutes, scrollBehavior } from './helpers';
@@ -12,7 +13,7 @@ export const router = createRouter({
 });
 
 /** setup vue router. - [安装vue路由] */
-export async function setupRouter(app) {
+export async function setupRouter(app: App) {
   app.use(router);
   createRouterGuard(router);
   await router.isReady();
