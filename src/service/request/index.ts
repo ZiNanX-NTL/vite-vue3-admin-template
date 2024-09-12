@@ -21,6 +21,12 @@ interface InstanceAxiosRequestConfig extends AxiosRequestConfig {
 interface SingleRequestAxiosRequestConfig extends AxiosRequestConfig {
   interceptors?: SingleRequestInterceptors;
 }
+interface IBackendConfig {
+  codeKey: string;
+  dataKey: string;
+  msgKey: string;
+  successCode: number | string;
+}
 
 class ZNRequest {
   instance: AxiosInstance;
@@ -33,7 +39,7 @@ class ZNRequest {
 
   constructor(
     axiosConfig: InstanceAxiosRequestConfig,
-    backendConfig = {
+    backendConfig: IBackendConfig = {
       codeKey: 'code',
       dataKey: 'data',
       msgKey: 'message',
