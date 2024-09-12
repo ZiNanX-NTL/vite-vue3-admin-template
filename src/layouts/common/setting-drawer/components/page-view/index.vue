@@ -7,6 +7,24 @@
     <setting-menu label="面包屑图标">
       <n-switch :value="theme.header.crumb.showIcon" @update:value="theme.setHeaderCrumbIconVisible" />
     </setting-menu>
+    <setting-menu label="顶部菜单位置">
+      <n-select
+        class="w-120px"
+        size="small"
+        :value="theme.headerMenu.horizontalPosition"
+        :options="theme.headerMenu.horizontalPositionList"
+        @update:value="theme.setHorizontalMenuPosition"
+      />
+    </setting-menu>
+    <setting-menu label="顶部菜单溢出">
+      <n-select
+        class="w-120px"
+        size="small"
+        :value="theme.headerMenu.overflowMode"
+        :options="theme.headerMenu.overflowModeList"
+        @update:value="theme.setHorizontalMenuOverflowMode"
+      />
+    </setting-menu>
     <setting-menu label="多页签">
       <n-switch :value="theme.tab.visible" @update:value="theme.setTabVisible" />
     </setting-menu>

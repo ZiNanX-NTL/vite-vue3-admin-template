@@ -6,7 +6,15 @@
     :style="{ height: theme.header.height + 'px' }"
   >
     <n-layout-header class="h-full flex-y-center" :inverted="!theme.darkMode && theme.header.inverted">
-      <global-logo v-if="showLogo" :show-title="true" class="h-full" :style="{ width: logoWidth }" />
+      <global-logo
+        v-if="showLogo"
+        :show-title="true"
+        class="h-full"
+        :class="{ 'px-25px': !theme.logo.isCustomizeWidth }"
+        :style="{
+          width: logoWidth
+        }"
+      />
       <div class="h-full flex-y-center flex-1-hidden">
         <menu-collapse
           v-if="mode !== 'horizontal' && (showMenuCollapse || isMobile) && theme.sider.showTrigger === 'headerIcon'"
@@ -63,7 +71,7 @@ const logoWidth = computed(() => {
   if (theme.logo.isCustomizeWidth) {
     return `${theme.logo.width}px`;
   }
-  return `${theme.sider.width}px`;
+  return `unset`;
 });
 </script>
 
