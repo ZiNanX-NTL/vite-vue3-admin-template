@@ -24,7 +24,7 @@
   </svg>
 </template>
 
-<script setup>
+<script setup lang="ts">
 defineProps({
   /** 过渡的开始颜色 */
   startColor: {

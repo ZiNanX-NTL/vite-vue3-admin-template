@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { getColorPalette } from '@/utils';
 import { CornerBottom, CornerTop } from './components';
 
