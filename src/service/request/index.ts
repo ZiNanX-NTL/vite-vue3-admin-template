@@ -74,7 +74,7 @@ class ZNRequest {
         console.log('全局响应拦截');
         const { status } = response;
         if (status === 200 || status < 300 || status === 304) {
-          const backend = response.data;
+          const backend = { ...response.data, url: response.config.url };
           const { codeKey, dataKey, successCode } = this.backendConfig;
           // 请求成功
           if (backend[codeKey] === successCode) {

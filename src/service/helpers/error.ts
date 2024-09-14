@@ -5,6 +5,7 @@ import {
   ERROR_STATUS,
   NETWORK_ERROR_CODE,
   NETWORK_ERROR_MSG,
+  NO_ERROR_MSG_URL,
   REQUEST_TIMEOUT_CODE,
   REQUEST_TIMEOUT_MSG
 } from '@/config';
@@ -95,7 +96,9 @@ export function handleBackendError(backendResult: Record<string, any>, config: S
     msg: backendResult[msgKey]
   };
 
-  showErrorMsg(error);
+  if (!NO_ERROR_MSG_URL.includes(backendResult.url)) {
+    showErrorMsg(error);
+  }
 
   return error;
 }
