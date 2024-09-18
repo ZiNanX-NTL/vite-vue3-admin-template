@@ -48,7 +48,8 @@ export function useMenu() {
           const defaultTopLevelMenu = getTopLevelMenu(route.name as string, routeStore.menus);
           routeStore.setChildrenMenus(defaultTopLevelMenu?.children);
         }
-      }
+      },
+      { immediate: true }
     );
 
     watch(

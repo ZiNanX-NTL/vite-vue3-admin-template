@@ -79,6 +79,7 @@ export function transformAuthRouteToVueRoute(item: AuthRoute.Route) {
 
     // 捕获无效路由的需特殊处理
     if (item.name === 'not-found') {
+      delete itemRoute.name;
       itemRoute.children = [
         {
           path: '',
@@ -87,7 +88,7 @@ export function transformAuthRouteToVueRoute(item: AuthRoute.Route) {
         }
       ];
     } else {
-      const parentPath = `${itemRoute.path}-parent`;
+      const parentPath = itemRoute.path;
 
       const layout =
         item.meta.singleLayout && layoutTypes.includes(item.meta.singleLayout)
@@ -97,8 +98,7 @@ export function transformAuthRouteToVueRoute(item: AuthRoute.Route) {
       const parentRoute: RouteRecordRaw = {
         path: parentPath,
         component: layout,
-        redirect: item.path,
-        children: [itemRoute]
+        children: [{ ...itemRoute, path: '' }]
       };
 
       return [parentRoute];

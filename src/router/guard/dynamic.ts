@@ -17,7 +17,7 @@ export async function createDynamicRouteGuard(
   if (!route.isInitAuthRoute) {
     // 未登录情况下直接回到登录页，登录成功后再加载权限路由
     if (!isLogin) {
-      const toName = to.name;
+      const toName = to.name as string;
       if (route.isValidConstantRoute(toName) && !to.meta.requiresAuth) {
         next();
       } else {
