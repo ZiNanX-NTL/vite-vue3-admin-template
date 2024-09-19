@@ -5,7 +5,7 @@
       class="h-full flex-1-hidden"
       content-class="h-full"
     >
-      <div class="h-full flex-y-center">
+      <div :key="key" class="h-full flex-y-center">
         <n-menu
           v-if="!theme.layout.isMenuSeparation"
           :value="activeKey"
@@ -39,6 +39,14 @@ const routeStore = useRouteStore();
 const theme = useThemeStore();
 
 const { activeKey, activeRootKey, handleUpdateMenu, handleUpdateRootMenu } = useMenu();
+
+const key = ref(1);
+watch(
+  () => theme.headerMenu.overflowMode,
+  () => {
+    key.value += 1;
+  }
+);
 </script>
 
 <style scoped>

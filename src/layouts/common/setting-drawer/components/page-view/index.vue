@@ -28,7 +28,7 @@
     <setting-menu label="多页签">
       <n-switch :value="theme.tab.visible" @update:value="theme.setTabVisible" />
     </setting-menu>
-    <setting-menu label="多页签滚动模式">
+    <setting-menu label="多页签溢出">
       <n-select
         class="w-120px"
         size="small"
