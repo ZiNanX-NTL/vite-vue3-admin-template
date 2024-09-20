@@ -1,6 +1,6 @@
 <template>
   <div class="flex-vertical-full gap-16px <sm:overflow-auto">
-    <table-search v-model:model="searchParams" @reset="resetSearchParams" @search="getData"></table-search>
+    <table-search v-model:model="searchParams" @reset="resetSearchParams" @search="handleSearch"></table-search>
     <n-card :bordered="false" size="small" title="表格" class="h-full card-wrapper">
       <template #header-extra>
         <table-header-operation
@@ -49,7 +49,8 @@ const {
   loading,
   pagination,
   getData,
-  updateSearchParams,
+  handleSearch,
+  handleSearchPaginationParams,
   searchParams,
   resetSearchParams
 } = useTable({
@@ -72,8 +73,7 @@ const {
     checkedKeys: ['0']
   },
   onPaginationChanged: p => {
-    updateSearchParams({ page: p.page, pageSize: p.pageSize });
-    getData();
+    handleSearchPaginationParams({ page: p.page, pageSize: p.pageSize });
   },
   formatSearchParams: params => {
     const formattedParams = { ...params };

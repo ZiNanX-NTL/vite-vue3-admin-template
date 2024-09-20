@@ -31,6 +31,7 @@ export function useTable(config) {
   const { columns, filteredColumns, reloadColumns } = useTableColumn(config.columns);
 
   const searchParams = reactive(cloneDeep(apiParams));
+  const requestParams = {};
 
   const data = ref([]);
 
@@ -58,12 +59,20 @@ export function useTable(config) {
     Object.assign(pagination, update);
   }
 
+  /** 设置请求分页参数 */
+  function setRequestPaginationParams() {
+    const { page, pageSize } = formatSearchParams(searchParams);
+    Object.assign(requestParams, { page, pageSize });
+  }
+  /** 设置请求参数 */
+  function setRequestParams() {
+    Object.assign(requestParams, formatSearchParams(searchParams));
+  }
+
   async function getData() {
     startLoading();
 
-    const formattedParams = formatSearchParams(searchParams);
-
-    const response = await apiFn(formattedParams);
+    const response = await apiFn(requestParams);
 
     const { data: tableData, pageNum = pagination.page, pageSize = pagination.pageSize, total } = transformer(response);
 
@@ -72,6 +81,20 @@ export function useTable(config) {
     setEmpty(tableData.length === 0);
     updatePagination({ page: pageNum, pageSize, itemCount: total });
     endLoading();
+  }
+
+  /** 查询数据 */
+  function handleSearch() {
+    updateSearchParams({ pageNum: 1 });
+    setRequestParams();
+    getData();
+  }
+
+  /** 重置查询参数 */
+  function handleSearchPaginationParams(params) {
+    updateSearchParams(params);
+    setRequestPaginationParams();
+    getData();
   }
 
   /**
@@ -89,7 +112,7 @@ export function useTable(config) {
   }
 
   if (immediate) {
-    getData();
+    handleSearch();
   }
 
   watch(
@@ -114,6 +137,8 @@ export function useTable(config) {
     pagination,
     updatePagination,
     getData,
+    handleSearch,
+    handleSearchPaginationParams,
     searchParams,
     updateSearchParams,
     resetSearchParams
