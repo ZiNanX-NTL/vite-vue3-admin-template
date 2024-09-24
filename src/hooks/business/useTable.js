@@ -25,6 +25,7 @@ export function useTable(config) {
     formatSearchParams = params => params,
     transformer,
     onPaginationChanged,
+    isPaging = true,
     immediate = true
   } = config;
 
@@ -85,12 +86,12 @@ export function useTable(config) {
 
   /** 查询数据 */
   function handleSearch() {
-    updateSearchParams({ pageNum: 1 });
+    if (isPaging) updateSearchParams({ pageNum: 1 });
     setRequestParams();
     getData();
   }
 
-  /** 重置查询参数 */
+  /** 重置分页查询参数 */
   function handleSearchPaginationParams(params) {
     updateSearchParams(params);
     setRequestPaginationParams();
