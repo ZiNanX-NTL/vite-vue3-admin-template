@@ -43,7 +43,7 @@ import TableActionModal from './components/TableActionModal.vue';
 
 const isMobile = useIsMobile();
 
-const { columns, filteredColumns, data, loading, pagination, getData, updateSearchParams } = useTable({
+const { columns, filteredColumns, data, loading, pagination, getData, handleSearchPaginationParams } = useTable({
   apiFn: fetchUserList,
   apiParams: {
     page: 1,
@@ -52,8 +52,7 @@ const { columns, filteredColumns, data, loading, pagination, getData, updateSear
     // 该值不能为undefined，否则Form中的属性将不起作用
   },
   onPaginationChanged: p => {
-    updateSearchParams({ page: p.page, pageSize: p.pageSize });
-    getData();
+    handleSearchPaginationParams({ page: p.page, pageSize: p.pageSize });
   },
   transformer: res => {
     console.log(res);

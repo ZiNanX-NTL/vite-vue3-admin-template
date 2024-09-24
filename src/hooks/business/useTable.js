@@ -86,7 +86,7 @@ export function useTable(config) {
 
   /** 查询数据 */
   function handleSearch() {
-    if (isPaging) updateSearchParams({ pageNum: 1 });
+    if (isPaging) updateSearchParams({ page: 1 });
     setRequestParams();
     getData();
   }
