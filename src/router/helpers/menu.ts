@@ -18,7 +18,8 @@ export function transformAuthRouteToMenu(routes: AuthRoute.Route[]): App.GlobalM
         key: routeName,
         label: meta.title,
         routeName,
-        routePath: path
+        routePath: path,
+        show: !meta.hide
         // i18nTitle: meta.i18nTitle
       },
       icon: meta.icon,
@@ -26,9 +27,7 @@ export function transformAuthRouteToMenu(routes: AuthRoute.Route[]): App.GlobalM
       children: menuChildren
     });
 
-    if (!hideInMenu(route)) {
-      globalMenu.push(menuItem);
-    }
+    globalMenu.push(menuItem);
   });
 
   return globalMenu;
@@ -43,10 +42,6 @@ export function transformAuthRouteToRootMenu(routes: AuthRoute.Route[], isRoot =
   routes.forEach(route => {
     const { name, path, meta } = route;
     const routeName = name;
-    // let menuChildren;
-    // if (route.children && route.children.length > 0) {
-    //   menuChildren = transformAuthRouteToRootMenu(route.children, false);
-    // }
     const menuItem = addPartialProps({
       menu: {
         key: routeName,
@@ -58,7 +53,6 @@ export function transformAuthRouteToRootMenu(routes: AuthRoute.Route[], isRoot =
       },
       icon: meta.icon,
       localIcon: meta.localIcon
-      // children: menuChildren
     });
 
     if (!hideInMenu(route)) {
