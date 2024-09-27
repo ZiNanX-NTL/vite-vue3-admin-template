@@ -20,18 +20,16 @@ export function useRouterPush() {
       window.open(routerData.href, '_blank');
       return Promise.resolve();
     }
+    // 替换路由
+    if (to.replace) {
+      removeTabOnly(route.value.fullPath);
+    }
     return router.push(to);
   }
 
   /** 返回上一级路由 */
   function routerBack() {
     router.go(-1);
-  }
-
-  /** 替换路由 */
-  function routerReplace(to: RouteLocationRaw) {
-    removeTabOnly(route.value.fullPath);
-    router.replace(to);
   }
 
   /**
@@ -84,7 +82,6 @@ export function useRouterPush() {
   return {
     routerPush,
     routerBack,
-    routerReplace,
     toHome,
     toLogin,
     toLoginModule,
