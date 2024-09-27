@@ -14,11 +14,9 @@ export default function useReload() {
     setFalse();
     await nextTick();
 
-    if (duration > 0) {
-      setTimeout(() => {
-        setTrue();
-      }, duration);
-    }
+    setTimeout(() => {
+      setTrue();
+    }, duration);
   }
 
   return {

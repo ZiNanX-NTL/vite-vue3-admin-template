@@ -5,7 +5,7 @@
       class="h-full flex-1-hidden"
       content-class="h-full"
     >
-      <div :key="key" class="h-full flex-y-center">
+      <div v-if="reloadFlag" class="h-full flex-y-center">
         <n-menu
           v-if="!theme.layout.isMenuSeparation"
           :value="activeKey"
@@ -31,20 +31,21 @@
 
 <script setup>
 import { useRouteStore, useThemeStore } from '@/store';
+import { useReload } from '@/hooks';
 import { useMenu } from '@/utils';
 
 defineOptions({ name: 'HeaderMenu' });
 
 const routeStore = useRouteStore();
 const theme = useThemeStore();
+const { reloadFlag, handleReload } = useReload();
 
 const { activeKey, activeRootKey, handleUpdateMenu, handleUpdateRootMenu } = useMenu();
 
-const key = ref(1);
 watch(
   () => theme.headerMenu.overflowMode,
   () => {
-    key.value += 1;
+    handleReload();
   }
 );
 </script>
