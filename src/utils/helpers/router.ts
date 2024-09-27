@@ -1,6 +1,7 @@
 import type { RouteLocationRaw } from 'vue-router';
 import { router } from '@/router';
 import { useTabStore } from '@/store';
+import { isObject } from '../common';
 
 /**
  * 路由跳转
@@ -21,7 +22,7 @@ export function useRouterPush() {
       return Promise.resolve();
     }
     // 替换路由
-    if (to.replace) {
+    if (isObject(to) && to.replace) {
       removeTabOnly(route.value.fullPath);
     }
     return router.push(to);

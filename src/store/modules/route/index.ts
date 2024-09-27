@@ -51,6 +51,8 @@ interface RouteState {
   searchMenus: AuthRoute.Route[];
   /** 缓存的路由名称 */
   cacheRoutes: string[];
+  /** 临时缓存的路由名称 */
+  tempCacheRoutes: string[];
 }
 
 export const useRouteStore = defineStore('route-store', {
@@ -65,8 +67,9 @@ export const useRouteStore = defineStore('route-store', {
     menus: [],
     rootMenus: [],
     childrenMenus: [],
+    searchMenus: [],
     cacheRoutes: [],
-    searchMenus: []
+    tempCacheRoutes: []
   }),
   actions: {
     /** 重置路由的store */
@@ -249,6 +252,20 @@ export const useRouteStore = defineStore('route-store', {
 
       if (isCached) {
         this.addCacheRoute(name);
+      }
+    },
+    /** 添加某个缓存路由 */
+    addTempCacheRoute(name: string) {
+      const index = this.tempCacheRoutes.indexOf(name);
+      if (index === -1) {
+        this.tempCacheRoutes.push(name);
+      }
+    },
+    /** 从缓存路由中去除某个路由 */
+    removeTempCacheRoute(name: string) {
+      const index = this.tempCacheRoutes.indexOf(name);
+      if (index > -1) {
+        this.tempCacheRoutes.splice(index, 1);
       }
     }
   }

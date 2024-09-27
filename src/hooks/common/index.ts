@@ -5,5 +5,6 @@ import useLoading from './useLoading';
 import useReload from './useReload';
 import useAuth from './useAuth';
 import useRender from './useRender';
+import useTempCache from './useTempCache';
 
-export { useGlobalLoading, useBoolean, useContext, useLoading, useReload, useAuth, useRender };
+export { useGlobalLoading, useBoolean, useContext, useLoading, useReload, useAuth, useRender, useTempCache };

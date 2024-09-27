@@ -1,7 +1,7 @@
 <template>
   <router-view v-slot="{ Component, route }">
     <transition :name="theme.pageAnimateMode" mode="out-in" :appear="true">
-      <keep-alive :include="routeStore.cacheRoutes">
+      <keep-alive :include="[...routeStore.cacheRoutes, ...routeStore.tempCacheRoutes]">
         <component
           :is="Component"
           v-if="app.reloadFlag"
