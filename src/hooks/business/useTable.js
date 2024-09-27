@@ -153,6 +153,7 @@ export function useTable(config) {
 
 function useTableColumn(factory) {
   const SELECTION_KEY = '__selection__';
+  const EXPAND_KEY = '__expand__';
 
   const allColumns = ref(factory());
 
@@ -177,6 +178,14 @@ function useTableColumn(factory) {
         });
       }
 
+      if (column.type === 'expand') {
+        cols.push({
+          key: EXPAND_KEY,
+          title: '展开',
+          checked: true
+        });
+      }
+
       if (column.type === 'selection') {
         cols.push({
           key: SELECTION_KEY,
@@ -195,6 +204,9 @@ function useTableColumn(factory) {
       .map(column => {
         if (column.key === SELECTION_KEY) {
           return allColumns.value.find(col => col.type === 'selection');
+        }
+        if (column.key === EXPAND_KEY) {
+          return allColumns.value.find(col => col.type === 'expand');
         }
         return allColumns.value.find(col => col.key === column.key);
       });
