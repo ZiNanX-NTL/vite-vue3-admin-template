@@ -1,10 +1,12 @@
 import type { RouteLocationRaw } from 'vue-router';
 import { router } from '@/router';
+import { useTabStore } from '@/store';
 
 /**
  * 路由跳转
  */
 export function useRouterPush() {
+  const { removeTabOnly } = useTabStore();
   const route = router.currentRoute;
 
   /**
@@ -24,6 +26,12 @@ export function useRouterPush() {
   /** 返回上一级路由 */
   function routerBack() {
     router.go(-1);
+  }
+
+  /** 替换路由 */
+  function routerReplace(to: RouteLocationRaw) {
+    removeTabOnly(route.value.fullPath);
+    router.replace(to);
   }
 
   /**
@@ -76,6 +84,7 @@ export function useRouterPush() {
   return {
     routerPush,
     routerBack,
+    routerReplace,
     toHome,
     toLogin,
     toLoginModule,

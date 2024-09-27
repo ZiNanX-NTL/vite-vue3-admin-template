@@ -193,16 +193,37 @@ export const useTabStore = defineStore('tab-store', {
         }
       }
     },
+    /** 仅删除多页签 */
+    async removeTabOnly(fullPath: string) {
+      const { removeCacheEntry } = useRouteStore();
+
+      const tabName = this.tabs.find(tab => tab.fullPath === fullPath)?.name as string | undefined;
+      if (tabName) {
+        await removeCacheEntry(tabName);
+      }
+
+      const updateTabs = this.tabs.filter(tab => tab.fullPath !== fullPath);
+      this.tabs = updateTabs;
+    },
     /**
      * 清空多页签(多页签首页保留)
      * @param excludes - 保留的多页签path
      */
     async clearTab(excludes: string[] = []) {
       const { routerPush } = useRouterPush();
+      const { removeCacheEntry } = useRouteStore();
 
       const homePath = this.homeTab.fullPath;
       const remain = [homePath, ...excludes];
       const hasActive = remain.includes(this.activeTab);
+
+      // 清除keepAlive缓存
+      this.tabs.forEach(async tab => {
+        if (!remain.includes(tab.fullPath)) {
+          await removeCacheEntry(tab.name as string);
+        }
+      });
+
       const updateTabs = this.tabs.filter(tab => remain.includes(tab.fullPath));
       if (hasActive) this.tabs = updateTabs;
       if (!hasActive && updateTabs.length) {
