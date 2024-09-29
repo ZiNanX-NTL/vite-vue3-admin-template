@@ -1,21 +1,79 @@
+import type { Reactive } from 'vue';
 import { ref, reactive, computed, watch } from 'vue';
+import type { DataTableBaseColumn, DataTableExpandColumn, DataTableSelectionColumn, PaginationProps } from 'naive-ui';
 import { cloneDeep } from 'lodash-es';
+import type { TableColumnGroup, TableColumnTitle, TableColumnGroupTitle } from 'naive-ui/es/data-table/src/interface';
 import { useIsMobile } from '@/utils';
 import { useBoolean, useLoading } from '../common';
 
-/**
- * 通用表格 hook
- * @param {Object} config 表格配置
- * @param {Function} config.apiFn 接口请求方法
- * @param {Object} config.apiParams 接口请求参数
- * @param {Function} config.columns 表格列配置工厂函数
- * @param {Object} config.pagination 分页配置
- * @param {Object} config.transformer 数据转换器
- * @param {Function} config.onPaginationChanged 分页变化回调
- * @param {Boolean} config.immediate 是否立即请求数据
- * @returns {Object}
- */
-export function useTable(config) {
+/** 接口请求函数 */
+type ApiFn<T = any, R = any> = (args: T) => Promise<Service.RequestResult<R>>;
+
+/** 接口请求函数的参数 */
+type GetApiFnParameters<T extends ApiFn, R = any> = T extends (args: infer P) => Promise<Service.RequestResult<R>>
+  ? P
+  : never;
+
+/** 接口请求函数的返回值 */
+type GetApiFnReturnType<T extends ApiFn, P = any> = T extends (args: P) => Promise<Service.RequestResult<infer R>>
+  ? R
+  : never;
+
+/** 表格接口请求后转换后的数据 */
+type Transformer<TableData, Response> = (response: Response) => {
+  data: TableData[];
+  pageNum?: number;
+  pageSize?: number;
+  total?: number;
+};
+
+/** 自定义的列 key */
+type CustomColumnKey<K = never> = K | 'action';
+
+/** 表格的列 */
+type HookTableColumn<T = Record<string, unknown>> =
+  | (Omit<TableColumnGroup<T>, 'key'> & { key: CustomColumnKey<keyof T> })
+  | (Omit<DataTableBaseColumn<T>, 'key'> & { key: CustomColumnKey<keyof T> })
+  | DataTableSelectionColumn<T>
+  | DataTableExpandColumn<T>;
+
+/** 表格操作列 */
+interface CheckColumn {
+  key?: string | number | symbol;
+  title?: TableColumnTitle | TableColumnGroupTitle;
+  checked: boolean;
+}
+
+/** 表格配置 */
+type HookTableConfig<TableData, Fn extends ApiFn> = {
+  /** 接口请求函数 */
+  apiFn: Fn;
+  /** 列表接口参数 */
+  apiParams: any;
+  /** 搜索参数格式化函数 */
+  formatSearchParams?: (params: any) => GetApiFnParameters<Fn>;
+  /** 列表接口返回数据转换 */
+  transformer: Transformer<TableData, Service.RequestResult<GetApiFnReturnType<Fn>>>;
+  /** 列表分页参数 */
+  pagination?: PaginationProps;
+  /** 列表列 */
+  columns: () => HookTableColumn<TableData>[];
+  /** 分页参数更新 */
+  onPaginationChanged?: (params: Reactive<PaginationProps>) => void;
+  /**
+   * 是否使用分页
+   * @default true
+   */
+  isPaging?: boolean;
+  /**
+   * 是否立即请求
+   * @default true
+   */
+  immediate?: boolean;
+};
+
+/** 通用表格 hook */
+export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<TableData, Fn>) {
   const { loading, startLoading, endLoading } = useLoading();
   const { bool: empty, setBool: setEmpty } = useBoolean();
 
@@ -29,12 +87,12 @@ export function useTable(config) {
     immediate = true
   } = config;
 
-  const { columns, filteredColumns, reloadColumns } = useTableColumn(config.columns);
+  const { columns, filteredColumns, reloadColumns } = useTableColumn<TableData>(config.columns);
 
   const searchParams = reactive(cloneDeep(apiParams));
-  const requestParams = {};
+  const requestParams = reactive({});
 
-  const data = ref([]);
+  const data = ref<TableData[]>([]);
 
   const isMobile = useIsMobile();
   const pagination = reactive({
@@ -42,12 +100,12 @@ export function useTable(config) {
     pageSize: 10,
     showSizePicker: true,
     pageSizes: [10, 15, 20, 25, 30],
-    onUpdatePage: async page => {
+    onUpdatePage: async (page: number) => {
       pagination.page = page;
 
       await onPaginationChanged?.(pagination);
     },
-    onUpdatePageSize: async pageSize => {
+    onUpdatePageSize: async (pageSize: number) => {
       pagination.pageSize = pageSize;
       pagination.page = 1;
 
@@ -56,7 +114,7 @@ export function useTable(config) {
     ...config.pagination
   });
 
-  function updatePagination(update) {
+  function updatePagination(update: Partial<PaginationProps>) {
     Object.assign(pagination, update);
   }
 
@@ -97,7 +155,7 @@ export function useTable(config) {
   }
 
   /** 重置分页查询参数 */
-  function handleSearchPaginationParams(params) {
+  function handleSearchPaginationParams(params: any) {
     updateSearchParams(params);
     setRequestPaginationParams();
     getData();
@@ -108,7 +166,7 @@ export function useTable(config) {
    *
    * @param params
    */
-  function updateSearchParams(params) {
+  function updateSearchParams(params: any) {
     Object.assign(searchParams, params);
   }
 
@@ -147,11 +205,12 @@ export function useTable(config) {
     handleSearchPaginationParams,
     searchParams,
     updateSearchParams,
-    resetSearchParams
+    resetSearchParams,
+    requestParams
   };
 }
 
-function useTableColumn(factory) {
+function useTableColumn<TableData>(factory: () => HookTableColumn<TableData>[]) {
   const SELECTION_KEY = '__selection__';
   const EXPAND_KEY = '__expand__';
 
@@ -166,8 +225,8 @@ function useTableColumn(factory) {
     filteredColumns.value = getFilteredColumns(factory());
   }
 
-  function getFilteredColumns(aColumns) {
-    const cols = [];
+  function getFilteredColumns(aColumns: HookTableColumn<TableData>[]) {
+    const cols: CheckColumn[] = [];
 
     aColumns.forEach(column => {
       if (column.type === undefined) {
@@ -208,7 +267,7 @@ function useTableColumn(factory) {
         if (column.key === EXPAND_KEY) {
           return allColumns.value.find(col => col.type === 'expand');
         }
-        return allColumns.value.find(col => col.key === column.key);
+        return allColumns.value.find((col: any) => col.key === column.key);
       });
 
     return cols;
@@ -221,7 +280,7 @@ function useTableColumn(factory) {
   };
 }
 
-export function useTableOperate(getData) {
+export function useTableOperate(getData: () => Promise<any>) {
   const { bool: modalVisible, setTrue: openModal, setFalse: closeModal } = useBoolean();
 
   const operateType = ref('add');
@@ -233,7 +292,7 @@ export function useTableOperate(getData) {
     openModal();
   }
 
-  function handleEdit(row) {
+  function handleEdit(row: any) {
     operateType.value = 'edit';
     editingData.value = row || null;
 
