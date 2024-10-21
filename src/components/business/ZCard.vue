@@ -44,7 +44,7 @@ const {
   showCollapse?: boolean;
   appear?: boolean;
 }>();
-const collapse = defineModel('show', { default: false });
+const collapse = defineModel<boolean>('collapse', { default: false });
 
 const slots = useSlots();
 
