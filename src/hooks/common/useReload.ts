@@ -1,26 +1,20 @@
 import { nextTick } from 'vue';
-import useBoolean from './useBoolean';
+import { guid } from '@/utils';
 
 /** 重载 */
 export default function useReload() {
   // 重载的标志
-  const { bool: reloadFlag, setTrue, setFalse } = useBoolean(true);
-
+  const uuid = ref(guid());
   /**
    * 触发重载
-   * @param duration - 延迟时间(ms)
    */
-  async function handleReload(duration = 0) {
-    setFalse();
+  async function handleReload() {
+    uuid.value = guid();
     await nextTick();
-
-    setTimeout(() => {
-      setTrue();
-    }, duration);
   }
 
   return {
-    reloadFlag,
+    reloadFlag: uuid,
     handleReload
   };
 }
