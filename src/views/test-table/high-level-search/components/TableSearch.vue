@@ -54,6 +54,7 @@
               <n-divider class="!mb-14px !mt-0" />
               <tag-select
                 v-model="model.dataTypes"
+                :multiple="false"
                 label-class="w-100px text-right"
                 label="数据集类型"
                 :options="dataTypeOptions"

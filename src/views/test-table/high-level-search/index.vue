@@ -68,7 +68,7 @@ const {
     email: '',
     userStatus: null,
 
-    dataTypes: [1],
+    dataTypes: 1,
     dataSources: [1],
     checkedKeys: ['0']
   },
@@ -78,7 +78,7 @@ const {
   formatSearchParams: params => {
     const formattedParams = { ...params };
 
-    formattedParams.dataTypes = params.dataTypes.join(',');
+    // formattedParams.dataTypes = params.dataTypes.join(',');
     formattedParams.dataSources = params.dataSources.join(',');
 
     return formattedParams;
