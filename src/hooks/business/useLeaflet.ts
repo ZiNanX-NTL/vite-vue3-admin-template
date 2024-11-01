@@ -41,10 +41,10 @@ export function useLeaflet(options: L.MapOptions = {}, hooks: MapHooks = {}) {
    *
    * @param callback callback function
    */
-  async function updateMap(callback: (map: L.Map | null) => void = () => {}) {
+  async function updateMap(callback: (map: L.Map) => void = () => {}) {
     if (!isRendered()) return;
 
-    callback(map);
+    callback(map!);
 
     await onUpdated?.(map!);
   }
@@ -59,26 +59,32 @@ export function useLeaflet(options: L.MapOptions = {}, hooks: MapHooks = {}) {
       const northEast = L.latLng(90, 180);
       const bounds = L.latLngBounds(southWest, northEast);
 
-      map = L.map(domRef.value as HTMLElement, {
-        crs: L.CRS.EPSG4326,
-        maxBounds: bounds,
-        minZoom: 1,
-        attributionControl: false,
-        zoomControl: false,
-        ...options
-      }).setView([48.19, 131.55], 6);
-
-      await onRender?.(map);
+      // 初始化
+      if (!map) {
+        map = L.map(domRef.value as HTMLElement, {
+          crs: L.CRS.EPSG4326,
+          maxBounds: bounds,
+          minZoom: 1,
+          attributionControl: false,
+          zoomControl: false,
+          ...options
+        }).setView([48.19, 131.55], 6);
+        await onRender?.(map);
+      }
     }
   }
 
   /** resize map */
-  function resize() {}
+  function resize() {
+    map!.invalidateSize();
+  }
 
   /** destroy map */
   async function destroy() {
     if (!map) return;
     await onDestroy?.(map);
+    map.off();
+    map.remove();
     if (!map) return;
     map = null;
   }
