@@ -85,6 +85,10 @@ export function useData<Data, Fn extends ApiFn>(config: HookListConfig<Data, Fn>
     Object.assign(searchParams, params);
   }
 
+  /** 重置初始参数(特殊情况下使用,最好不要重复调用) */
+  function resetApiParams(params: any) {
+    Object.assign(apiParams, params);
+  }
   /** reset search params */
   function resetSearchParams() {
     Object.assign(searchParams, cloneDeep(apiParams));
@@ -101,6 +105,7 @@ export function useData<Data, Fn extends ApiFn>(config: HookListConfig<Data, Fn>
     handleSearch,
     searchParams,
     updateSearchParams,
+    resetApiParams,
     resetSearchParams,
     requestParams
   };

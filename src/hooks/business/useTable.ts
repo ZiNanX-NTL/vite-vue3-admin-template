@@ -161,6 +161,11 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
     getData();
   }
 
+  /** 重置初始参数(特殊情况下使用,最好不要重复调用) */
+  function resetApiParams(params: any) {
+    Object.assign(apiParams, params);
+  }
+
   /**
    * update search params
    *
@@ -205,6 +210,7 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
     handleSearchPaginationParams,
     searchParams,
     updateSearchParams,
+    resetApiParams,
     resetSearchParams,
     requestParams
   };

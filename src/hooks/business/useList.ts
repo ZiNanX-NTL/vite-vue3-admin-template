@@ -148,6 +148,11 @@ export function useList<ListData, Fn extends ApiFn>(config: HookListConfig<ListD
     Object.assign(searchParams, params);
   }
 
+  /** 重置初始参数(特殊情况下使用,最好不要重复调用) */
+  function resetApiParams(params: any) {
+    Object.assign(apiParams, params);
+  }
+
   /** reset search params */
   function resetSearchParams() {
     Object.assign(searchParams, cloneDeep(apiParams));
@@ -180,6 +185,7 @@ export function useList<ListData, Fn extends ApiFn>(config: HookListConfig<ListD
     handleSearchPaginationParams,
     searchParams,
     updateSearchParams,
+    resetApiParams,
     resetSearchParams,
     requestParams
   };
