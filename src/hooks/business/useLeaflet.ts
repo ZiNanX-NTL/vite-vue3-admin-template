@@ -2,6 +2,7 @@ import { ref, nextTick, watch, onScopeDispose, effectScope } from 'vue';
 import { useScriptTag, useElementSize } from '@vueuse/core';
 import L from 'leaflet';
 import '@/plugins/leaflet/leaflet-marker.js';
+import 'leaflet-easybutton';
 import { ESRI_LEAFLET_CDN } from '@/config';
 
 interface MapHooks {
