@@ -1,6 +1,12 @@
 import type { Reactive } from 'vue';
 import { ref, reactive, computed, watch } from 'vue';
-import type { DataTableBaseColumn, DataTableExpandColumn, DataTableSelectionColumn, PaginationProps } from 'naive-ui';
+import type {
+  DataTableBaseColumn,
+  DataTableExpandColumn,
+  DataTableSelectionColumn,
+  PaginationProps,
+  DataTableColumns
+} from 'naive-ui';
 import { cloneDeep } from 'lodash-es';
 import type { TableColumnGroup, TableColumnTitle, TableColumnGroupTitle } from 'naive-ui/es/data-table/src/interface';
 import { useIsMobile } from '@/utils';
@@ -148,10 +154,10 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
   }
 
   /** 查询数据 */
-  function handleSearch() {
+  async function handleSearch() {
     if (isPaging) updateSearchParams({ page: 1 });
     setRequestParams();
-    getData();
+    await getData();
   }
 
   /** 重置分页查询参数 */
@@ -276,7 +282,7 @@ function useTableColumn<TableData>(factory: () => HookTableColumn<TableData>[]) 
         return allColumns.value.find((col: any) => col.key === column.key);
       });
 
-    return cols;
+    return cols as DataTableColumns<TableData>;
   }
 
   return {

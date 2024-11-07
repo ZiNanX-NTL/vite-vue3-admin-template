@@ -126,10 +126,10 @@ export function useList<ListData, Fn extends ApiFn>(config: HookListConfig<ListD
   }
 
   /** 查询数据 */
-  function handleSearch() {
+  async function handleSearch() {
     if (isPaging) updateSearchParams({ pageNum: 1 });
     setRequestParams();
-    getData();
+    await getData();
   }
 
   /** 重置分页查询参数 */
