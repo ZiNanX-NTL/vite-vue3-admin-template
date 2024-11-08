@@ -64,7 +64,7 @@
     "eslint": "^8.57.0",
     "eslint-config-soybeanjs": "^0.4.9",
     "mockjs": "^1.1.0",
-    "sass": "^1.71.1",
+    "sass": "^1.79.6",
     "simple-git-hooks": "^2.10.0",
     "typescript": "^5.3.3",
     "unocss-preset-unit-to-vw": "^1.0.2",
