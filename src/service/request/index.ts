@@ -28,17 +28,14 @@ interface IBackendConfig {
   successCode: number | string;
 }
 
-class ZNRequest {
+class Request {
   instance: AxiosInstance;
-
-  // 该属性从实例中获取
-  interceptors: InstanceInterceptors | undefined;
 
   // 后端数据字段配置
   backendConfig;
 
   constructor(
-    axiosConfig: InstanceAxiosRequestConfig,
+    axiosConfig?: InstanceAxiosRequestConfig,
     backendConfig: IBackendConfig = {
       codeKey: 'code',
       dataKey: 'data',
@@ -47,8 +44,6 @@ class ZNRequest {
     }
   ) {
     this.instance = axios.create(axiosConfig);
-    // 从实例配置config中获取拦截器配置
-    this.interceptors = axiosConfig.interceptors;
     this.backendConfig = backendConfig;
 
     this.setInterceptor();
@@ -59,11 +54,9 @@ class ZNRequest {
     // 全局请求拦截
     this.instance.interceptors.request.use(
       config => {
-        console.log('全局请求拦截');
         return config;
       },
       (axiosError: AxiosError) => {
-        console.log('全局请求失败拦截', axiosError);
         const error = handleAxiosError(axiosError);
         return handleServiceResult(error, null);
       }
@@ -71,7 +64,6 @@ class ZNRequest {
     // 全局响应拦截
     this.instance.interceptors.response.use(
       (async response => {
-        console.log('全局响应拦截');
         const { status } = response;
         if (status === 200 || status < 300 || status === 304) {
           const backend = { ...response.data, url: response.config.url };
@@ -88,12 +80,35 @@ class ZNRequest {
         return handleServiceResult(error, null);
       }) as (response: AxiosResponse<any, any>) => any,
       (axiosError: AxiosError) => {
-        console.log('全局响应失败拦截', axiosError);
         const error = handleAxiosError(axiosError);
         return handleServiceResult(error, null);
       }
     );
+  }
+}
 
+class ZNRequest extends Request {
+  // 该属性从实例中获取
+  interceptors: InstanceInterceptors | undefined;
+
+  constructor(
+    axiosConfig: InstanceAxiosRequestConfig,
+    backendConfig: IBackendConfig = {
+      codeKey: 'code',
+      dataKey: 'data',
+      msgKey: 'message',
+      successCode: 200
+    }
+  ) {
+    super(axiosConfig, backendConfig);
+    // 从实例配置config中获取拦截器配置
+    this.interceptors = axiosConfig.interceptors;
+
+    this.setInstanceInterceptor();
+  }
+
+  /** 设置实例级别请求拦截器 */
+  setInstanceInterceptor() {
     // 实例级别拦截
     this.instance.interceptors.request.use(
       this.interceptors?.requestInterceptor,
@@ -122,7 +137,7 @@ class ZNRequest {
   request<T>(config: SingleRequestAxiosRequestConfig): Promise<Service.RequestResult<T>> {
     let resConfig = config;
     return new Promise((resolve, reject) => {
-      // 请求拦截设置位置
+      // 设置接口级别请求拦截器
       if (resConfig.interceptors?.requestInterceptor) {
         resConfig = resConfig.interceptors.requestInterceptor(resConfig);
       }
@@ -131,7 +146,7 @@ class ZNRequest {
         .request(resConfig)
         .then(response => {
           let res = response;
-          // 响应拦截设置位置
+          // 设置接口级别响应级别拦截器
           if (resConfig.interceptors?.responseInterceptor) {
             res = resConfig.interceptors.responseInterceptor(res);
           }
@@ -145,4 +160,4 @@ class ZNRequest {
   }
 }
 
-export { ZNRequest };
+export { Request, ZNRequest };

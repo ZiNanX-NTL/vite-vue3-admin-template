@@ -15,6 +15,7 @@
     "release": "soy release"
   },
   "dependencies": {
+    "@alova/adapter-axios": "^2.0.10",
     "@kjgl77/datav-vue3": "^1.7.3",
     "@leafer-in/editor": "^1.0.2",
     "@leafer-in/scroll": "^1.0.2",
@@ -22,6 +23,7 @@
     "@leafer-in/view": "^1.0.2",
     "@vueuse/core": "^10.9.0",
     "@vueuse/integrations": "^10.9.0",
+    "alova": "^3.2.3",
     "axios": "^1.6.7",
     "clipboard": "^2.0.11",
     "colord": "^2.9.3",

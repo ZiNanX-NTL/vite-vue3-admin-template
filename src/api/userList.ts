@@ -1,4 +1,4 @@
-import { mockInstance } from '@/service';
+import { mockAlova, mockInstance } from '@/service';
 import { adapter } from '@/service/helpers';
 import { adapterOfFetchUserList } from './userList.adapter';
 
@@ -6,9 +6,16 @@ import { adapterOfFetchUserList } from './userList.adapter';
  * 获取分页用户列表数据
  * @param { Object } params - 负载参数
  */
-export async function fetchUserList(params: any) {
-  const data = await mockInstance.post({ url: '/userList', data: params });
-  return adapter(adapterOfFetchUserList, data);
+export function fetchUserList(params: any) {
+  return mockAlova.Post(
+    '/userList',
+    { ...params },
+    {
+      transform(data: Service.RequestResult<unknown>) {
+        return adapter(adapterOfFetchUserList, data);
+      }
+    }
+  );
 }
 /**
  * 获取所有用户列表数据
