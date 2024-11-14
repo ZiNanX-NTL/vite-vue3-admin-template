@@ -120,21 +120,21 @@ class ZNRequest extends Request {
     );
   }
 
-  get<T>(config: SingleRequestAxiosRequestConfig) {
+  get<T = any>(config: SingleRequestAxiosRequestConfig) {
     return this.request<T>({
       ...config,
       method: 'GET'
     });
   }
 
-  post<T>(config: SingleRequestAxiosRequestConfig) {
+  post<T = any>(config: SingleRequestAxiosRequestConfig) {
     return this.request<T>({
       ...config,
       method: 'POST'
     });
   }
 
-  request<T>(config: SingleRequestAxiosRequestConfig): Promise<Service.RequestResult<T>> {
+  request<T = any>(config: SingleRequestAxiosRequestConfig): Promise<Service.RequestResult<T>> {
     let resConfig = config;
     return new Promise((resolve, reject) => {
       // 设置接口级别请求拦截器
