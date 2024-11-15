@@ -66,7 +66,7 @@ export default function useRender<T>(domRef: Ref<HTMLElement | null>, callbacks:
   });
 
   onScopeDispose(() => {
-    destroy(instance);
+    destroy(instance, true);
     scope.stop();
   });
 
