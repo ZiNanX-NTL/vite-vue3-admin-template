@@ -1,5 +1,5 @@
 <template>
-  <component :is="h(ZCard, $attrs)" ref="cardRef" v-model="model" class="card-wrapper" content-class="h-0 flex-1">
+  <component :is="h(ZCard, $attrs)" ref="cardRef" v-model="model" content-class="h-0 flex-1">
     <template #header-extra="slotData">
       <slot name="header-extra" v-bind="slotData || {}">
         <n-flex align="center">
