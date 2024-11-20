@@ -27,25 +27,30 @@ export function useLeaflet(options: L.MapOptions = {}, hooks: MapHooks = {}) {
     async render() {
       await loadEsriLeaflet(true);
 
+      await nextTick();
+
       const southWest = L.latLng(-90, -180);
       const northEast = L.latLng(90, 180);
       const bounds = L.latLngBounds(southWest, northEast);
 
       const { layers = [], ...resOptions } = options;
 
-      const map = L.map(domRef.value as HTMLElement, {
-        crs: L.CRS.EPSG4326,
-        maxBounds: bounds,
-        minZoom: 1,
-        attributionControl: false,
-        zoomControl: false,
-        layers: [
-          // 添加默认底图或者其他图层
-          ...layers
-        ],
-        ...resOptions
-      }).setView([48.19, 131.55], 6);
-      await onRender?.(map);
+      let map: L.Map | null = null;
+      if (!mapInstance.value) {
+        map = L.map(domRef.value as HTMLElement, {
+          crs: L.CRS.EPSG4326,
+          maxBounds: bounds,
+          minZoom: 1,
+          attributionControl: false,
+          zoomControl: false,
+          layers: [
+            // 添加默认底图或者其他图层
+            ...layers
+          ],
+          ...resOptions
+        }).setView([48.19, 131.55], 6);
+        await onRender?.(map);
+      }
 
       return map;
     },

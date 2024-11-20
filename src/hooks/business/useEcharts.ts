@@ -123,11 +123,14 @@ export function useEcharts<T extends ECOption>(optionsFactory: () => T, hooks: C
 
       await nextTick();
 
-      const chart = echarts.init(domRef.value, chartTheme);
+      let chart: echarts.ECharts | null = null;
+      if (!chartInstance.value) {
+        chart = echarts.init(domRef.value, chartTheme);
 
-      chart.setOption({ ...chartOptions, backgroundColor: 'transparent' });
+        chart.setOption({ ...chartOptions, backgroundColor: 'transparent' });
 
-      await onRender?.(chart);
+        await onRender?.(chart);
+      }
 
       return chart;
     },
