@@ -61,7 +61,12 @@ export default function useRender<T>(domRef: Ref<HTMLElement | null>, callbacks:
 
   scope.run(() => {
     watch([width, height], ([newWidth, newHeight]) => {
-      renderBySize(newWidth, newHeight);
+      const timer = setTimeout(async () => {
+        await renderBySize(newWidth, newHeight);
+      });
+      onWatcherCleanup(() => {
+        clearTimeout(timer);
+      });
     });
   });
 
