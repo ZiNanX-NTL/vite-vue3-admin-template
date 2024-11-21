@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="transition-all dark:bg-dark dark:text-white dark:text-opacity-82"
-    :class="inverted ? 'bg-#001428 text-white' : 'bg-white text-#333639'"
-  >
+  <div class="transition-all dark:text-white dark:text-opacity-82" :class="inverted ? 'text-white' : 'text-#333639'">
     <slot></slot>
   </div>
 </template>
