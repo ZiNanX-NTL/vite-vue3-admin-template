@@ -39,7 +39,7 @@
     "leaflet-easybutton": "^2.4.0",
     "localforage": "^1.10.0",
     "lodash-es": "^4.17.21",
-    "naive-ui": "^2.40.1",
+    "naive-ui": "^2.40.2",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^4.0.1",
     "qs": "^6.11.2",
