@@ -7,5 +7,17 @@ import useAuth from './useAuth';
 import useRender from './useRender';
 import useTempCache from './useTempCache';
 import useHeight from './useHeight';
+import useResettableReactive from './useResettableReactive';
 
-export { useGlobalLoading, useBoolean, useContext, useLoading, useReload, useAuth, useRender, useTempCache, useHeight };
+export {
+  useGlobalLoading,
+  useBoolean,
+  useContext,
+  useLoading,
+  useReload,
+  useAuth,
+  useRender,
+  useTempCache,
+  useHeight,
+  useResettableReactive
+};
