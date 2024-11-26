@@ -1,6 +1,39 @@
 # Changelog
 
 
+## [v0.0.4](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/compare/v0.0.3...v0.0.4) (2024-11-26)
+
+### &nbsp;&nbsp;&nbsp;🚀 Features
+
+- **hooks**:
+  - 新增useLeaflet全局默认底图设置方式 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(45fbf)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/45fbf6a)
+  - 新增useHeight,获取basic布局下内容区高度 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(3d444)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/3d44470)
+- **projects**:
+  - 设置request返回类型默认类型为any &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(a70ed)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/a70eda6)
+
+### &nbsp;&nbsp;&nbsp;🐞 Bug Fixes
+
+- **hooks**:
+  - 修复useRender的destroy方法执行强制销毁 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(619d5)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/619d542)
+  - 修复useLeaflet,useEcharts初始化渲染多次的问题 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(0b576)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/0b576f3)
+  - 修复useRender中renderBySize方法 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(bff4a)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/bff4a20)
+
+### &nbsp;&nbsp;&nbsp;💅 Refactors
+
+- **components**: 重构DarkModeContainer组件 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(2f167)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/2f16762)
+- **hooks**: 重构useLeaflet &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(ed3b4)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/ed3b482)
+
+### &nbsp;&nbsp;&nbsp;🏡 Chore
+
+- **projects**:
+  - update deps &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(4927e)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/4927e3b)
+  - 更新依赖 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(e9e02)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/e9e0289)
+
+### &nbsp;&nbsp;&nbsp;❤️ Contributors
+
+
+[ZiNanX_NTL](mailto:702668400@qq.com)
+
 ## [v0.0.3](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/compare/v0.0.2...v0.0.3) (2024-11-12)
 
 ### &nbsp;&nbsp;&nbsp;🚀 Features
