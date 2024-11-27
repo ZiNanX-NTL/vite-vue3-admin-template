@@ -78,7 +78,7 @@
     "vite-plugin-mock": "2.9.8",
     "vite-plugin-progress": "^0.0.7",
     "vite-plugin-svg-icons": "^2.0.1",
-    "vite-plugin-vue-devtools": "7.3.6"
+    "vite-plugin-vue-devtools": "^7.6.4"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm soy lint-staged",
