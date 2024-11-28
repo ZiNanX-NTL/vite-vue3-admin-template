@@ -267,3 +267,42 @@ export function applyColorTransition(startColor: string, endColor: string, value
 
   return colord({ r, g, b }).toHex();
 }
+
+/** 根据颜色获取配色方案 */
+export function generateColorScheme(color: string): string[] {
+  const baseColor = colord(color);
+
+  // 生成互补色
+  const complementaryColor = baseColor.rotate(180).toHex();
+
+  // 生成类似色（±30°）
+  const analogousColor1 = baseColor.rotate(30).toHex();
+  const analogousColor2 = baseColor.rotate(-30).toHex();
+
+  // 生成分裂互补色（互补色的类似色）
+  const splitComplementaryColor1 = baseColor.rotate(150).toHex();
+  const splitComplementaryColor2 = baseColor.rotate(-150).toHex();
+
+  // 生成三文鱼色（±120°）
+  const triadicColor1 = baseColor.rotate(120).toHex();
+  const triadicColor2 = baseColor.rotate(-120).toHex();
+
+  // 生成四色和谐（±90°）
+  const tetradicColor1 = baseColor.rotate(90).toHex();
+  const tetradicColor2 = baseColor.rotate(180).toHex();
+  const tetradicColor3 = baseColor.rotate(270).toHex();
+
+  return [
+    baseColor.toHex(),
+    complementaryColor,
+    analogousColor1,
+    analogousColor2,
+    splitComplementaryColor1,
+    splitComplementaryColor2,
+    triadicColor1,
+    triadicColor2,
+    tetradicColor1,
+    tetradicColor2,
+    tetradicColor3
+  ];
+}
