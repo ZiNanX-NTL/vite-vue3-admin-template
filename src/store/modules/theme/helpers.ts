@@ -32,7 +32,7 @@ export function getOverrides(state: any) {
 function getSettingThemeOverrides(state: any) {
   const colors = { primary: state.themeColor, ...state.otherColor };
   const { primary, success, warning, error } = colors;
-  const info = state.isCustomizeInfoColor ? colors.info : getColorPalette(primary, 7, state.darkMode);
+  const info = state.isCustomizeInfoColor ? colors.info : getColorPalette(primary, 7);
 
   const themeColors = getThemeColors(
     [

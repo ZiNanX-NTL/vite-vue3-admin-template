@@ -1,6 +1,6 @@
 import { colord, extend } from 'colord';
 import mixPlugin from 'colord/plugins/mix';
-import type { AnyColor, HsvColor } from 'colord';
+import type { AnyColor, Colord, HsvColor } from 'colord';
 
 extend([mixPlugin]);
 
@@ -27,27 +27,27 @@ type ColorIndex = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 /** 暗色主题颜色映射关系表 */
 const darkColorMap = [
-  { index: 1, opacity: 0.98 },
-  { index: 2, opacity: 0.97 },
-  { index: 3, opacity: 0.95 },
-  { index: 4, opacity: 0.9 },
-  { index: 5, opacity: 0.85 },
-  { index: 6, opacity: 0.65 },
-  { index: 7, opacity: 0.45 },
-  { index: 8, opacity: 0.3 },
-  { index: 9, opacity: 0.25 },
-  { index: 10, opacity: 0.15 }
+  { index: 1, ratio: 0.98 },
+  { index: 2, ratio: 0.97 },
+  { index: 3, ratio: 0.95 },
+  { index: 4, ratio: 0.9 },
+  { index: 5, ratio: 0.85 },
+  { index: 6, ratio: 0.65 },
+  { index: 7, ratio: 0.45 },
+  { index: 8, ratio: 0.3 },
+  { index: 9, ratio: 0.25 },
+  { index: 10, ratio: 0.15 }
 ];
 
 /**
  * 根据传入颜色返回暗色主体颜色
  * @param color - 颜色
- * @param opacity - 透明度(0 - 1),默认0.65
+ * @param ratio - 所占比例(0 - 1),默认0.65
  */
-export function getDarkColor(color: AnyColor, opacity = 0.65) {
+export function getDarkColor(color: AnyColor | Colord, ratio = 0.65) {
   /** 暗黑主题的混合颜色 */
   const darkThemeMixColor = colord(color).isLight() ? '#141414' : '#fafafa';
-  const darkColor = colord(darkThemeMixColor).mix(color, opacity);
+  const darkColor = colord(darkThemeMixColor).mix(color, ratio);
 
   return darkColor;
 }
@@ -67,6 +67,9 @@ export function getColorPalette(color: AnyColor, index: ColorIndex, darkTheme = 
   }
 
   if (index === 6) {
+    if (darkTheme) {
+      return getDarkColor(transformColor).toHex();
+    }
     return colord(transformColor).toHex();
   }
 
@@ -97,8 +100,8 @@ export function getColorPalettes(color: AnyColor, darkTheme = false): string[] {
   const patterns = indexes.map(index => getColorPalette(color, index));
 
   if (darkTheme) {
-    const darkPatterns = darkColorMap.map(({ index, opacity }) => {
-      const darkColor = getDarkColor(patterns[index - 1], opacity);
+    const darkPatterns = darkColorMap.map(({ index, ratio }) => {
+      const darkColor = getDarkColor(patterns[index - 1], ratio);
 
       return darkColor;
     });
