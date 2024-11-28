@@ -27,11 +27,11 @@ type ColorIndex = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 /** 暗色主题颜色映射关系表 */
 const darkColorMap = [
-  { index: 1, ratio: 0.98 },
-  { index: 2, ratio: 0.97 },
-  { index: 3, ratio: 0.95 },
-  { index: 4, ratio: 0.9 },
-  { index: 5, ratio: 0.85 },
+  { index: 1, ratio: 0.8 },
+  { index: 2, ratio: 0.77 },
+  { index: 3, ratio: 0.74 },
+  { index: 4, ratio: 0.71 },
+  { index: 5, ratio: 0.68 },
   { index: 6, ratio: 0.65 },
   { index: 7, ratio: 0.45 },
   { index: 8, ratio: 0.3 },
@@ -84,7 +84,7 @@ export function getColorPalette(color: AnyColor, index: ColorIndex, darkTheme = 
   };
 
   if (darkTheme) {
-    return getDarkColor(newHsv).toHex();
+    return getDarkColor(newHsv, darkColorMap.find(item => item.index === index)?.ratio).toHex();
   }
   return colord(newHsv).toHex();
 }
