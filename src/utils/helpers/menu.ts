@@ -24,6 +24,9 @@ export function useMenu() {
     if (menuItem) {
       if (!(menuItem.children && menuItem.children.length)) {
         routerPush(menuItem.routePath as string);
+      } else {
+        // 设置默认选中子菜单
+        routerPush(menuItem.children[0].routePath as string);
       }
       routeStore.setChildrenMenus(menuItem?.children as App.GlobalMenuOption[]);
     } else {
