@@ -32,15 +32,18 @@ export function getOverrides(state: any) {
 function getSettingThemeOverrides(state: any) {
   const colors = { primary: state.themeColor, ...state.otherColor };
   const { primary, success, warning, error } = colors;
-  const info = state.isCustomizeInfoColor ? colors.info : getColorPalette(primary, 7);
+  const info = state.isCustomizeInfoColor ? colors.info : getColorPalette(primary, 7, state.darkMode);
 
-  const themeColors = getThemeColors([
-    ['primary', primary],
-    ['info', info],
-    ['success', success],
-    ['warning', warning],
-    ['error', error]
-  ]);
+  const themeColors = getThemeColors(
+    [
+      ['primary', primary],
+      ['info', info],
+      ['success', success],
+      ['warning', warning],
+      ['error', error]
+    ],
+    state.darkMode
+  );
   const colorLoading = primary;
 
   const settingOverrides = {
@@ -65,13 +68,13 @@ interface ColorAction {
   handler: (color: string) => string;
 }
 /** 获取主题颜色的各种场景对应的颜色 */
-function getThemeColors(colors: [ColorType, string][]) {
+function getThemeColors(colors: [ColorType, string][], darkMode = false) {
   const colorActions: ColorAction[] = [
-    { scene: '', handler: color => color },
-    { scene: 'Suppl', handler: color => color },
-    { scene: 'Hover', handler: color => getColorPalette(color, 5) },
-    { scene: 'Pressed', handler: color => getColorPalette(color, 7) },
-    { scene: 'Active', handler: color => addColorAlpha(color, 0.1) }
+    { scene: '', handler: color => getColorPalette(color, 6, darkMode) },
+    { scene: 'Suppl', handler: color => getColorPalette(color, 6, darkMode) },
+    { scene: 'Hover', handler: color => getColorPalette(color, 5, darkMode) },
+    { scene: 'Pressed', handler: color => getColorPalette(color, 7, darkMode) },
+    { scene: 'Active', handler: color => addColorAlpha(getColorPalette(color, 6, darkMode), 0.1) }
   ];
 
   const themeColor: ThemeColor = {};

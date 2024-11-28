@@ -26,7 +26,7 @@ export default function subscribeThemeStore() {
       () => theme.naiveThemeOverrides,
       newValue => {
         if (newValue.common) {
-          addThemeCssVarsToHtml(newValue.common, theme.darkMode);
+          addThemeCssVarsToHtml(newValue.common);
         }
       },
       { immediate: true }
@@ -41,7 +41,7 @@ export default function subscribeThemeStore() {
         } else {
           removeDarkClass();
         }
-        addThemeCssVarsToHtml(theme.naiveThemeOverrides.common, newValue);
+        addThemeCssVarsToHtml(theme.naiveThemeOverrides.common);
       },
       {
         immediate: true
@@ -83,18 +83,18 @@ type ThemeVars = Exclude<GlobalThemeOverrides['common'], undefined>;
 type ThemeVarsKeys = keyof ThemeVars;
 
 /** 添加css vars至html */
-function addThemeCssVarsToHtml(themeVars: ThemeVars, isDark = false) {
+function addThemeCssVarsToHtml(themeVars: ThemeVars) {
   const keys = Object.keys(themeVars) as ThemeVarsKeys[];
   const style: string[] = [];
   keys.forEach(key => {
     const styleValue = themeVars[key];
 
     if (styleValue) {
-      const { r, g, b } = getRgbOfColor(styleValue, isDark);
+      const { r, g, b } = getRgbOfColor(styleValue);
       style.push(`--${kebabCase(key)}: ${r} ${g} ${b}`);
 
       if (key === 'primaryColor') {
-        const colorPalettes = getColorPalettes(styleValue, isDark);
+        const colorPalettes = getColorPalettes(styleValue);
 
         colorPalettes.forEach((palette, index) => {
           const { r: pR, g: pG, b: pB } = getRgbOfColor(palette);
