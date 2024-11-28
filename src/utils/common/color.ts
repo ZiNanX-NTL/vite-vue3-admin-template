@@ -25,13 +25,41 @@ const darkColorCount = 4;
  */
 type ColorIndex = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
+/** 暗色主题颜色映射关系表 */
+const darkColorMap = [
+  { index: 1, opacity: 0.98 },
+  { index: 2, opacity: 0.97 },
+  { index: 3, opacity: 0.95 },
+  { index: 4, opacity: 0.9 },
+  { index: 5, opacity: 0.85 },
+  { index: 6, opacity: 0.65 },
+  { index: 7, opacity: 0.45 },
+  { index: 8, opacity: 0.3 },
+  { index: 9, opacity: 0.25 },
+  { index: 10, opacity: 0.15 }
+];
+
+/**
+ * 根据传入颜色返回暗色主体颜色
+ * @param color - 颜色
+ * @param opacity - 透明度(0 - 1),默认0.65
+ */
+export function getDarkColor(color: AnyColor, opacity = 0.65) {
+  /** 暗黑主题的混合颜色 */
+  const darkThemeMixColor = colord(color).isLight() ? '#141414' : '#fafafa';
+  const darkColor = colord(darkThemeMixColor).mix(color, opacity);
+
+  return darkColor;
+}
+
 /**
  * 根据颜色获取调色板颜色(从左至右颜色从浅到深，6为主色号)
  * @param color - 颜色
  * @param index - 调色板的对应的色号(6为主色号)
+ * @param darkTheme - 暗黑主题的颜色
  * @returns 返回hex格式的颜色
  */
-export function getColorPalette(color: AnyColor, index: ColorIndex): string {
+export function getColorPalette(color: AnyColor, index: ColorIndex, darkTheme = false): string {
   const transformColor = colord(color);
 
   if (!transformColor.isValid()) {
@@ -52,37 +80,25 @@ export function getColorPalette(color: AnyColor, index: ColorIndex): string {
     v: getValue(hsv, i, isLight)
   };
 
+  if (darkTheme) {
+    return getDarkColor(newHsv).toHex();
+  }
   return colord(newHsv).toHex();
 }
-
-/** 暗色主题颜色映射关系表 */
-const darkColorMap = [
-  { index: 10, opacity: 0.15 },
-  { index: 9, opacity: 0.25 },
-  { index: 8, opacity: 0.3 },
-  { index: 7, opacity: 0.45 },
-  { index: 6, opacity: 0.65 },
-  { index: 5, opacity: 0.85 },
-  { index: 4, opacity: 0.9 },
-  { index: 3, opacity: 0.95 },
-  { index: 2, opacity: 0.97 },
-  { index: 1, opacity: 0.98 }
-];
 
 /**
  * 根据颜色获取调色板颜色所有颜色
  * @param color - 颜色
  * @param darkTheme - 暗黑主题的调色板颜色
- * @param darkThemeMixColor - 暗黑主题的混合颜色，默认 #141414
  */
-export function getColorPalettes(color: AnyColor, darkTheme = false, darkThemeMixColor = '#141414'): string[] {
+export function getColorPalettes(color: AnyColor, darkTheme = false): string[] {
   const indexes: ColorIndex[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   const patterns = indexes.map(index => getColorPalette(color, index));
 
   if (darkTheme) {
     const darkPatterns = darkColorMap.map(({ index, opacity }) => {
-      const darkColor = colord(darkThemeMixColor).mix(patterns[index], opacity);
+      const darkColor = getDarkColor(patterns[index - 1], opacity);
 
       return darkColor;
     });
@@ -216,7 +232,35 @@ export function isWhiteColor(color: string) {
 /**
  *	获取颜色的rgb值
  * @param color 颜色
+ * @param darkTheme - 暗黑主题的颜色
  */
-export function getRgbOfColor(color: string) {
+export function getRgbOfColor(color: string, darkTheme = false) {
+  if (darkTheme) {
+    return getDarkColor(color).toRgb();
+  }
   return colord(color).toRgb();
+}
+
+/**
+ * 将颜色的过渡应用到数值上
+ * @param startColor 开始颜色
+ * @param endColor 结束颜色
+ * @param value 数值，范围在 0 到 1 之间
+ * @returns 过渡后的颜色
+ */
+export function applyColorTransition(startColor: string, endColor: string, value: number): string {
+  if (value < 0 || value > 1) {
+    throw new Error('Value must be between 0 and 1');
+  }
+
+  const start = colord(startColor);
+  const end = colord(endColor);
+  const { r: sr, g: sg, b: sb } = start.toRgb();
+  const { r: er, g: eg, b: eb } = end.toRgb();
+
+  const r = Math.round(sr + (er - sr) * value);
+  const g = Math.round(sg + (eg - sg) * value);
+  const b = Math.round(sb + (eb - sb) * value);
+
+  return colord({ r, g, b }).toHex();
 }
