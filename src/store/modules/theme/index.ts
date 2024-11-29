@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { darkTheme } from 'naive-ui';
-import { sessionStg } from '@/utils';
+import { generateColorScheme, sessionStg } from '@/utils';
 import { initThemeSettings, getOverrides } from './helpers';
 
 export const useThemeStore = defineStore('theme-store', {
@@ -14,6 +14,11 @@ export const useThemeStore = defineStore('theme-store', {
     naiveThemeOverrides(state) {
       const overrides = getOverrides(state);
       return overrides;
+    },
+    /** 配色方案色板 */
+    colorScheme(state) {
+      const color = state?.naiveThemeOverrides?.common?.primaryColor || state.themeColor;
+      return generateColorScheme(color);
     },
     /** 页面动画模式 */
     pageAnimateMode(state) {
