@@ -94,23 +94,22 @@ export function useEcharts<T extends ECOption>(optionsFactory: () => T, hooks: C
   const route = unref(router.currentRoute);
   const isKeepAlive = route.meta.keepAlive;
 
-  const {
-    onRender = instance => {
-      const textColor = darkMode.value ? 'rgb(224, 224, 224)' : 'rgb(31, 31, 31)';
-      const maskColor = darkMode.value ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.8)';
+  const showLoading = (instance: echarts.ECharts) => {
+    const textColor = darkMode.value ? 'rgb(224, 224, 224)' : 'rgb(31, 31, 31)';
+    const maskColor = darkMode.value ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.8)';
 
-      instance.showLoading({
-        color: themeStore.themeColor,
-        textColor,
-        fontSize: 14,
-        maskColor
-      });
-    },
-    onUpdated = instance => {
-      instance.hideLoading();
-    },
-    onDestroy
-  } = hooks;
+    instance.showLoading({
+      color: themeStore.themeColor,
+      textColor,
+      fontSize: 14,
+      maskColor
+    });
+  };
+  const hideLoading = (instance: echarts.ECharts) => {
+    instance.hideLoading();
+  };
+
+  const { onRender, onUpdated, onDestroy } = hooks;
 
   const {
     instance: chartInstance,
@@ -126,6 +125,8 @@ export function useEcharts<T extends ECOption>(optionsFactory: () => T, hooks: C
       const chart = echarts.init(domRef.value, chartTheme);
 
       chart.setOption({ ...chartOptions, backgroundColor: 'transparent' });
+
+      showLoading(chart);
 
       await onRender?.(chart);
 
@@ -163,6 +164,7 @@ export function useEcharts<T extends ECOption>(optionsFactory: () => T, hooks: C
 
     chartInstance.value?.setOption({ ...updatedOpts, backgroundColor: 'transparent' });
 
+    hideLoading(chartInstance.value!);
     await onUpdated?.(chartInstance.value!);
   }
 
@@ -179,6 +181,7 @@ export function useEcharts<T extends ECOption>(optionsFactory: () => T, hooks: C
         chartInstance.value = tmp;
       }
     }
+    hideLoading(chartInstance.value!);
     await onUpdated?.(chartInstance.value!);
   }
 
