@@ -74,3 +74,57 @@
 	opacity: 0;
 	transform: scale(0);
 }
+
+/* 其他自定义过渡动画 */
+/* fade-slide-left */
+.fade-slide-left-leave-active,
+.fade-slide-left-enter-active {
+	transition: all 0.3s;
+}
+.fade-slide-left-enter-active {
+	transition-delay: 0.3s;
+}
+.fade-slide-left-enter-from,.fade-slide-left-leave-to {
+	opacity: 0;
+	transform: translateX(-30px);
+}
+
+/* fade-slide-right */
+.fade-slide-right-leave-active,
+.fade-slide-right-enter-active {
+	transition: all 0.3s;
+}
+.fade-slide-right-enter-active {
+	transition-delay: 0.3s;
+}
+.fade-slide-right-enter-from,.fade-slide-right-leave-to {
+	opacity: 0;
+	transform: translateX(30px);
+}
+
+/* fade-slide-top */
+.fade-slide-top-leave-active,
+.fade-slide-top-enter-active {
+	transition: all 0.3s;
+}
+.fade-slide-top-enter-active {
+	transition-delay: 0.3s;
+}
+.fade-slide-top-enter-from,.fade-slide-top-leave-to {
+	opacity: 0;
+	transform: translateY(-30px);
+}
+
+/* fade-slide-bottom */
+.fade-slide-bottom-leave-active,
+.fade-slide-bottom-enter-active {
+	transition: all 0.3s;
+}
+.fade-slide-bottom-enter-active {
+	transition-delay: 0.3s;
+}
+.fade-slide-bottom-enter-from,.fade-slide-bottom-leave-to {
+	opacity: 0;
+	transform: translateY(30px);
+}
+
