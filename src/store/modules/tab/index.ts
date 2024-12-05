@@ -158,7 +158,7 @@ export const useTabStore = defineStore('tab-store', {
      * @param fullPath - 路由fullPath
      */
     async handleClickTab(fullPath: string) {
-      const { routerPush } = useRouterPush();
+      const { routerPush } = useRouterPush(false);
 
       const isActive = this.activeTab === fullPath;
       if (!isActive) {
@@ -172,7 +172,7 @@ export const useTabStore = defineStore('tab-store', {
      */
     async removeTab(fullPath: string) {
       const { removeCacheEntry } = useRouteStore();
-      const { routerPush } = useRouterPush();
+      const { routerPush } = useRouterPush(false);
 
       const tabName = this.tabs.find(tab => tab.fullPath === fullPath)?.name as string | undefined;
       if (tabName) {
@@ -210,7 +210,7 @@ export const useTabStore = defineStore('tab-store', {
      * @param excludes - 保留的多页签path
      */
     async clearTab(excludes: string[] = []) {
-      const { routerPush } = useRouterPush();
+      const { routerPush } = useRouterPush(false);
       const { removeCacheEntry } = useRouteStore();
 
       const homePath = this.homeTab.fullPath;

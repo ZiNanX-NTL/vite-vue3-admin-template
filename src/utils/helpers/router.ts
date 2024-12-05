@@ -1,12 +1,16 @@
+import { useRouter } from 'vue-router';
 import type { RouteLocationRaw } from 'vue-router';
-import { router } from '@/router';
+import { router as globalRouter } from '@/router';
 import { useTabStore } from '@/store';
 
 /**
  * 路由跳转
+ * @param inSetup - 是否在vue页面/组件的setup里面调用，在axios里面无法使用useRouter和useRoute
  */
-export function useRouterPush() {
+
+export function useRouterPush(inSetup = true) {
   const { removeTabOnly } = useTabStore();
+  const router = inSetup ? useRouter() : globalRouter;
   const route = router.currentRoute;
 
   /**

@@ -21,7 +21,7 @@ export const useAuthStore = defineStore('auth-store', {
   actions: {
     /** 重置auth状态 */
     resetAuthStore() {
-      const { toLogin } = useRouterPush();
+      const { toLogin } = useRouterPush(false);
       const { resetRouteStore } = useRouteStore();
       const route = unref(router.currentRoute);
 
@@ -57,7 +57,7 @@ export const useAuthStore = defineStore('auth-store', {
      */
     async handleActionAfterLogin(backendToken: any, redirect = true) {
       const route = useRouteStore();
-      const { toLoginRedirect } = useRouterPush();
+      const { toLoginRedirect } = useRouterPush(false);
 
       const loginSuccess = await this.loginByToken(backendToken);
 
