@@ -3,9 +3,9 @@
     <div
       v-for="item in tab.tabs"
       :key="item.fullPath"
-      class="relative h-32px flex flex-y-center cursor-pointer select-none border-1px border-#e5e7eb rounded-3px px-12px py-4px dark:border-#ffffff3d hover:border-[rgba(var(--primary-color),0.3)] hover:text-primary dark:hover:border-[rgba(var(--primary-color),0.3)]"
+      class="relative h-32px flex flex-y-center cursor-pointer select-none border-1px border-#e5e7eb rounded-3px px-12px py-4px dark:border-#ffffff3d hover:border-[rgb(var(--primary-color)/0.3)] hover:text-primary dark:hover:border-[rgb(var(--primary-color)/0.3)]"
       :class="{
-        'text-primary bg-[rgba(var(--primary-color),0.1)] dark:bg-[rgba(var(--primary-color),0.15)] !border-[rgba(var(--primary-color),0.3)]':
+        'text-primary bg-[rgb(var(--primary-color)/0.1)] dark:bg-[rgb(var(--primary-color)/0.15)] !border-[rgb(var(--primary-color)/0.3)]':
           tab.activeTab === item.fullPath
       }"
       @click="tab.handleClickTab(item.fullPath)"
