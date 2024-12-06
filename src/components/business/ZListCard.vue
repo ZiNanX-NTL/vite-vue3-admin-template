@@ -14,11 +14,15 @@
     </template>
     <template v-for="(_value, name) in resultSlots" #[name]="slotData">
       <slot v-if="!['default'].includes(name as string)" :name="name" v-bind="slotData || {}"></slot>
-      <n-spin v-if="name === 'default'" :key="name" :show="loading" class="h-full" content-class="h-full">
+      <n-spin v-if="name === 'default'" :key="name" :show="loading" class="h-full" content-class="h-full relative">
         <n-scrollbar id="image-scroll-container" class="h-full">
           <slot :name="name" v-bind="{ ...slotData, list: listData }"></slot>
         </n-scrollbar>
-        <n-empty v-if="!listData.length && !loading" class="size-full flex-center" description="暂无数据"></n-empty>
+        <n-empty
+          v-if="!listData.length && !loading"
+          class="absolute-lt size-full flex-center"
+          description="暂无数据"
+        ></n-empty>
       </n-spin>
     </template>
     <template #footer="slotData">
