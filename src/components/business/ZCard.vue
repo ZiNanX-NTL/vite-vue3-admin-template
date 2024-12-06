@@ -1,7 +1,10 @@
 <template>
   <component :is="h(NCard, $attrs)" ref="cardRef" v-model="model">
     <template v-if="title" #header>
-      <n-h4 prefix="bar" align-text class="mb-0">{{ title }}</n-h4>
+      <n-h4 :prefix="showPrefix ? 'bar' : undefined" align-text class="mb-0" :class="titleClass">
+        {{ title }}
+        <slot name="tip"></slot>
+      </n-h4>
     </template>
     <template #header-extra="slotData">
       <n-flex justify="end" align="center">
@@ -13,7 +16,6 @@
               :class="collapse ? 'rotate-180' : ''"
             />
           </template>
-          折叠
         </n-button>
       </n-flex>
     </template>
@@ -37,12 +39,16 @@ defineOptions({
 
 const {
   title,
+  showPrefix = true,
   showCollapse = false,
-  appear = false
+  appear = false,
+  titleClass = ''
 } = defineProps<{
   title?: string;
+  showPrefix?: boolean;
   showCollapse?: boolean;
   appear?: boolean;
+  titleClass?: string;
 }>();
 const collapse = defineModel<boolean>('collapse', { default: false });
 
