@@ -1,5 +1,5 @@
 <template>
-  <component :is="h(ZCard, $attrs)" ref="cardRef" v-model="model" content-class="h-0 flex-1">
+  <component :is="h(ZCard, $attrs)" ref="cardRef" v-model="model" :content-class="`!p-0 h-0 flex-1 ${contentClass}`">
     <template #header-extra="slotData">
       <slot name="header-extra" v-bind="slotData || {}">
         <n-flex align="center">
@@ -48,7 +48,8 @@ defineOptions({
 const {
   loading = false,
   listData = [],
-  pagination
+  pagination,
+  contentClass = ''
 } = defineProps<{
   /** 加载状态 */
   loading?: boolean;
@@ -56,6 +57,8 @@ const {
   listData?: any[];
   /** 分页参数 */
   pagination?: PaginationProps;
+  /** 内容区样式类 */
+  contentClass?: string;
 }>();
 const emit = defineEmits(['refresh']);
 
