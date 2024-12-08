@@ -3,16 +3,16 @@ import { getTopLevelMenu } from '@/router';
 import { useRouteStore, useThemeStore } from '@/store';
 import { useRouterPush } from './router';
 
+let initMenu = false;
 export function useMenu() {
   const scope = effectScope();
-  const route = useRoute();
   const routeStore = useRouteStore();
   const theme = useThemeStore();
-  const { routerPush } = useRouterPush();
+  const { route, routerPush } = useRouterPush(false);
 
-  const activeKey = computed(() => (route.meta?.activeMenu ? route.meta.activeMenu : route.name));
+  const activeKey = computed(() => (route.value.meta?.activeMenu ? route.value.meta.activeMenu : route.value.name));
   const activeRootKey = computed(() => {
-    const topLevelMenu = getTopLevelMenu(route.name as string, routeStore.menus);
+    const topLevelMenu = getTopLevelMenu(route.value.name as string, routeStore.menus);
     return topLevelMenu?.routeName;
   });
 
@@ -42,36 +42,46 @@ export function useMenu() {
     routerPush(menuItem.routePath as string);
   }
 
-  scope.run(() => {
-    watch(
-      () => route.name,
-      () => {
-        if (theme.layout.isMenuSeparation) {
-          // 默认设置上子菜单
-          const defaultTopLevelMenu = getTopLevelMenu(route.name as string, routeStore.menus);
-          routeStore.setChildrenMenus(defaultTopLevelMenu?.children);
-        }
-      },
-      { immediate: true }
-    );
+  /** 根据顶层菜单设置子菜单项 */
+  function setChildrenMenusFromTopLevelMenu() {
+    const defaultTopLevelMenu = getTopLevelMenu(route.value.name as string, routeStore.menus);
+    routeStore.setChildrenMenus(defaultTopLevelMenu?.children);
+  }
 
-    watch(
-      () => theme.layout.isMenuSeparation,
-      val => {
-        if (val) {
-          // 默认设置上子菜单
-          const defaultTopLevelMenu = getTopLevelMenu(route.name as string, routeStore.menus);
-          routeStore.setChildrenMenus(defaultTopLevelMenu?.children);
-        } else {
-          routeStore.setChildrenMenus();
+  if (!initMenu) {
+    scope.run(() => {
+      initMenu = true;
+      watch(
+        () => route.value.name,
+        () => {
+          if (theme.layout.isMenuSeparation) {
+            // 默认设置上子菜单
+            setChildrenMenusFromTopLevelMenu();
+          }
+        },
+        {
+          immediate: true
         }
-      }
-    );
-  });
+      );
+
+      watch(
+        () => theme.layout.isMenuSeparation,
+        val => {
+          if (val) {
+            // 默认设置上子菜单
+            setChildrenMenusFromTopLevelMenu();
+          } else {
+            routeStore.setChildrenMenus();
+          }
+        }
+      );
+    });
+  }
   return {
     activeKey,
     activeRootKey,
     handleUpdateMenu,
-    handleUpdateRootMenu
+    handleUpdateRootMenu,
+    setChildrenMenusFromTopLevelMenu
   };
 }

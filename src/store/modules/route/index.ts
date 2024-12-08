@@ -17,6 +17,7 @@ import {
   transformAuthRouteToSearchMenus,
   sortRoutesByOrder
 } from '@/router';
+import { useMenu } from '@/utils';
 import { fetchGetUserRoutes } from '@/api';
 import { useAuthStore } from '../auth';
 import { useAppStore } from '../app';
@@ -53,6 +54,8 @@ interface RouteState {
   cacheRoutes: string[];
   /** 临时缓存的路由名称 */
   tempCacheRoutes: string[];
+  /** 是否是简洁模式 */
+  isSimpleMode: boolean;
 }
 
 export const useRouteStore = defineStore('route-store', {
@@ -69,7 +72,8 @@ export const useRouteStore = defineStore('route-store', {
     childrenMenus: [],
     searchMenus: [],
     cacheRoutes: [],
-    tempCacheRoutes: []
+    tempCacheRoutes: [],
+    isSimpleMode: false
   }),
   actions: {
     /** 重置路由的store */
@@ -267,6 +271,13 @@ export const useRouteStore = defineStore('route-store', {
       if (index > -1) {
         this.tempCacheRoutes.splice(index, 1);
       }
+    },
+    /** 设置简洁模式 */
+    setSimpleMode(isSimpleMode: boolean) {
+      const { setChildrenMenusFromTopLevelMenu } = useMenu();
+      this.isSimpleMode = isSimpleMode;
+      this.initAuthRoute();
+      setChildrenMenusFromTopLevelMenu();
     }
   }
 });

@@ -139,7 +139,7 @@ export function transformAuthRouteToVueRoute(item: AuthRoute.Route) {
 export function transformAuthRouteToSearchMenus(routes: AuthRoute.Route[], treeMap: AuthRoute.Route[] = []) {
   if (routes && routes.length === 0) return [];
   return routes.reduce((acc, cur) => {
-    if (!cur.meta?.hide) {
+    if (!cur.meta?.hide && !cur.meta?.hideOfSimple) {
       acc.push(cur);
     }
     if (cur.children && cur.children.length > 0) {

@@ -1,3 +1,4 @@
+import { useRouteStore } from '@/store';
 import { useIconRender } from '@/utils';
 
 /**
@@ -5,6 +6,7 @@ import { useIconRender } from '@/utils';
  * @param routes - 路由
  */
 export function transformAuthRouteToMenu(routes: AuthRoute.Route[]): App.GlobalMenuOption[] {
+  const routeStore = useRouteStore();
   const globalMenu: App.GlobalMenuOption[] = [];
   routes.forEach(route => {
     const { name, path, meta } = route;
@@ -13,13 +15,14 @@ export function transformAuthRouteToMenu(routes: AuthRoute.Route[]): App.GlobalM
     if (route.children && route.children.length > 0) {
       menuChildren = transformAuthRouteToMenu(route.children);
     }
+    const hideOfSimple = routeStore.isSimpleMode && meta.hideOfSimple;
     const menuItem = addPartialProps({
       menu: {
         key: routeName,
         label: meta.title,
         routeName,
         routePath: path,
-        show: !meta.hide
+        show: !meta.hide && !hideOfSimple
         // i18nTitle: meta.i18nTitle
       },
       icon: meta.icon,
@@ -37,35 +40,30 @@ export function transformAuthRouteToMenu(routes: AuthRoute.Route[]): App.GlobalM
  * 将权限路由转换成一级菜单
  * @param routes - 路由
  */
-export function transformAuthRouteToRootMenu(routes: AuthRoute.Route[], isRoot = true) {
+export function transformAuthRouteToRootMenu(routes: AuthRoute.Route[]) {
+  const routeStore = useRouteStore();
   const globalMenu: App.GlobalMenuOption[] = [];
   routes.forEach(route => {
     const { name, path, meta } = route;
     const routeName = name;
+    const hideOfSimple = routeStore.isSimpleMode && meta.hideOfSimple;
     const menuItem = addPartialProps({
       menu: {
         key: routeName,
         label: meta.title,
         routeName,
         routePath: path,
+        show: !meta.hide && !hideOfSimple
         // i18nTitle: meta.i18nTitle,
-        show: isRoot
       },
       icon: meta.icon,
       localIcon: meta.localIcon
     });
 
-    if (!hideInMenu(route)) {
-      globalMenu.push(menuItem);
-    }
+    globalMenu.push(menuItem);
   });
 
   return globalMenu;
-}
-
-/** 路由不转换菜单 */
-function hideInMenu(route: AuthRoute.Route) {
-  return Boolean(route.meta.hide);
 }
 
 /** 给菜单添加可选属性 */

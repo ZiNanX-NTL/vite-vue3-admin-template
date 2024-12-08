@@ -86,6 +86,8 @@ export function useRouterPush(inSetup = true) {
   }
 
   return {
+    router,
+    route,
     routerPush,
     routerBack,
     routerReplace,
