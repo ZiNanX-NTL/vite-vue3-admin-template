@@ -274,7 +274,7 @@ export const useRouteStore = defineStore('route-store', {
     },
     /** 设置简洁模式 */
     setSimpleMode(isSimpleMode: boolean) {
-      const { setChildrenMenusFromTopLevelMenu } = useMenu();
+      const { setChildrenMenusFromTopLevelMenu } = useMenu(false);
       this.isSimpleMode = isSimpleMode;
       this.initAuthRoute();
       setChildrenMenusFromTopLevelMenu();

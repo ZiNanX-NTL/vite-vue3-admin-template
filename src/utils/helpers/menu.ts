@@ -4,11 +4,16 @@ import { useRouteStore, useThemeStore } from '@/store';
 import { useRouterPush } from './router';
 
 let initMenu = false;
-export function useMenu() {
+
+/**
+ * 操作分离子菜单
+ * @param inSetup - 是否在vue页面/组件的setup里面调用，在axios里面无法使用useRouter和useRoute
+ */
+export function useMenu(inSetup = true) {
   const scope = effectScope();
   const routeStore = useRouteStore();
   const theme = useThemeStore();
-  const { route, routerPush } = useRouterPush(false);
+  const { route, routerPush } = useRouterPush(inSetup);
 
   const activeKey = computed(() => (route.value.meta?.activeMenu ? route.value.meta.activeMenu : route.value.name));
   const activeRootKey = computed(() => {
