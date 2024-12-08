@@ -1,10 +1,12 @@
 <template>
   <component :is="h(NCard, $attrs)" ref="cardRef" v-model="model">
     <template v-if="title" #header>
-      <n-h4 :prefix="showPrefix ? 'bar' : undefined" align-text class="mb-0" :class="titleClass">
-        {{ title }}
+      <n-flex align="center">
+        <n-h4 :prefix="showPrefix ? 'bar' : undefined" align-text class="mb-0" :class="titleClass">
+          {{ title }}
+        </n-h4>
         <slot name="tip"></slot>
-      </n-h4>
+      </n-flex>
     </template>
     <template #header-extra="slotData">
       <n-flex justify="end" align="center">
