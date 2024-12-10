@@ -1,10 +1,13 @@
 import { defineStore } from 'pinia';
+import { useRouteStore } from '../route';
 
 export const useRememberStore = defineStore('remember-store', {
   state: () => ({
     rememberMe: false,
     userName: '',
-    password: ''
+    password: '',
+    /** 是否是简洁模式 */
+    isSimpleMode: false
   }),
   actions: {
     setRememberMe(value: boolean) {
@@ -17,10 +20,15 @@ export const useRememberStore = defineStore('remember-store', {
     clearAccount() {
       this.userName = '';
       this.password = '';
+    },
+    setSimpleMode(isSimpleMode: boolean) {
+      const { reloadAuthRoute } = useRouteStore();
+      this.isSimpleMode = isSimpleMode;
+      reloadAuthRoute();
     }
   },
   persist: {
     key: 'rememberInfo',
-    pick: ['rememberMe', 'userName', 'password']
+    pick: ['rememberMe', 'userName', 'password', 'isSimpleMode']
   }
 });

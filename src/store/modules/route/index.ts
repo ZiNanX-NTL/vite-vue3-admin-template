@@ -54,8 +54,6 @@ interface RouteState {
   cacheRoutes: string[];
   /** 临时缓存的路由名称 */
   tempCacheRoutes: string[];
-  /** 是否是简洁模式 */
-  isSimpleMode: boolean;
 }
 
 export const useRouteStore = defineStore('route-store', {
@@ -72,8 +70,7 @@ export const useRouteStore = defineStore('route-store', {
     childrenMenus: [],
     searchMenus: [],
     cacheRoutes: [],
-    tempCacheRoutes: [],
-    isSimpleMode: false
+    tempCacheRoutes: []
   }),
   actions: {
     /** 重置路由的store */
@@ -105,6 +102,7 @@ export const useRouteStore = defineStore('route-store', {
     },
     /** 初始化权限路由 */
     async initAuthRoute() {
+      const { setChildrenMenusFromTopLevelMenu } = useMenu(false);
       const { initHomeTab } = useTabStore();
 
       if (this.authRouteMode === 'dynamic') {
@@ -112,6 +110,7 @@ export const useRouteStore = defineStore('route-store', {
       } else {
         await this.initStaticRoute();
       }
+      setChildrenMenusFromTopLevelMenu();
 
       initHomeTab();
     },
@@ -272,10 +271,9 @@ export const useRouteStore = defineStore('route-store', {
         this.tempCacheRoutes.splice(index, 1);
       }
     },
-    /** 设置简洁模式 */
-    setSimpleMode(isSimpleMode: boolean) {
+    /** 重新获取权限路由和路由菜单 */
+    reloadAuthRoute() {
       const { setChildrenMenusFromTopLevelMenu } = useMenu(false);
-      this.isSimpleMode = isSimpleMode;
       this.initAuthRoute();
       setChildrenMenusFromTopLevelMenu();
     }
