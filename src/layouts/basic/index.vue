@@ -37,11 +37,13 @@ import { useFullscreen } from '@vueuse/core';
 import { useAppStore, useThemeStore } from '@/store';
 import { useBasicLayout, useIsMobile } from '@/utils';
 import { GlobalContent, GlobalSider, GlobalHeader, SettingDrawer, GlobalTab } from '../common';
+import { setupMixMenuContext } from '../context';
 
 defineOptions({ name: 'BasicLayout' });
 
 const theme = useThemeStore();
 const app = useAppStore();
+setupMixMenuContext();
 
 const { mode, layoutProps, headerProps, siderProps } = useBasicLayout();
 const isMobile = useIsMobile();

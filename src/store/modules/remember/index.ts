@@ -22,9 +22,9 @@ export const useRememberStore = defineStore('remember-store', {
       this.password = '';
     },
     setSimpleMode(isSimpleMode: boolean) {
-      const { reloadAuthRoute } = useRouteStore();
+      const { initAuthRoute } = useRouteStore();
       this.isSimpleMode = isSimpleMode;
-      reloadAuthRoute();
+      initAuthRoute();
     }
   },
   persist: {

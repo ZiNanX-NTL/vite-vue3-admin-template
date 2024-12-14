@@ -17,30 +17,54 @@
         />
         <n-menu
           v-else
-          :value="theme.layout.isMenuInverted ? activeRootKey : activeKey"
+          :value="theme.layout.isMenuInverted ? activeFirstLevelMenuKey : activeKey"
           mode="horizontal"
           responsive
-          :options="theme.layout.isMenuInverted ? routeStore.rootMenus : routeStore.childrenMenus"
+          :options="theme.layout.isMenuInverted ? firstLevelMenus : childLevelMenus"
           :inverted="theme.header.inverted"
-          @update:value="handleUpdateRootMenu"
+          @update:value="handleUpdateMixMenu"
         />
       </div>
     </n-scrollbar>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import type { MenuOption } from 'naive-ui';
 import { useRouteStore, useThemeStore } from '@/store';
 import { useReload } from '@/hooks';
-import { useMenu } from '@/utils';
-
-defineOptions({ name: 'HeaderMenu' });
+import { useMenu, useMixMenuContext } from '../../../context';
 
 const routeStore = useRouteStore();
 const theme = useThemeStore();
 const { reloadFlag, handleReload } = useReload();
 
-const { activeKey, activeRootKey, handleUpdateMenu, handleUpdateRootMenu } = useMenu();
+const {
+  firstLevelMenus,
+  childLevelMenus,
+  activeFirstLevelMenuKey,
+  setActiveFirstLevelMenuKey,
+  isActiveFirstLevelMenuHasChildren
+} = useMixMenuContext();
+const { activeKey, handleUpdateMenu } = useMenu();
+
+/**
+ * 更新选中菜单分离混合路由菜单
+ */
+function handleUpdateMixMenu(key: string, item: MenuOption) {
+  if (theme.layout.isMenuInverted) {
+    setActiveFirstLevelMenuKey(key);
+
+    if (!isActiveFirstLevelMenuHasChildren.value) {
+      handleUpdateMenu(key, item);
+    } else {
+      // 默认选中子菜单的第一个
+      handleUpdateMenu(childLevelMenus.value[0].key, childLevelMenus.value[0]);
+    }
+  } else {
+    handleUpdateMenu(key, item);
+  }
+}
 
 watch(
   () => theme.headerMenu.overflowMode,

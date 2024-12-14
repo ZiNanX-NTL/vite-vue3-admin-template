@@ -28,27 +28,25 @@
     >
       <n-menu
         v-if="!theme.layout.isMenuSeparation"
+        v-model:expanded-keys="expandedKeys"
         :value="activeKey"
         :inverted="!theme.darkMode && theme.sider.inverted"
         :collapsed="app.siderCollapse"
         :collapsed-width="collapsedWidth"
         :collapsed-icon-size="22"
         :options="routeStore.menus"
-        :expanded-keys="expandedKeys"
         @update:value="handleUpdateMenu"
-        @update:expanded-keys="handleUpdateExpandedKeys"
       />
       <n-menu
         v-else
-        :value="theme.layout.isMenuInverted ? activeKey : activeRootKey"
+        v-model:expanded-keys="expandedKeys"
+        :value="theme.layout.isMenuInverted ? activeKey : activeFirstLevelMenuKey"
         :inverted="!theme.darkMode && theme.sider.inverted"
         :collapsed="app.siderCollapse"
         :collapsed-width="collapsedWidth"
         :collapsed-icon-size="22"
-        :options="theme.layout.isMenuInverted ? routeStore.childrenMenus : routeStore.rootMenus"
-        :expanded-keys="expandedKeys"
-        :expand-icon="expandIcon"
-        @update:value="handleUpdateRootMenu"
+        :options="theme.layout.isMenuInverted ? childLevelMenus : firstLevelMenus"
+        @update:value="handleUpdateMixMenu"
       />
     </n-layout-sider>
     <!-- siderBar 遮罩 -->
@@ -64,11 +62,13 @@
   </dark-mode-container>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import type { MenuOption } from 'naive-ui';
 import { getActiveKeyPathsOfMenus } from '@/router';
 import { useAppStore, useRouteStore, useThemeStore } from '@/store';
-import { useBasicLayout, useIsMobile, useMenu } from '@/utils';
+import { useBasicLayout, useIsMobile } from '@/utils';
 import GlobalLogo from '../global-logo/index.vue';
+import { useMenu, useMixMenuContext } from '../../context';
 
 defineOptions({ name: 'GlobalSider' });
 defineProps({
@@ -82,16 +82,33 @@ const theme = useThemeStore();
 const { mode } = useBasicLayout();
 const isMobile = useIsMobile();
 
-const expandedKeys = ref([]);
+const {
+  firstLevelMenus,
+  childLevelMenus,
+  activeFirstLevelMenuKey,
+  setActiveFirstLevelMenuKey,
+  isActiveFirstLevelMenuHasChildren
+} = useMixMenuContext();
+const { activeKey, handleUpdateMenu } = useMenu();
 
-const { activeKey, activeRootKey, handleUpdateMenu, handleUpdateRootMenu } = useMenu();
+const expandedKeys = ref<string[]>([]);
 
-function handleUpdateExpandedKeys(keys) {
-  expandedKeys.value = keys;
-}
+/**
+ * 更新选中菜单分离混合路由菜单
+ */
+function handleUpdateMixMenu(key: string, item: MenuOption) {
+  if (theme.layout.isMenuInverted) {
+    handleUpdateMenu(key, item);
+  } else {
+    setActiveFirstLevelMenuKey(key);
 
-function expandIcon() {
-  return null;
+    if (!isActiveFirstLevelMenuHasChildren.value) {
+      handleUpdateMenu(key, item);
+    } else {
+      // 默认选中子菜单的第一个
+      handleUpdateMenu(childLevelMenus.value[0].key, childLevelMenus.value[0]);
+    }
+  }
 }
 
 const showTitle = computed(() => !app.siderCollapse);
@@ -100,13 +117,13 @@ const showTitle = computed(() => !app.siderCollapse);
 const collapsedWidth = computed(() => {
   const width = isMobile.value || theme.sider.showTrigger === 'bar' ? 0 : theme.sider.collapsedWidth;
   if (!(theme.layout.isMenuSeparation && theme.layout.isMenuInverted)) return width;
-  if (routeStore.childrenMenus.length) return width;
+  if (childLevelMenus.value.length) return width;
   return 0;
 });
 /** sider的宽度 */
 const siderWidth = computed(() => {
   if (!(theme.layout.isMenuSeparation && theme.layout.isMenuInverted)) return theme.sider.width;
-  if (routeStore.childrenMenus.length) return theme.sider.width;
+  if (childLevelMenus.value.length) return theme.sider.width;
   return 0;
 });
 /** logo的宽度 */

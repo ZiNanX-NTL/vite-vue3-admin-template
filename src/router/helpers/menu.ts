@@ -30,37 +30,7 @@ export function transformAuthRouteToMenu(routes: AuthRoute.Route[]): App.GlobalM
       children: menuChildren
     });
 
-    globalMenu.push(menuItem);
-  });
-
-  return globalMenu;
-}
-
-/**
- * 将权限路由转换成一级菜单
- * @param routes - 路由
- */
-export function transformAuthRouteToRootMenu(routes: AuthRoute.Route[]) {
-  const remember = useRememberStore();
-  const globalMenu: App.GlobalMenuOption[] = [];
-  routes.forEach(route => {
-    const { name, path, meta } = route;
-    const routeName = name;
-    const hideOfSimple = remember.isSimpleMode && meta.hideOfSimple;
-    const menuItem = addPartialProps({
-      menu: {
-        key: routeName,
-        label: meta.title,
-        routeName,
-        routePath: path,
-        show: !meta.hide && !hideOfSimple
-        // i18nTitle: meta.i18nTitle,
-      },
-      icon: meta.icon,
-      localIcon: meta.localIcon
-    });
-
-    globalMenu.push(menuItem);
+    if (!meta.hide && !hideOfSimple) globalMenu.push(menuItem);
   });
 
   return globalMenu;

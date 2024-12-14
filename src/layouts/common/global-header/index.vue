@@ -17,7 +17,12 @@
       />
       <div class="h-full flex-y-center flex-1-hidden">
         <menu-collapse
-          v-if="mode !== 'horizontal' && (showMenuCollapse || isMobile) && theme.sider.showTrigger === 'headerIcon'"
+          v-if="
+            mode !== 'horizontal' &&
+            (showMenuCollapse || isMobile) &&
+            theme.sider.showTrigger === 'headerIcon' &&
+            showMenuCollapseForMenuInverted
+          "
         />
         <global-breadcrumb
           v-if="!(showHeaderMenu || theme.layout.isMenuSeparation) && theme.header.crumb.visible && !isMobile"
@@ -40,6 +45,7 @@ import { useThemeStore } from '@/store';
 import { useBasicLayout, useIsMobile } from '@/utils';
 import GlobalLogo from '../global-logo/index.vue';
 import GlobalSearch from '../global-search/index.vue';
+import { useMixMenuContext } from '../../context';
 import {
   MenuCollapse,
   GlobalBreadcrumb,
@@ -50,7 +56,6 @@ import {
   SettingButton
 } from './components';
 
-defineOptions({ name: 'GlobalHeader' });
 defineProps({
   /** 显示logo */
   showLogo: Boolean,
@@ -63,6 +68,14 @@ defineProps({
 const theme = useThemeStore();
 const { mode } = useBasicLayout();
 const isMobile = useIsMobile();
+const { isActiveFirstLevelMenuHasChildren } = useMixMenuContext();
+
+const showMenuCollapseForMenuInverted = computed(() => {
+  if (!theme.layout.isMenuSeparation || !theme.layout.isMenuInverted) {
+    return true;
+  }
+  return isActiveFirstLevelMenuHasChildren.value;
+});
 
 const showButton = import.meta.env.DEV;
 
