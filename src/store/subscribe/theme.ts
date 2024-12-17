@@ -41,7 +41,6 @@ export default function subscribeThemeStore() {
         } else {
           removeDarkClass();
         }
-        addThemeCssVarsToHtml(theme.naiveThemeOverrides.common);
       },
       {
         immediate: true
