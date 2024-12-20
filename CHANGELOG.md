@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [v0.1.1](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/compare/v0.1.0...v0.1.1) (2024-12-20)
+
+### &nbsp;&nbsp;&nbsp;🎨 Styles
+
+- **projects**: 格式化代码 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(5183b)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/5183b68)
+
+### &nbsp;&nbsp;&nbsp;❤️ Contributors
+
+
+[ZiNanX_NTL](mailto:702668400@qq.com)
+
 ## [v0.1.0](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/compare/v0.0.4...v0.1.0) (2024-12-20)
 
 ### &nbsp;&nbsp;&nbsp;🚀 Features
