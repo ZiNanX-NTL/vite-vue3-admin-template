@@ -1,6 +1,68 @@
 # Changelog
 
 
+## [v0.1.0](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/compare/v0.0.4...v0.1.0) (2024-12-20)
+
+### &nbsp;&nbsp;&nbsp;🚀 Features
+
+- **components**:
+  - 新增业务组件 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(243a6)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/243a672)
+  - 优化ZCard卡片组件标题样式和功能 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(c45ae)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/c45ae98)
+  - 优化 ZListCard 组件并添加内容区样式类属性 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(b6631)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/b6631a4)
+- **hooks**:
+  - 新增useResettableReactive &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(32089)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/32089cb)
+- **projects**:
+  - 添加菜单简洁模式并优化菜单显示逻辑 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(be697)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/be697aa)
+- **theme**:
+  - 添加配色方案色板功能 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(66858)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/66858df)
+- **utils**:
+  - 优化暗色主题下颜色处理逻辑 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(b9ac6)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/b9ac6f0)
+  - 添加生成配色方案的功能 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(8a30f)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/8a30f63)
+
+### &nbsp;&nbsp;&nbsp;🐞 Bug Fixes
+
+- **hooks**:
+  - 修复useEcharts的loading显示逻辑 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(969c8)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/969c847)
+  - 修改useEcharts onRender回调的时机 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(5349d)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/5349de4)
+- **projects**:
+  - 修复暗黑模式下的主题色调配 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(fb795)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/fb795ba)
+  - 修复菜单分栏模式选择根菜单默认选中子菜单 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(0a6b5)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/0a6b5ff)
+  - 修复暗黑模式匹配颜色 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(dd99b)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/dd99ba0)
+  - 修复暗黑模式颜色值调配 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(bf480)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/bf48008)
+
+### &nbsp;&nbsp;&nbsp;🔥 Performance
+
+- 移除主题变量冗余设置 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(d94d5)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/d94d501)
+
+### &nbsp;&nbsp;&nbsp;💅 Refactors
+
+- **build**:
+  - 修改服务器端口并增强 useContext 钩子功能 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(23eac)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/23eac08)
+- **components**:
+  - 优化 ZListCard 组件中的数据为空状态展示 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(24501)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/24501e7)
+  - 优化 ZCard 组件标题样式 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(6db0d)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/6db0ded)
+- **layout**:
+  - 重构菜单逻辑以支持混合菜单 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(c54b6)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/c54b646)
+- **menu**:
+  - 优化 useMenu 函数调用 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(91947)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/91947fc)
+- **router**:
+  - 优化路由跳转函数以支持在 setup 外部使用 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(9001e)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/9001e74)
+- **store**:
+  - 重构路由和记忆功能 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(a8416)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/a8416a0)
+
+### &nbsp;&nbsp;&nbsp;📦 Build
+
+- **projects**: 升级eslint配置方式,代码检查和代码格式化 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(6d198)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/6d1988a)
+
+### &nbsp;&nbsp;&nbsp;🎨 Styles
+
+- **projects**: 优化颜色透明度表示方法 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(326f2)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/326f2ef)
+
+### &nbsp;&nbsp;&nbsp;❤️ Contributors
+
+
+[ZiNanX_NTL](mailto:702668400@qq.com)
+
 ## [v0.0.4](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/compare/v0.0.3...v0.0.4) (2024-11-26)
 
 ### &nbsp;&nbsp;&nbsp;🚀 Features
