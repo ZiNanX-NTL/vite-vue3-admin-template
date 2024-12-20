@@ -1,17 +1,3 @@
-<template>
-  <n-divider title-placement="center">系统主题</n-divider>
-  <n-grid :cols="8" :x-gap="8" :y-gap="12">
-    <n-grid-item v-for="color in theme.themeColorList" :key="color" class="flex-x-center">
-      <color-checkbox :color="color" :checked="color === theme.themeColor" @click="theme.setThemeColor(color)" />
-    </n-grid-item>
-  </n-grid>
-  <n-space :vertical="true" class="pt-12px">
-    <n-color-picker :value="theme.themeColor" :show-alpha="false" @update-value="theme.setThemeColor" />
-    <n-button :block="true" :type="otherColorBtnType" @click="openModal">更多颜色</n-button>
-  </n-space>
-  <color-modal :visible="visible" @close="closeModal" />
-</template>
-
 <script setup>
 import { isInTraditionColors } from '@/settings';
 import { useThemeStore } from '@/store';
@@ -27,5 +13,19 @@ const { bool: visible, setTrue: openModal, setFalse: closeModal } = useBoolean()
 const isInOther = computed(() => isInTraditionColors(theme.themeColor));
 const otherColorBtnType = computed(() => (isInOther.value ? 'primary' : 'default'));
 </script>
+
+<template>
+	<NDivider title-placement="center">系统主题</NDivider>
+	<NGrid :cols="8" :x-gap="8" :y-gap="12">
+		<NGridItem v-for="color in theme.themeColorList" :key="color" class="flex-x-center">
+			<ColorCheckbox :color="color" :checked="color === theme.themeColor" @click="theme.setThemeColor(color)" />
+		</NGridItem>
+	</NGrid>
+	<NSpace :vertical="true" class="pt-12px">
+		<NColorPicker :value="theme.themeColor" :show-alpha="false" @update-value="theme.setThemeColor" />
+		<NButton :block="true" :type="otherColorBtnType" @click="openModal">更多颜色</NButton>
+	</NSpace>
+	<ColorModal :visible="visible" @close="closeModal" />
+</template>
 
 <style scoped></style>

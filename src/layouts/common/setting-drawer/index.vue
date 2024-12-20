@@ -1,23 +1,23 @@
-<template>
-  <n-drawer :show="app.settingDrawerVisible" display-directive="show" :width="330" @mask-click="app.closeSettingDrawer">
-    <n-drawer-content title="主题配置" :native-scrollbar="false">
-      <dark-mode />
-      <layout-mode />
-      <theme-color-select />
-      <page-func />
-      <page-view />
-      <theme-config />
-    </n-drawer-content>
-  </n-drawer>
-</template>
-
 <script setup>
 import { useAppStore } from '@/store';
-import { DarkMode, LayoutMode, ThemeColorSelect, PageFunc, PageView, ThemeConfig } from './components';
+import { DarkMode, LayoutMode, PageFunc, PageView, ThemeColorSelect, ThemeConfig } from './components';
 
 defineOptions({ name: 'SettingDrawer' });
 
 const app = useAppStore();
 </script>
+
+<template>
+	<NDrawer :show="app.settingDrawerVisible" display-directive="show" :width="330" @mask-click="app.closeSettingDrawer">
+		<NDrawerContent title="主题配置" :native-scrollbar="false">
+			<DarkMode />
+			<LayoutMode />
+			<ThemeColorSelect />
+			<PageFunc />
+			<PageView />
+			<ThemeConfig />
+		</NDrawerContent>
+	</NDrawer>
+</template>
 
 <style scoped></style>

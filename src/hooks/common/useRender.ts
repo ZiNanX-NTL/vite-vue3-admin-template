@@ -2,83 +2,83 @@ import type { ShallowRef } from 'vue';
 import { useElementSize } from '@vueuse/core';
 
 interface renderCallbacks<T> {
-  render?: () => T | Promise<T>;
-  resize?: (instance?: ShallowRef<T | null>) => void | Promise<void>;
-  destroy?: (instance?: ShallowRef<T | null>, isForce?: boolean) => void | Promise<void>;
+	render?: () => T | Promise<T>;
+	resize?: (instance?: ShallowRef<T | null>) => void | Promise<void>;
+	destroy?: (instance?: ShallowRef<T | null>, isForce?: boolean) => void | Promise<void>;
 }
 
 export default function useRender<T>(domRef: Ref<HTMLElement | null>, callbacks: renderCallbacks<T> = {}) {
-  const scope = effectScope();
+	const scope = effectScope();
 
-  const initialSize = { width: 0, height: 0 };
-  const { width, height } = useElementSize(domRef, initialSize);
+	const initialSize = { width: 0, height: 0 };
+	const { width, height } = useElementSize(domRef, initialSize);
 
-  const instance = shallowRef<T | null>(null);
+	const instance = shallowRef<T | null>(null);
 
-  const { render = () => instance.value, resize = () => {}, destroy = () => {} } = callbacks;
+	const { render = () => instance.value, resize = () => {}, destroy = () => {} } = callbacks;
 
-  /**
-   * whether can render
-   *
-   * when domRef is ready and initialSize is valid
-   */
-  function canRender() {
-    return domRef.value && initialSize.width > 0 && initialSize.height > 0;
-  }
+	/**
+	 * whether can render
+	 *
+	 * when domRef is ready and initialSize is valid
+	 */
+	function canRender() {
+		return domRef.value && initialSize.width > 0 && initialSize.height > 0;
+	}
 
-  /** is chart rendered */
-  function isRendered() {
-    return Boolean(domRef.value && instance.value);
-  }
+	/** is chart rendered */
+	function isRendered() {
+		return Boolean(domRef.value && instance.value);
+	}
 
-  /**
-   * render by size
-   *
-   * @param w width
-   * @param h height
-   */
-  async function renderBySize(w: number, h: number) {
-    initialSize.width = w;
-    initialSize.height = h;
+	/**
+	 * render by size
+	 *
+	 * @param w width
+	 * @param h height
+	 */
+	async function renderBySize(w: number, h: number) {
+		initialSize.width = w;
+		initialSize.height = h;
 
-    // size is abnormal, destroy
-    if (!canRender()) {
-      await destroy?.(instance);
+		// size is abnormal, destroy
+		if (!canRender()) {
+			await destroy?.(instance);
 
-      return;
-    }
+			return;
+		}
 
-    // resize
-    if (isRendered()) {
-      resize?.(instance);
+		// resize
+		if (isRendered()) {
+			resize?.(instance);
 
-      return;
-    }
+			return;
+		}
 
-    // render
-    instance.value = await render?.();
-  }
+		// render
+		instance.value = await render?.();
+	}
 
-  scope.run(() => {
-    watch([width, height], ([newWidth, newHeight]) => {
-      const timer = setTimeout(async () => {
-        await renderBySize(newWidth, newHeight);
-      });
-      onWatcherCleanup(() => {
-        clearTimeout(timer);
-      });
-    });
-  });
+	scope.run(() => {
+		watch([width, height], ([newWidth, newHeight]) => {
+			const timer = setTimeout(async () => {
+				await renderBySize(newWidth, newHeight);
+			});
+			onWatcherCleanup(() => {
+				clearTimeout(timer);
+			});
+		});
+	});
 
-  onScopeDispose(() => {
-    destroy(instance, true);
-    scope.stop();
-  });
+	onScopeDispose(() => {
+		destroy(instance, true);
+		scope.stop();
+	});
 
-  return {
-    instance,
-    isRendered,
-    render,
-    destroy
-  };
+	return {
+		instance,
+		isRendered,
+		render,
+		destroy
+	};
 }

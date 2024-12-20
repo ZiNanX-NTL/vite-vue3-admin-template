@@ -9,7 +9,7 @@
 		"commit": "soy git-commit",
 		"dev": "vite",
 		"format": "soy prettier-write",
-		"lint": "eslint src --fix",
+		"lint": "eslint . --fix",
 		"preview": "vite preview",
 		"release": "soy release",
 		"update-pkg": "soy ncu"
