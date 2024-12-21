@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-	<LookForward />
+  <LookForward />
 </template>
 
 <style lang="scss" scoped></style>

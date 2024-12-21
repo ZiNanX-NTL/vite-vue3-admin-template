@@ -4,17 +4,17 @@ import { transformRouteNameToRoutePath } from '@/router';
 defineOptions({ name: 'GlobalLogo' });
 
 defineProps({
-	showTitle: Boolean
+  showTitle: Boolean
 });
 
 const routeHomePath = transformRouteNameToRoutePath('root');
 </script>
 
 <template>
-	<RouterLink :to="routeHomePath" class="flex-center nowrap-hidden">
-		<SystemLogo class="text-32px text-primary" />
-		<h2 v-show="showTitle" class="pl-8px text-16px text-primary font-bold transition-base">aptx管理系统</h2>
-	</RouterLink>
+  <RouterLink :to="routeHomePath" class="flex-center nowrap-hidden">
+    <SystemLogo class="text-32px text-primary" />
+    <h2 v-show="showTitle" class="pl-8px text-16px text-primary font-bold transition-base">aptx管理系统</h2>
+  </RouterLink>
 </template>
 
 <style scoped></style>

@@ -7,61 +7,61 @@ import { useIconRender } from '@/utils';
  * @param routes - 路由
  */
 export function transformAuthRouteToMenu(routes: AuthRoute.Route[]): App.GlobalMenuOption[] {
-	const remember = useRememberStore();
-	const globalMenu: App.GlobalMenuOption[] = [];
-	routes.forEach(route => {
-		const { name, path, meta } = route;
-		const routeName = name;
-		let menuChildren: App.GlobalMenuOption[] | undefined;
-		if (route.children && route.children.length > 0) {
-			menuChildren = transformAuthRouteToMenu(route.children);
-		}
-		const hideOfSimple = remember.isSimpleMode && meta.hideOfSimple;
-		const menuItem = addPartialProps({
-			menu: {
-				key: routeName,
-				label: meta.title,
-				routeName,
-				routePath: path,
-				show: !meta.hide && !hideOfSimple
-				// i18nTitle: meta.i18nTitle
-			},
-			icon: meta.icon,
-			localIcon: meta.localIcon,
-			children: menuChildren
-		});
+  const remember = useRememberStore();
+  const globalMenu: App.GlobalMenuOption[] = [];
+  routes.forEach(route => {
+    const { name, path, meta } = route;
+    const routeName = name;
+    let menuChildren: App.GlobalMenuOption[] | undefined;
+    if (route.children && route.children.length > 0) {
+      menuChildren = transformAuthRouteToMenu(route.children);
+    }
+    const hideOfSimple = remember.isSimpleMode && meta.hideOfSimple;
+    const menuItem = addPartialProps({
+      menu: {
+        key: routeName,
+        label: meta.title,
+        routeName,
+        routePath: path,
+        show: !meta.hide && !hideOfSimple
+        // i18nTitle: meta.i18nTitle
+      },
+      icon: meta.icon,
+      localIcon: meta.localIcon,
+      children: menuChildren
+    });
 
-		if (!meta.hide && !hideOfSimple) globalMenu.push(menuItem);
-	});
+    if (!meta.hide && !hideOfSimple) globalMenu.push(menuItem);
+  });
 
-	return globalMenu;
+  return globalMenu;
 }
 
 /** 给菜单添加可选属性 */
 function addPartialProps(config: {
-	menu: App.GlobalMenuOption;
-	icon?: string;
-	localIcon?: string;
-	children?: App.GlobalMenuOption[];
+  menu: App.GlobalMenuOption;
+  icon?: string;
+  localIcon?: string;
+  children?: App.GlobalMenuOption[];
 }) {
-	const { iconRender } = useIconRender();
+  const { iconRender } = useIconRender();
 
-	const item = { ...config.menu };
+  const item = { ...config.menu };
 
-	const { icon, localIcon, children } = config;
+  const { icon, localIcon, children } = config;
 
-	if (localIcon) {
-		Object.assign(item, { icon: iconRender({ localIcon }) });
-	}
+  if (localIcon) {
+    Object.assign(item, { icon: iconRender({ localIcon }) });
+  }
 
-	if (icon) {
-		Object.assign(item, { icon: iconRender({ icon }) });
-	}
+  if (icon) {
+    Object.assign(item, { icon: iconRender({ icon }) });
+  }
 
-	if (children) {
-		Object.assign(item, { children });
-	}
-	return item;
+  if (children) {
+    Object.assign(item, { children });
+  }
+  return item;
 }
 
 /**
@@ -71,17 +71,17 @@ function addPartialProps(config: {
  * @param menus - 菜单数据
  */
 export function getActiveKeyPathsOfMenus(activeKey: string, menus: App.GlobalMenuOption[]) {
-	const keys = menus.map(menu => getActiveKeyPathsOfMenu(activeKey, menu)).flat(1);
-	return keys;
+  const keys = menus.map(menu => getActiveKeyPathsOfMenu(activeKey, menu)).flat(1);
+  return keys;
 }
 
 function getActiveKeyPathsOfMenu(activeKey: string, menu: App.GlobalMenuOption): string[] {
-	const keys = [];
-	if (activeKey.startsWith(menu.routeName)) {
-		keys.push(menu.routeName);
-	}
-	if (menu.children) {
-		keys.push(...menu.children.map(item => getActiveKeyPathsOfMenu(activeKey, item as App.GlobalMenuOption)).flat(1));
-	}
-	return keys;
+  const keys = [];
+  if (activeKey.startsWith(menu.routeName)) {
+    keys.push(menu.routeName);
+  }
+  if (menu.children) {
+    keys.push(...menu.children.map(item => getActiveKeyPathsOfMenu(activeKey, item as App.GlobalMenuOption)).flat(1));
+  }
+  return keys;
 }

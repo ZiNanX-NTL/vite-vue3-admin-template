@@ -8,15 +8,15 @@ import { adapterOfFetchUserList } from './userList.adapter';
  * @param {Object} params - 负载参数
  */
 export function fetchUserList(params: any) {
-	return mockAlova.Post(
-		'/userList',
-		{ ...params },
-		{
-			transform(data: Service.RequestResult<unknown>) {
-				return adapter(adapterOfFetchUserList, data);
-			}
-		}
-	);
+  return mockAlova.Post(
+    '/userList',
+    { ...params },
+    {
+      transform(data: Service.RequestResult<unknown>) {
+        return adapter(adapterOfFetchUserList, data);
+      }
+    }
+  );
 }
 /**
  * 获取所有用户列表数据
@@ -24,6 +24,6 @@ export function fetchUserList(params: any) {
  * @param {Object} params - 负载参数
  */
 export async function fetchAllUserList() {
-	const data = await mockInstance.get({ url: '/allUserList' });
-	return adapter(adapterOfFetchUserList, data);
+  const data = await mockInstance.get({ url: '/allUserList' });
+  return adapter(adapterOfFetchUserList, data);
 }

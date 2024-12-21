@@ -3,12 +3,12 @@ import jsonNaiveTheme from './naive-ui-theme-overrides.json';
 import colorJson from './color.json';
 
 interface TraditionColorDetail {
-	label: string;
-	color: string;
+  label: string;
+  color: string;
 }
 interface TraditionColor {
-	label: string;
-	data: TraditionColorDetail[];
+  label: string;
+  data: TraditionColorDetail[];
 }
 
 /**
@@ -19,19 +19,19 @@ interface TraditionColor {
 const defaultNaiveTheme = {};
 
 export function getThemeSettings() {
-	return theme;
+  return theme;
 }
 
 export function getNaiveThemeOverrides() {
-	return jsonNaiveTheme || defaultNaiveTheme;
+  return jsonNaiveTheme || defaultNaiveTheme;
 }
 
 /** 中国传统颜色 */
 export const traditionColors = colorJson as TraditionColor[];
 
 export function isInTraditionColors(color: string) {
-	return traditionColors.some(item => {
-		const flag = item.data.some(v => v.color === color);
-		return flag;
-	});
+  return traditionColors.some(item => {
+    const flag = item.data.some(v => v.color === color);
+    return flag;
+  });
 }

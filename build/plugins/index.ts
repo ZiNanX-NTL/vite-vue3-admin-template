@@ -12,21 +12,21 @@ import compression from './vitePluginCompression';
 import mock from './vitePluginMock';
 
 export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | PluginOption[])[] {
-	return [
-		vue(),
-		vueJsx(),
-		unocss(),
-		// 打包进度条
-		progress(),
-		VueDevtools(),
-		icons(viteEnv),
-		// 按需导入组件
-		components(viteEnv),
-		svgIcons(viteEnv),
-		// 按需引入依赖
-		autoImport(),
-		// 压缩
-		compression(viteEnv),
-		mock(viteEnv)
-	];
+  return [
+    vue(),
+    vueJsx(),
+    unocss(),
+    // 打包进度条
+    progress(),
+    VueDevtools(),
+    icons(viteEnv),
+    // 按需导入组件
+    components(viteEnv),
+    svgIcons(viteEnv),
+    // 按需引入依赖
+    autoImport(),
+    // 压缩
+    compression(viteEnv),
+    mock(viteEnv)
+  ];
 }

@@ -8,7 +8,7 @@ import { useMenu, useMixMenuContext } from '../../context';
 
 defineOptions({ name: 'GlobalSider' });
 defineProps<{
-	showLogo: boolean;
+  showLogo: boolean;
 }>();
 
 const route = useRoute();
@@ -19,11 +19,11 @@ const { mode } = useBasicLayout();
 const isMobile = useIsMobile();
 
 const {
-	firstLevelMenus,
-	childLevelMenus,
-	activeFirstLevelMenuKey,
-	setActiveFirstLevelMenuKey,
-	isActiveFirstLevelMenuHasChildren
+  firstLevelMenus,
+  childLevelMenus,
+  activeFirstLevelMenuKey,
+  setActiveFirstLevelMenuKey,
+  isActiveFirstLevelMenuHasChildren
 } = useMixMenuContext();
 const { activeKey, handleUpdateMenu } = useMenu();
 
@@ -31,114 +31,114 @@ const expandedKeys = ref<string[]>([]);
 
 /** 更新选中菜单分离混合路由菜单 */
 function handleUpdateMixMenu(key: string, item: MenuOption) {
-	if (theme.layout.isMenuInverted) {
-		handleUpdateMenu(key, item);
-	} else {
-		setActiveFirstLevelMenuKey(key);
+  if (theme.layout.isMenuInverted) {
+    handleUpdateMenu(key, item);
+  } else {
+    setActiveFirstLevelMenuKey(key);
 
-		if (!isActiveFirstLevelMenuHasChildren.value) {
-			handleUpdateMenu(key, item);
-		} else {
-			// 默认选中子菜单的第一个
-			handleUpdateMenu(childLevelMenus.value[0].key, childLevelMenus.value[0]);
-		}
-	}
+    if (!isActiveFirstLevelMenuHasChildren.value) {
+      handleUpdateMenu(key, item);
+    } else {
+      // 默认选中子菜单的第一个
+      handleUpdateMenu(childLevelMenus.value[0].key, childLevelMenus.value[0]);
+    }
+  }
 }
 
 const showTitle = computed(() => !app.siderCollapse);
 
 /** 折叠后的宽度 */
 const collapsedWidth = computed(() => {
-	const width = isMobile.value || theme.sider.showTrigger === 'bar' ? 0 : theme.sider.collapsedWidth;
-	if (!(theme.layout.isMenuSeparation && theme.layout.isMenuInverted)) return width;
-	if (childLevelMenus.value.length) return width;
-	return 0;
+  const width = isMobile.value || theme.sider.showTrigger === 'bar' ? 0 : theme.sider.collapsedWidth;
+  if (!(theme.layout.isMenuSeparation && theme.layout.isMenuInverted)) return width;
+  if (childLevelMenus.value.length) return width;
+  return 0;
 });
 /** sider的宽度 */
 const siderWidth = computed(() => {
-	if (!(theme.layout.isMenuSeparation && theme.layout.isMenuInverted)) return theme.sider.width;
-	if (childLevelMenus.value.length) return theme.sider.width;
-	return 0;
+  if (!(theme.layout.isMenuSeparation && theme.layout.isMenuInverted)) return theme.sider.width;
+  if (childLevelMenus.value.length) return theme.sider.width;
+  return 0;
 });
 /** logo的宽度 */
 const logoWidth = computed(() => {
-	if (theme.logo.isCustomizeWidth && mode.value !== 'vertical') {
-		return `${theme.logo.width}px`;
-	}
-	return app.siderCollapse ? `${collapsedWidth.value}px` : `${siderWidth.value}px`;
+  if (theme.logo.isCustomizeWidth && mode.value !== 'vertical') {
+    return `${theme.logo.width}px`;
+  }
+  return app.siderCollapse ? `${collapsedWidth.value}px` : `${siderWidth.value}px`;
 });
 
 watch(
-	() => route.name,
-	() => {
-		expandedKeys.value = getActiveKeyPathsOfMenus(activeKey.value, routeStore.menus);
-	},
-	{ immediate: true }
+  () => route.name,
+  () => {
+    expandedKeys.value = getActiveKeyPathsOfMenus(activeKey.value, routeStore.menus);
+  },
+  { immediate: true }
 );
 </script>
 
 <template>
-	<DarkModeContainer
-		class="z-20 h-full flex-vertical-stretch shadow-[2px_0_8px_0_rgba(29,35,41,0.05)]"
-		:inverted="theme.sider.inverted"
-	>
-		<GlobalLogo
-			v-if="showLogo"
-			:show-title="showTitle"
-			class="overflow-hidden transition-base"
-			:style="{
-				width: logoWidth,
-				height: theme.header.height + 'px'
-			}"
-		/>
-		<NLayoutSider
-			class="h-0 flex-1"
-			:show-trigger="theme.sider.showTrigger !== 'headerIcon' && theme.sider.showTrigger"
-			:trigger-style="theme.sider.showTrigger === 'arrow-circle' ? 'top: 240px' : ''"
-			:collapsed-trigger-style="theme.sider.showTrigger === 'arrow-circle' ? 'top: 240px' : ''"
-			:collapse-mode="theme.sider.showTrigger === 'bar' ? 'transform' : 'width'"
-			:collapsed="app.siderCollapse"
-			:collapsed-width="collapsedWidth"
-			:width="siderWidth"
-			:native-scrollbar="false"
-			:inverted="!theme.darkMode && theme.sider.inverted"
-			@collapse="app.setSiderCollapse(true)"
-			@expand="app.setSiderCollapse(false)"
-		>
-			<NMenu
-				v-if="!theme.layout.isMenuSeparation"
-				v-model:expanded-keys="expandedKeys"
-				:value="activeKey"
-				:inverted="!theme.darkMode && theme.sider.inverted"
-				:collapsed="app.siderCollapse"
-				:collapsed-width="collapsedWidth"
-				:collapsed-icon-size="22"
-				:options="routeStore.menus"
-				@update:value="handleUpdateMenu"
-			/>
-			<NMenu
-				v-else
-				v-model:expanded-keys="expandedKeys"
-				:value="theme.layout.isMenuInverted ? activeKey : activeFirstLevelMenuKey"
-				:inverted="!theme.darkMode && theme.sider.inverted"
-				:collapsed="app.siderCollapse"
-				:collapsed-width="collapsedWidth"
-				:collapsed-icon-size="22"
-				:options="theme.layout.isMenuInverted ? childLevelMenus : firstLevelMenus"
-				@update:value="handleUpdateMixMenu"
-			/>
-		</NLayoutSider>
-		<!-- siderBar 遮罩 -->
-		<Teleport to="body">
-			<Transition name="fade">
-				<div
-					v-if="isMobile && !app.siderCollapse"
-					class="sider-mask absolute-lt z-200 size-full bg-[rgba(0,0,0,.2)]"
-					@click="app.setSiderCollapse(true)"
-				></div>
-			</Transition>
-		</Teleport>
-	</DarkModeContainer>
+  <DarkModeContainer
+    class="z-20 h-full flex-vertical-stretch shadow-[2px_0_8px_0_rgba(29,35,41,0.05)]"
+    :inverted="theme.sider.inverted"
+  >
+    <GlobalLogo
+      v-if="showLogo"
+      :show-title="showTitle"
+      class="overflow-hidden transition-base"
+      :style="{
+        width: logoWidth,
+        height: theme.header.height + 'px'
+      }"
+    />
+    <NLayoutSider
+      class="h-0 flex-1"
+      :show-trigger="theme.sider.showTrigger !== 'headerIcon' && theme.sider.showTrigger"
+      :trigger-style="theme.sider.showTrigger === 'arrow-circle' ? 'top: 240px' : ''"
+      :collapsed-trigger-style="theme.sider.showTrigger === 'arrow-circle' ? 'top: 240px' : ''"
+      :collapse-mode="theme.sider.showTrigger === 'bar' ? 'transform' : 'width'"
+      :collapsed="app.siderCollapse"
+      :collapsed-width="collapsedWidth"
+      :width="siderWidth"
+      :native-scrollbar="false"
+      :inverted="!theme.darkMode && theme.sider.inverted"
+      @collapse="app.setSiderCollapse(true)"
+      @expand="app.setSiderCollapse(false)"
+    >
+      <NMenu
+        v-if="!theme.layout.isMenuSeparation"
+        v-model:expanded-keys="expandedKeys"
+        :value="activeKey"
+        :inverted="!theme.darkMode && theme.sider.inverted"
+        :collapsed="app.siderCollapse"
+        :collapsed-width="collapsedWidth"
+        :collapsed-icon-size="22"
+        :options="routeStore.menus"
+        @update:value="handleUpdateMenu"
+      />
+      <NMenu
+        v-else
+        v-model:expanded-keys="expandedKeys"
+        :value="theme.layout.isMenuInverted ? activeKey : activeFirstLevelMenuKey"
+        :inverted="!theme.darkMode && theme.sider.inverted"
+        :collapsed="app.siderCollapse"
+        :collapsed-width="collapsedWidth"
+        :collapsed-icon-size="22"
+        :options="theme.layout.isMenuInverted ? childLevelMenus : firstLevelMenus"
+        @update:value="handleUpdateMixMenu"
+      />
+    </NLayoutSider>
+    <!-- siderBar 遮罩 -->
+    <Teleport to="body">
+      <Transition name="fade">
+        <div
+          v-if="isMobile && !app.siderCollapse"
+          class="sider-mask absolute-lt z-200 size-full bg-[rgba(0,0,0,.2)]"
+          @click="app.setSiderCollapse(true)"
+        ></div>
+      </Transition>
+    </Teleport>
+  </DarkModeContainer>
 </template>
 
 <style lang="scss" scoped></style>

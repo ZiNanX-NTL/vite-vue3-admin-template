@@ -1,11 +1,11 @@
 {
-	"recommendations": [
-		"vue.volar",
-		"simonsiefke.svg-preview",
-		"antfu.unocss",
-		"afzalsayed96.icones",
-		"mikestead.dotenv",
-		"simonhe.common-intellisense",
-		"steoates.autoimport"
-	]
+  "recommendations": [
+    "vue.volar",
+    "simonsiefke.svg-preview",
+    "antfu.unocss",
+    "afzalsayed96.icones",
+    "mikestead.dotenv",
+    "simonhe.common-intellisense",
+    "steoates.autoimport"
+  ]
 }

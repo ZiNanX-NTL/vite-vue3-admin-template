@@ -2,15 +2,15 @@ import * as THREE from 'three';
 import texture from '@/assets/images/texture.jpg';
 
 export class LightSweepMaterial extends THREE.ShaderMaterial {
-	constructor() {
-		super({
-			transparent: true,
-			uniforms: {
-				ringWidth: { value: 0.0 },
-				innerRadius: { value: 0.0 },
-				uTexture: { value: new THREE.TextureLoader().load(texture) }
-			},
-			vertexShader: /* glsl */ `
+  constructor() {
+    super({
+      transparent: true,
+      uniforms: {
+        ringWidth: { value: 0.0 },
+        innerRadius: { value: 0.0 },
+        uTexture: { value: new THREE.TextureLoader().load(texture) }
+      },
+      vertexShader: /* glsl */ `
         varying vec2 vUv;
 
         void main() {
@@ -18,7 +18,7 @@ export class LightSweepMaterial extends THREE.ShaderMaterial {
           gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
       `,
-			fragmentShader: /* glsl */ `
+      fragmentShader: /* glsl */ `
         varying vec2 vUv;
         uniform float ringWidth;
         uniform float innerRadius;
@@ -34,6 +34,6 @@ export class LightSweepMaterial extends THREE.ShaderMaterial {
           gl_FragColor.rgba = vec4(pattern*texture.r*1.0, pattern*texture.g*1.0, pattern*texture.b*1.4, texture.b*pattern);
         }
       `
-		});
-	}
+    });
+  }
 }

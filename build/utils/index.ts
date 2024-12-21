@@ -7,7 +7,7 @@ import process from 'node:process';
  * @descrition 末尾不带斜杠
  */
 export function getRootPath() {
-	return path.resolve(process.cwd());
+  return path.resolve(process.cwd());
 }
 
 /**
@@ -17,7 +17,7 @@ export function getRootPath() {
  * @descrition 末尾不带斜杠
  */
 export function getSrcPath(srcName = 'src') {
-	const rootPath = getRootPath();
+  const rootPath = getRootPath();
 
-	return `${rootPath}/${srcName}`;
+  return `${rootPath}/${srcName}`;
 }

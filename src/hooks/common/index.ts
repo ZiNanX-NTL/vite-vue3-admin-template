@@ -10,14 +10,14 @@ import useHeight from './useHeight';
 import useResettableReactive from './useResettableReactive';
 
 export {
-	useGlobalLoading,
-	useBoolean,
-	useContext,
-	useLoading,
-	useReload,
-	useAuth,
-	useRender,
-	useTempCache,
-	useHeight,
-	useResettableReactive
+  useGlobalLoading,
+  useBoolean,
+  useContext,
+  useLoading,
+  useReload,
+  useAuth,
+  useRender,
+  useTempCache,
+  useHeight,
+  useResettableReactive
 };

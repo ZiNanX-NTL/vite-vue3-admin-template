@@ -5,7 +5,7 @@ defineOptions({ name: 'BlankLayout' });
 </script>
 
 <template>
-	<GlobalContent :show-padding="false" />
+  <GlobalContent :show-padding="false" />
 </template>
 
 <style scoped></style>

@@ -1,13 +1,14 @@
+import process from 'node:process';
 import { defineConfig, loadEnv } from 'vite';
 import {
   getRootPath,
   getSrcPath,
-  viteDefine,
-  viteCss,
-  viteServer,
-  viteOptimizeDeps,
+  setupVitePlugins,
   viteBuild,
-  setupVitePlugins
+  viteCss,
+  viteDefine,
+  viteOptimizeDeps,
+  viteServer
 } from './build';
 
 // https://vitejs.dev/config/

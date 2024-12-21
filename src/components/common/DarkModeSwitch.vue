@@ -2,33 +2,33 @@
 defineOptions({ name: 'DarkModeSwitch' });
 
 const props = defineProps({
-	dark: {
-		type: Boolean,
-		default: false
-	}
+  dark: {
+    type: Boolean,
+    default: false
+  }
 });
 
 const emit = defineEmits(['update:dark']);
 
 const darkMode = computed({
-	get() {
-		return props.dark;
-	},
-	set(newValue) {
-		emit('update:dark', newValue);
-	}
+  get() {
+    return props.dark;
+  },
+  set(newValue) {
+    emit('update:dark', newValue);
+  }
 });
 
 async function handleSwitch() {
-	darkMode.value = !darkMode.value;
+  darkMode.value = !darkMode.value;
 }
 </script>
 
 <template>
-	<div class="flex-center cursor-pointer text-18px" @click="handleSwitch">
-		<icon-mdi-moon-waning-crescent v-if="darkMode" />
-		<icon-mdi-white-balance-sunny v-else />
-	</div>
+  <div class="flex-center cursor-pointer text-18px" @click="handleSwitch">
+    <icon-mdi-moon-waning-crescent v-if="darkMode" />
+    <icon-mdi-white-balance-sunny v-else />
+  </div>
 </template>
 
 <style></style>

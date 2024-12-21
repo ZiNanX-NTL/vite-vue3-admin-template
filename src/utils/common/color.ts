@@ -28,16 +28,16 @@ type ColorIndex = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 /** 暗色主题颜色映射关系表 */
 const darkColorMap = [
-	{ index: 1, ratio: 0.8 },
-	{ index: 2, ratio: 0.77 },
-	{ index: 3, ratio: 0.74 },
-	{ index: 4, ratio: 0.71 },
-	{ index: 5, ratio: 0.68 },
-	{ index: 6, ratio: 0.65 },
-	{ index: 7, ratio: 0.45 },
-	{ index: 8, ratio: 0.3 },
-	{ index: 9, ratio: 0.25 },
-	{ index: 10, ratio: 0.15 }
+  { index: 1, ratio: 0.8 },
+  { index: 2, ratio: 0.77 },
+  { index: 3, ratio: 0.74 },
+  { index: 4, ratio: 0.71 },
+  { index: 5, ratio: 0.68 },
+  { index: 6, ratio: 0.65 },
+  { index: 7, ratio: 0.45 },
+  { index: 8, ratio: 0.3 },
+  { index: 9, ratio: 0.25 },
+  { index: 10, ratio: 0.15 }
 ];
 
 /**
@@ -47,11 +47,11 @@ const darkColorMap = [
  * @param ratio - 所占比例(0 - 1),默认0.65
  */
 export function getDarkColor(color: AnyColor | Colord, ratio = 0.65) {
-	/** 暗黑主题的混合颜色 */
-	const darkThemeMixColor = colord(color).isLight() ? '#141414' : '#fafafa';
-	const darkColor = colord(darkThemeMixColor).mix(color, ratio);
+  /** 暗黑主题的混合颜色 */
+  const darkThemeMixColor = colord(color).isLight() ? '#141414' : '#fafafa';
+  const darkColor = colord(darkThemeMixColor).mix(color, ratio);
 
-	return darkColor;
+  return darkColor;
 }
 
 /**
@@ -63,33 +63,33 @@ export function getDarkColor(color: AnyColor | Colord, ratio = 0.65) {
  * @returns 返回hex格式的颜色
  */
 export function getColorPalette(color: AnyColor, index: ColorIndex, darkTheme = false): string {
-	const transformColor = colord(color);
+  const transformColor = colord(color);
 
-	if (!transformColor.isValid()) {
-		throw new Error('invalid input color value');
-	}
+  if (!transformColor.isValid()) {
+    throw new Error('invalid input color value');
+  }
 
-	if (index === 6) {
-		if (darkTheme) {
-			return getDarkColor(transformColor).toHex();
-		}
-		return colord(transformColor).toHex();
-	}
+  if (index === 6) {
+    if (darkTheme) {
+      return getDarkColor(transformColor).toHex();
+    }
+    return colord(transformColor).toHex();
+  }
 
-	const isLight = index < 6;
-	const hsv = transformColor.toHsv();
-	const i = isLight ? lightColorCount + 1 - index : index - lightColorCount - 1;
+  const isLight = index < 6;
+  const hsv = transformColor.toHsv();
+  const i = isLight ? lightColorCount + 1 - index : index - lightColorCount - 1;
 
-	const newHsv: HsvColor = {
-		h: getHue(hsv, i, isLight),
-		s: getSaturation(hsv, i, isLight),
-		v: getValue(hsv, i, isLight)
-	};
+  const newHsv: HsvColor = {
+    h: getHue(hsv, i, isLight),
+    s: getSaturation(hsv, i, isLight),
+    v: getValue(hsv, i, isLight)
+  };
 
-	if (darkTheme) {
-		return getDarkColor(newHsv, darkColorMap.find(item => item.index === index)?.ratio).toHex();
-	}
-	return colord(newHsv).toHex();
+  if (darkTheme) {
+    return getDarkColor(newHsv, darkColorMap.find(item => item.index === index)?.ratio).toHex();
+  }
+  return colord(newHsv).toHex();
 }
 
 /**
@@ -99,21 +99,21 @@ export function getColorPalette(color: AnyColor, index: ColorIndex, darkTheme = 
  * @param darkTheme - 暗黑主题的调色板颜色
  */
 export function getColorPalettes(color: AnyColor, darkTheme = false): string[] {
-	const indexes: ColorIndex[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const indexes: ColorIndex[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-	const patterns = indexes.map(index => getColorPalette(color, index));
+  const patterns = indexes.map(index => getColorPalette(color, index));
 
-	if (darkTheme) {
-		const darkPatterns = darkColorMap.map(({ index, ratio }) => {
-			const darkColor = getDarkColor(patterns[index - 1], ratio);
+  if (darkTheme) {
+    const darkPatterns = darkColorMap.map(({ index, ratio }) => {
+      const darkColor = getDarkColor(patterns[index - 1], ratio);
 
-			return darkColor;
-		});
+      return darkColor;
+    });
 
-		return darkPatterns.map(item => colord(item).toHex());
-	}
+    return darkPatterns.map(item => colord(item).toHex());
+  }
 
-	return patterns;
+  return patterns;
 }
 
 /**
@@ -124,31 +124,31 @@ export function getColorPalettes(color: AnyColor, darkTheme = false): string[] {
  * @param isLight - 是否是亮颜色
  */
 function getHue(hsv: HsvColor, i: number, isLight: boolean) {
-	let hue;
+  let hue;
 
-	const hsvH = Math.round(hsv.h);
+  const hsvH = Math.round(hsv.h);
 
-	if (hsvH >= 60 && hsvH <= 240) {
-		// 冷色调
-		// 减淡变亮 色相顺时针旋转 更暖
-		// 加深变暗 色相逆时针旋转 更冷
-		hue = isLight ? hsvH - hueStep * i : hsvH + hueStep * i;
-	} else {
-		// 暖色调
-		// 减淡变亮 色相逆时针旋转 更暖
-		// 加深变暗 色相顺时针旋转 更冷
-		hue = isLight ? hsvH + hueStep * i : hsvH - hueStep * i;
-	}
+  if (hsvH >= 60 && hsvH <= 240) {
+    // 冷色调
+    // 减淡变亮 色相顺时针旋转 更暖
+    // 加深变暗 色相逆时针旋转 更冷
+    hue = isLight ? hsvH - hueStep * i : hsvH + hueStep * i;
+  } else {
+    // 暖色调
+    // 减淡变亮 色相逆时针旋转 更暖
+    // 加深变暗 色相顺时针旋转 更冷
+    hue = isLight ? hsvH + hueStep * i : hsvH - hueStep * i;
+  }
 
-	if (hue < 0) {
-		hue += 360;
-	}
+  if (hue < 0) {
+    hue += 360;
+  }
 
-	if (hue >= 360) {
-		hue -= 360;
-	}
+  if (hue >= 360) {
+    hue -= 360;
+  }
 
-	return hue;
+  return hue;
 }
 
 /**
@@ -159,34 +159,34 @@ function getHue(hsv: HsvColor, i: number, isLight: boolean) {
  * @param isLight - 是否是亮颜色
  */
 function getSaturation(hsv: HsvColor, i: number, isLight: boolean) {
-	// 灰色不渐变
-	if (hsv.h === 0 && hsv.s === 0) {
-		return hsv.s;
-	}
+  // 灰色不渐变
+  if (hsv.h === 0 && hsv.s === 0) {
+    return hsv.s;
+  }
 
-	let saturation;
+  let saturation;
 
-	if (isLight) {
-		saturation = hsv.s - saturationStep * i;
-	} else if (i === darkColorCount) {
-		saturation = hsv.s + saturationStep;
-	} else {
-		saturation = hsv.s + saturationStep2 * i;
-	}
+  if (isLight) {
+    saturation = hsv.s - saturationStep * i;
+  } else if (i === darkColorCount) {
+    saturation = hsv.s + saturationStep;
+  } else {
+    saturation = hsv.s + saturationStep2 * i;
+  }
 
-	if (saturation > 100) {
-		saturation = 100;
-	}
+  if (saturation > 100) {
+    saturation = 100;
+  }
 
-	if (isLight && i === lightColorCount && saturation > 10) {
-		saturation = 10;
-	}
+  if (isLight && i === lightColorCount && saturation > 10) {
+    saturation = 10;
+  }
 
-	if (saturation < 6) {
-		saturation = 6;
-	}
+  if (saturation < 6) {
+    saturation = 6;
+  }
 
-	return saturation;
+  return saturation;
 }
 
 /**
@@ -197,19 +197,19 @@ function getSaturation(hsv: HsvColor, i: number, isLight: boolean) {
  * @param isLight - 是否是亮颜色
  */
 function getValue(hsv: HsvColor, i: number, isLight: boolean) {
-	let value;
+  let value;
 
-	if (isLight) {
-		value = hsv.v + brightnessStep1 * i;
-	} else {
-		value = hsv.v - brightnessStep2 * i;
-	}
+  if (isLight) {
+    value = hsv.v + brightnessStep1 * i;
+  } else {
+    value = hsv.v - brightnessStep2 * i;
+  }
 
-	if (value > 100) {
-		value = 100;
-	}
+  if (value > 100) {
+    value = 100;
+  }
 
-	return value;
+  return value;
 }
 
 /**
@@ -219,7 +219,7 @@ function getValue(hsv: HsvColor, i: number, isLight: boolean) {
  * @param alpha - 透明度(0 - 1)
  */
 export function addColorAlpha(color: string, alpha: number) {
-	return colord(color).alpha(alpha).toHex();
+  return colord(color).alpha(alpha).toHex();
 }
 
 /**
@@ -230,7 +230,7 @@ export function addColorAlpha(color: string, alpha: number) {
  * @param ratio - 第二个颜色占比
  */
 export function mixColor(firstColor: string, secondColor: string, ratio: number) {
-	return colord(firstColor).mix(secondColor, ratio).toHex();
+  return colord(firstColor).mix(secondColor, ratio).toHex();
 }
 
 /**
@@ -239,7 +239,7 @@ export function mixColor(firstColor: string, secondColor: string, ratio: number)
  * @param color - 颜色
  */
 export function isWhiteColor(color: string) {
-	return colord(color).isEqual('#ffffff');
+  return colord(color).isEqual('#ffffff');
 }
 
 /**
@@ -249,10 +249,10 @@ export function isWhiteColor(color: string) {
  * @param darkTheme - 暗黑主题的颜色
  */
 export function getRgbOfColor(color: string, darkTheme = false) {
-	if (darkTheme) {
-		return getDarkColor(color).toRgb();
-	}
-	return colord(color).toRgb();
+  if (darkTheme) {
+    return getDarkColor(color).toRgb();
+  }
+  return colord(color).toRgb();
 }
 
 /**
@@ -264,57 +264,57 @@ export function getRgbOfColor(color: string, darkTheme = false) {
  * @returns 过渡后的颜色
  */
 export function applyColorTransition(startColor: string, endColor: string, value: number): string {
-	if (value < 0 || value > 1) {
-		throw new Error('Value must be between 0 and 1');
-	}
+  if (value < 0 || value > 1) {
+    throw new Error('Value must be between 0 and 1');
+  }
 
-	const start = colord(startColor);
-	const end = colord(endColor);
-	const { r: sr, g: sg, b: sb } = start.toRgb();
-	const { r: er, g: eg, b: eb } = end.toRgb();
+  const start = colord(startColor);
+  const end = colord(endColor);
+  const { r: sr, g: sg, b: sb } = start.toRgb();
+  const { r: er, g: eg, b: eb } = end.toRgb();
 
-	const r = Math.round(sr + (er - sr) * value);
-	const g = Math.round(sg + (eg - sg) * value);
-	const b = Math.round(sb + (eb - sb) * value);
+  const r = Math.round(sr + (er - sr) * value);
+  const g = Math.round(sg + (eg - sg) * value);
+  const b = Math.round(sb + (eb - sb) * value);
 
-	return colord({ r, g, b }).toHex();
+  return colord({ r, g, b }).toHex();
 }
 
 /** 根据颜色获取配色方案 */
 export function generateColorScheme(color: string): string[] {
-	const baseColor = colord(color);
+  const baseColor = colord(color);
 
-	// 生成互补色
-	const complementaryColor = baseColor.rotate(180).toHex();
+  // 生成互补色
+  const complementaryColor = baseColor.rotate(180).toHex();
 
-	// 生成类似色（±30°）
-	const analogousColor1 = baseColor.rotate(30).toHex();
-	const analogousColor2 = baseColor.rotate(-30).toHex();
+  // 生成类似色（±30°）
+  const analogousColor1 = baseColor.rotate(30).toHex();
+  const analogousColor2 = baseColor.rotate(-30).toHex();
 
-	// 生成分裂互补色（互补色的类似色）
-	const splitComplementaryColor1 = baseColor.rotate(150).toHex();
-	const splitComplementaryColor2 = baseColor.rotate(-150).toHex();
+  // 生成分裂互补色（互补色的类似色）
+  const splitComplementaryColor1 = baseColor.rotate(150).toHex();
+  const splitComplementaryColor2 = baseColor.rotate(-150).toHex();
 
-	// 生成三文鱼色（±120°）
-	const triadicColor1 = baseColor.rotate(120).toHex();
-	const triadicColor2 = baseColor.rotate(-120).toHex();
+  // 生成三文鱼色（±120°）
+  const triadicColor1 = baseColor.rotate(120).toHex();
+  const triadicColor2 = baseColor.rotate(-120).toHex();
 
-	// 生成四色和谐（±90°）
-	const tetradicColor1 = baseColor.rotate(90).toHex();
-	const tetradicColor2 = baseColor.rotate(180).toHex();
-	const tetradicColor3 = baseColor.rotate(270).toHex();
+  // 生成四色和谐（±90°）
+  const tetradicColor1 = baseColor.rotate(90).toHex();
+  const tetradicColor2 = baseColor.rotate(180).toHex();
+  const tetradicColor3 = baseColor.rotate(270).toHex();
 
-	return [
-		baseColor.toHex(),
-		complementaryColor,
-		analogousColor1,
-		analogousColor2,
-		splitComplementaryColor1,
-		splitComplementaryColor2,
-		triadicColor1,
-		triadicColor2,
-		tetradicColor1,
-		tetradicColor2,
-		tetradicColor3
-	];
+  return [
+    baseColor.toHex(),
+    complementaryColor,
+    analogousColor1,
+    analogousColor2,
+    splitComplementaryColor1,
+    splitComplementaryColor2,
+    triadicColor1,
+    triadicColor2,
+    tetradicColor1,
+    tetradicColor2,
+    tetradicColor3
+  ];
 }
