@@ -15,7 +15,8 @@ export default defineConfig({
     presetUnitToVw({
       baseFontSize: 1,
       baseWidth: 1920,
-      unitPrecision: 5
+      unitPrecision: 5,
+      units: ['pw']
     })
   ],
   transformers: [transformerDirectives(), transformerVariantGroup()],

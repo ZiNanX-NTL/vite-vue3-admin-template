@@ -15,7 +15,7 @@ useGlobalEvents();
     :theme-overrides="theme.naiveThemeOverrides"
     :locale="zhCN"
     :date-locale="dateZhCN"
-    class="h-full"
+    abstract
   >
     <NThemeEditor class="bottom-100px">
       <NaiveProvider>
