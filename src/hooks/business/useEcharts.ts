@@ -118,7 +118,7 @@ export function useEcharts<T extends ECOption>(optionsFactory: () => T, hooks: C
     destroy
   } = useRender(domRef, {
     async render() {
-      const chartTheme = darkMode.value ? 'dark' : 'light';
+      const chartTheme = darkMode.value ? 'dark' : undefined;
 
       await nextTick();
 
