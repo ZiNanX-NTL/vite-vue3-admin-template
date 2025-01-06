@@ -30,13 +30,14 @@ export function useRouterPush(inSetup = true) {
   }
 
   /** 返回上一级路由 */
-  function routerBack() {
+  function routerBack(removeTab = false) {
+    if (removeTab) removeTabOnly(route.value.fullPath);
     router.go(-1);
   }
 
   /** 替换路由 */
-  function routerReplace(to: RouteLocationRaw) {
-    removeTabOnly(route.value.fullPath);
+  function routerReplace(to: RouteLocationRaw, removeTab = true) {
+    if (removeTab) removeTabOnly(route.value.fullPath);
     router.replace(to);
   }
 
