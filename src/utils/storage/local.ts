@@ -35,7 +35,7 @@ function createLocalStorage<T extends Local = Local>(isEncryption = false) {
     window.localStorage.setItem(key as string, json);
   }
 
-  function get<K extends keyof T>(key: K) {
+  function get<K extends keyof T>(key: K, hasExpire = true) {
     const json = window.localStorage.getItem(key as string);
     if (json) {
       let storageData: StorageData<T[K]> | null = null;
@@ -49,10 +49,14 @@ function createLocalStorage<T extends Local = Local>(isEncryption = false) {
         // 防止解析失败
       }
       if (storageData) {
-        const { value, expire } = storageData;
-        // 在有效期内直接返回
-        if (expire === null || expire >= Date.now()) {
-          return value as T[K];
+        if (hasExpire) {
+          const { value, expire } = storageData;
+          // 在有效期内直接返回
+          if (expire === null || expire >= Date.now()) {
+            return value as T[K];
+          }
+        } else {
+          return storageData as any;
         }
       }
       remove(key);
