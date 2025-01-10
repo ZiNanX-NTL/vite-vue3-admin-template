@@ -80,6 +80,7 @@ watch(
 <template>
   <DarkModeContainer
     class="z-20 h-full flex-vertical-stretch shadow-[2px_0_8px_0_rgba(29,35,41,0.05)]"
+    :class="theme.sider.inverted ? 'bg-invert' : ''"
     :inverted="theme.sider.inverted"
   >
     <GlobalLogo
