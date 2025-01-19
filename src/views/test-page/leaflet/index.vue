@@ -63,10 +63,11 @@ const { domRef } = useLeaflet(
       //     // zoomOffset: 1
       //   }
       // ).addTo(map);
-      L.tileLayer(`https://t{s}.tianditu.gov.cn/DataServer?T=img_c&X={x}&Y={y}&L={z}&tk=${TIANDITU_KEY}`, {
-        subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'],
-        zoomOffset: 1
-      }).addTo(map);
+      // // ********
+      // L.tileLayer(`https://t{s}.tianditu.gov.cn/DataServer?T=img_c&X={x}&Y={y}&L={z}&tk=${TIANDITU_KEY}`, {
+      //   subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'],
+      //   zoomOffset: 1
+      // }).addTo(map);
       // L.tileLayer(`https://t{s}.tianditu.gov.cn/DataServer?T=img_c&X={x}&Y={y}&L={z}&tk=${TIANDITU_KEY}`, {
       //   subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'],
       //   zoomOffset: 1
@@ -143,38 +144,45 @@ const { domRef } = useLeaflet(
   :deep(.esri-view-surface:focus::after) {
     outline: none !important;
   }
+  @include leafletControlLayers(29px, 32px);
+
   :deep(.leaflet-control-layers) {
-    border: 1px solid #18bdf2;
-    @apply bg-#101b2882 p-15px;
-    .leaflet-control-layers-overlays {
-      > label {
-        > span {
-          @apply flex items-center;
-          > input[type='checkbox'] {
-            @apply w-15px h-15px bg-transparent appearance-none outline-none;
-            border: 1px solid #18bdf2;
-            &:checked {
-              // border: none;
-              background: url('/src/assets/images/checked.png') no-repeat center;
-              background-size: contain;
-            }
-          }
-          > .leaflet-control-layers-selector {
-            @apply mt-0 top-0 mr-5px;
-          }
-          > span {
-            @apply flex items-center text-#fff;
-            .legend {
-              @apply w-29px h-32px mr-5px;
-            }
-            .block-legend {
-              @apply flex-center before:content-empty before:block before:w-20px before:h-20px before:bg-#74f84d;
-            }
-          }
-        }
-      }
+    .block-legend {
+      @apply flex-center before:content-empty before:block before:w-20px before:h-20px before:bg-#74f84d;
     }
   }
+  // :deep(.leaflet-control-layers) {
+  //   border: 1px solid #18bdf2;
+  //   @apply bg-#101b2882 p-15px;
+  //   .leaflet-control-layers-overlays {
+  //     > label {
+  //       > span {
+  //         @apply flex items-center;
+  //         > input[type='checkbox'] {
+  //           @apply w-15px h-15px bg-transparent appearance-none outline-none;
+  //           border: 1px solid #18bdf2;
+  //           &:checked {
+  //             // border: none;
+  //             background: url('/src/assets/images/checked.png') no-repeat center;
+  //             background-size: contain;
+  //           }
+  //         }
+  //         > .leaflet-control-layers-selector {
+  //           @apply mt-0 top-0 mr-5px;
+  //         }
+  //         > span {
+  //           @apply flex items-center text-#fff;
+  //           .legend {
+  //             @apply w-29px h-32px mr-5px;
+  //           }
+  //           .block-legend {
+  //             @apply flex-center before:content-empty before:block before:w-20px before:h-20px before:bg-#74f84d;
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
   // :deep(.leaflet-touch .leaflet-control-layers) {
   // @apply mt-50px;
   // }

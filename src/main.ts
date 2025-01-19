@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import GlobalLoading from './components/common/GlobalLoading.vue';
-import { setupAssets, setupDayjs, setupLoading } from './plugins';
+import { fixResizeObserver, setupAssets, setupDayjs, setupLoading } from './plugins';
 import { setupStore } from './store';
 import { setupDirectives } from './directives';
 import { setupRouter } from './router';
@@ -32,3 +32,4 @@ async function bootstrapApp() {
 }
 
 bootstrapApp();
+fixResizeObserver();

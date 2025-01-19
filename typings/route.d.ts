@@ -1,4 +1,9 @@
 declare namespace AuthRoute {
+  type Lazy<T> = () => Promise<T>;
+  interface ModuleComponent {
+    default: import('vue-router').RouteComponent;
+  }
+
   /**
    * 路由的组件
    *
@@ -7,7 +12,7 @@ declare namespace AuthRoute {
    * - multi - 多级路由布局(三级路由或三级以上时，除第一级路由和最后一级路由，其余的采用该布局)
    * - self - 作为子路由，使用自身的布局(作为最后一级路由，没有子路由)
    */
-  type RouteComponentType = 'basic' | 'blank' | 'multi' | 'self';
+  type RouteComponentType = 'basic' | 'blank' | 'multi' | 'self' | Lazy<ModuleComponent>;
 
   /** 路由描述 */
   interface RouteMeta {

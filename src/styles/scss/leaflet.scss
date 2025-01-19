@@ -1,0 +1,62 @@
+/** leaflet */
+:deep(.leaflet-container) {
+  outline: none !important;
+
+  .easy-button-button {
+    border-radius: 2px;
+  }
+  .leaflet-control-layers-overlays > label > span {
+    @apply flex items-center cursor-pointer;
+  }
+  .leaflet-control-layers-overlays .leaflet-control-layers-selector[type='checkbox'] {
+    @apply relative size-16px mt-0 top-0 mr-5px aspect-square !appearance-none !bg-none checked:!bg-gradient-to-tr checked:!from-primary checked:!to-white bg-white border border-gray-300 shadow-sm rounded-[0.25em] !outline-none !ring-0 !text-transparent !ring-offset-0 checked:!border-primary hover:!border-primary cursor-pointer transition-all duration-300 ease-in-out focus-visible:!outline-offset-2 focus-visible:!outline-2 focus-visible:!outline-primary/30 focus-visible:border-primary after:w-[35%] after:h-[53%] after:absolute after:opacity-0 after:top-[40%] after:left-[50%] after:-translate-x-2/4 after:-translate-y-2/4 after:rotate-[10deg] after:drop-shadow-[1px_0.5px_1px_rgb(var(--primary-color)/0.5)] after:border-r-[0.17em] after:border-r-white after:border-b-[0.17em] after:border-b-white after:transition-all after:duration-200 after:ease-linear checked:after:opacity-100 checked:after:rotate-45 after:content-[''];
+  }
+  .leaflet-control-layers-overlays .leaflet-control-layers-selector[type='radio'] {
+    @apply relative size-16px mt-0 top-0 mr-5px aspect-square !appearance-none !bg-none checked:!bg-gradient-to-tr checked:!from-primary checked:!to-white bg-white border border-gray-300 shadow-sm rounded-full !outline-none !ring-0 !text-transparent !ring-offset-0 checked:!border-primary hover:!border-primary cursor-pointer transition-all duration-300 ease-in-out focus-visible:!outline-offset-2 focus-visible:!outline-2 focus-visible:!outline-primary/30 focus-visible:border-primary after:w-[35%] after:h-[53%] after:absolute after:opacity-0 after:top-[40%] after:left-[50%] after:-translate-x-2/4 after:-translate-y-2/4 after:rotate-[10deg] after:drop-shadow-[1px_0.5px_1px_rgb(var(--primary-color)/0.5)] after:border-r-[0.17em] after:border-r-white after:border-b-[0.17em] after:border-b-white after:transition-all after:duration-200 after:ease-linear checked:after:opacity-100 checked:after:rotate-45 after:content-[''];
+  }
+}
+
+@mixin leafletControlLayers($width: 12px, $height: 12px) {
+  :deep(.leaflet-control-layers-overlays) {
+    @apply flex-vertical gap-5px;
+    > label {
+      > span {
+        @apply flex items-center cursor-pointer;
+        > .leaflet-control-layers-selector {
+          @apply mt-0 top-0 mr-5px;
+        }
+        > span {
+          @apply flex items-center;
+          .legend {
+            width: $width;
+            height: $height;
+            @apply mr-5px;
+          }
+          .legend-label {
+            @apply flex-y-center justify-between text-14px text-depth_2;
+          }
+        }
+      }
+    }
+  }
+  :deep(.leaflet-control-layers-group) {
+    @apply flex-vertical gap-5px;
+    > label {
+      @apply flex items-center cursor-pointer;
+      > .leaflet-control-layers-selector {
+        @apply mt-0 top-0 mr-5px;
+      }
+      > span {
+        @apply flex items-center w-full;
+        .legend {
+          width: $width;
+          height: $height;
+          @apply mr-5px;
+        }
+        .legend-label {
+          @apply w-full flex-y-center justify-between text-14px text-depth_2;
+        }
+      }
+    }
+  }
+}
