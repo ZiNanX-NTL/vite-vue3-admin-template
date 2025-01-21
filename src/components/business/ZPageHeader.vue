@@ -6,6 +6,20 @@ defineOptions({
   inheritAttrs: false
 });
 
+const {
+  cardClass = '',
+  titleCenter = false,
+  showBack = true
+} = defineProps<{
+  showBack?: boolean;
+  cardClass?: string;
+  titleCenter?: boolean;
+}>();
+
+const outCardClass = computed(() => {
+  return cardClass + (titleCenter ? ' title-center' : '');
+});
+
 const model = defineModel<any>();
 const pageHeaderRef = ref();
 
@@ -25,13 +39,16 @@ defineExpose(
 </script>
 
 <template>
-  <NCard class="w-unset -mx-20px -mt-20px">
+  <NCard class="m-[-16px_-16px_0] w-unset rounded-0 shadow-sm" :class="outCardClass" :bordered="false">
     <component :is="h(NPageHeader, $attrs)" ref="pageHeaderRef" v-model="model">
       <template #back>
-        <NButton text class="text-16px">
+        <NButton v-if="showBack" text class="text-16px">
           <icon-ion-arrow-back class="mr-4px text-18px" />
           返回
         </NButton>
+        <div v-else>
+          <slot name="back"></slot>
+        </div>
       </template>
       <template v-for="(_value, name) in $slots" #[name]="slotData">
         <slot :name="name" v-bind="slotData || {}"></slot>
@@ -40,4 +57,14 @@ defineExpose(
   </NCard>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.title-center {
+  :deep(.n-page-header__main) {
+    flex: 1;
+    .n-page-header__title {
+      margin: auto;
+      transform: translateX(-35px);
+    }
+  }
+}
+</style>
