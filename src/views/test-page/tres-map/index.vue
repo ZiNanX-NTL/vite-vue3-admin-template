@@ -129,6 +129,8 @@ onMounted(() => {
         <Suspense>
           <HeiLongJiangMapMesh :position="[0, 0, 0.05]" />
         </Suspense>
+
+        <!-- TODO: 统计标签 -->
       </TresCanvas>
     </div>
   </div>
