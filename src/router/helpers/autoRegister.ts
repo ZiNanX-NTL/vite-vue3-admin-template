@@ -1,4 +1,8 @@
-const modules = import.meta.glob(['@/views/**/index.{vue,tsx,jsx}', '!@/views/**/components/**']);
+const modules = import.meta.glob([
+  '@/views/**/index.{vue,tsx,jsx}',
+  '!@/views/**/components/**',
+  '!@/views/**/plugins/**'
+]);
 
 function handlePages(pages: typeof modules) {
   const views: Record<string, any> = {};

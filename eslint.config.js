@@ -15,7 +15,7 @@ export default defineConfig(
         'PascalCase',
         {
           registeredComponentsOnly: false,
-          ignores: ['/^icon-/']
+          ignores: ['/^icon-/', 'primitive']
         }
       ],
       'no-underscore-dangle': 'off'

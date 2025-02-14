@@ -4,6 +4,18 @@ const pageRoute: AuthRoute.Route = {
   component: 'basic',
   children: [
     {
+      name: 'test-page_tres-map',
+      path: '/test-page/tres-map',
+      component: 'self',
+      meta: {
+        title: 'TresMap',
+        requiresAuth: true,
+        keepAlive: false,
+        permissions: ['super', 'admin', 'user'],
+        icon: 'ic:round-tab'
+      }
+    },
+    {
       name: 'test-page_function-test',
       path: '/test-page/function-test',
       component: 'self',

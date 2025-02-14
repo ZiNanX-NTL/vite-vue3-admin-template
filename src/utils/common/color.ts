@@ -212,6 +212,16 @@ function getValue(hsv: HsvColor, i: number, isLight: boolean) {
   return value;
 }
 
+/** 设置颜色加明亮度 */
+export function setLightness(color: string, lightness = 50) {
+  const newHsv: HsvColor = {
+    h: colord(color).toHsv().h,
+    s: colord(color).toHsv().s,
+    v: lightness
+  };
+  return colord(newHsv).toHex();
+}
+
 /**
  * 给颜色加透明度
  *

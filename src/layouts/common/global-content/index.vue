@@ -19,13 +19,15 @@ const routeStore = useRouteStore();
   <RouterView v-slot="{ Component, route }">
     <Transition :name="theme.pageAnimateMode" mode="out-in" :appear="true">
       <KeepAlive :include="[...routeStore.cacheRoutes, ...routeStore.tempCacheRoutes]">
-        <component
-          :is="Component"
-          v-if="app.reloadFlag"
-          :key="route.fullPath"
-          :class="{ 'p-16px': showPadding }"
-          class="flex-grow transition-base"
-        />
+        <Suspense>
+          <component
+            :is="Component"
+            v-if="app.reloadFlag"
+            :key="route.fullPath"
+            :class="{ 'p-16px': showPadding }"
+            class="flex-grow transition-base"
+          />
+        </Suspense>
       </KeepAlive>
     </Transition>
   </RouterView>

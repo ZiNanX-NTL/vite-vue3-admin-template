@@ -13,7 +13,13 @@ import mock from './vitePluginMock';
 
 export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | PluginOption[])[] {
   return [
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: tag => (tag.startsWith('Tres') && tag !== 'TresCanvas') || tag === 'primitive'
+        }
+      }
+    }),
     vueJsx(),
     unocss(),
     // 打包进度条
