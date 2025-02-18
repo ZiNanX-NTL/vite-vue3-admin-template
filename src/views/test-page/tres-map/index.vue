@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// import { dateZhCN, zhCN } from 'naive-ui';
 import { TresCanvas, useRenderLoop } from '@tresjs/core';
 import { CameraControls, Stars, useProgress } from '@tresjs/cientos';
 import { Pane } from 'tweakpane';
@@ -9,8 +10,9 @@ import DigitalGround from './components/DigitalGround.vue';
 import DigitalGround1 from './components/DigitalGround1.vue';
 import ReflectorGround from './components/ReflectorGround.vue';
 import HeiLongJiangMapMesh from './components/HeiLongJiangMapMesh.vue';
+import MapTabs from './components/MapTabs.vue';
 
-const { colorScheme } = useThemeStore();
+const theme = useThemeStore();
 const { hasFinishLoading, progress } = await useProgress();
 const { onBeforeLoop, onAfterLoop } = useRenderLoop();
 
@@ -33,7 +35,7 @@ const directionalLightPositions = [
 ] as [number, number, number][];
 
 const digitalState = reactive({
-  color: setLightness(colorScheme[0], 100),
+  color: setLightness(theme.colorScheme[0], 100),
   speed: 3,
   size: 100
 });
@@ -43,6 +45,22 @@ const reflectorState = reactive({
   showGridHelper: false,
   size: [100, 100],
   scale: 1.5
+});
+
+const mapExtrudeSettings = reactive({
+  depth: 4,
+  bevelEnabled: true,
+  bevelSegments: 0,
+  bevelThickness: 0.2
+});
+
+const htmlState = reactive({
+  wrapperClass: 'wrapper',
+  center: true,
+  sprite: true,
+  prepend: true,
+  transform: true,
+  distanceFactor: 10
 });
 
 /** 创建一个Tweakpane窗格 */
@@ -74,10 +92,17 @@ function createPane() {
   ground.addBinding(digitalState, 'speed', { label: '动画速度' });
   ground.addBinding(digitalState, 'size', { label: '纹理大小' });
 
-  // const mapPane = pane.addFolder({
-  //   title: '地图参数',
-  //   expanded: true
-  // });
+  const mapPane = pane.addFolder({
+    title: '地图参数',
+    expanded: true
+  });
+  mapPane.addBinding(mapExtrudeSettings, 'depth', { label: '地图厚度' });
+
+  const tabsPane = pane.addFolder({
+    title: '标签参数',
+    expanded: true
+  });
+  tabsPane.addBinding(htmlState, 'distanceFactor', { label: '缩放系数' });
 }
 
 onMounted(() => {
@@ -127,10 +152,10 @@ onMounted(() => {
         -->
 
         <Suspense>
-          <HeiLongJiangMapMesh :position="[0, 0, 0.05]" />
+          <HeiLongJiangMapMesh :position="[0, 0, 0.05]" :extrude-settings="mapExtrudeSettings" />
         </Suspense>
-
-        <!-- TODO: 统计标签 -->
+        <!-- 地图标签 -->
+        <MapTabs :position="[0, 0, mapExtrudeSettings.depth + 1]" :html-state="htmlState" />
       </TresCanvas>
     </div>
   </div>

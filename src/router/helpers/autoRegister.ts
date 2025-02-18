@@ -1,7 +1,8 @@
 const modules = import.meta.glob([
   '@/views/**/index.{vue,tsx,jsx}',
   '!@/views/**/components/**',
-  '!@/views/**/plugins/**'
+  '!@/views/**/plugins/**',
+  '!@/views/**/data/**'
 ]);
 
 function handlePages(pages: typeof modules) {

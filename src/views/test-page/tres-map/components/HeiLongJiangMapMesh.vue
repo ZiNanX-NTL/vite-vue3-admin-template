@@ -47,6 +47,11 @@ interface AreaListType {
 defineOptions({
   inheritAttrs: false
 });
+const { extrudeSettings } = defineProps<{
+  // 地图参数
+  extrudeSettings: Record<string, any>;
+}>();
+
 const { colorScheme } = useThemeStore();
 
 const initMeshBvh = () => {
@@ -60,13 +65,6 @@ initMeshBvh();
 const projection = geoMercator().center([127.84, 47.44]).scale(250).translate([0, 0]);
 
 const areaJson: FeaturesType = await loadGeojson('/src/assets/json/HLJZone.json');
-
-const extrudeSettings = {
-  depth: 4,
-  bevelEnabled: true,
-  bevelSegments: 0,
-  bevelThickness: 0.2
-};
 
 const areaList = [] as AreaListType[];
 function makeAreaPrimary() {
@@ -181,7 +179,7 @@ const pMove = useThrottleFn(pointerMove, 10, true);
         @pointer-leave="pLeave"
         @pointer-move="pMove"
       >
-        <TresExtrudeGeometry :args="[item.shape, extrudeSettings]" />
+        <TresExtrudeGeometry :args="[item.shape, { ...extrudeSettings }]" />
         <TresMeshStandardMaterial :metalness="1" :roughness="0.5" :color="colorScheme[0]" attach="material-0" />
         <TresMeshStandardMaterial :metalness="1" :roughness="1" :color="colorScheme[0]" attach="material-1" />
       </TresMesh>
