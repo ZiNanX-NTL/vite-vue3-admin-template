@@ -37,7 +37,7 @@ type Transformer<TableData, Response> = (response: Response) => {
 type CustomColumnKey<K = never> = K | 'action';
 
 /** 表格的列 */
-type HookTableColumn<T = Record<string, unknown>> =
+export type HookTableColumn<T = Record<string, unknown>> =
   | (Omit<TableColumnGroup<T>, 'key'> & { key: CustomColumnKey<keyof T> })
   | (Omit<DataTableBaseColumn<T>, 'key'> & { key: CustomColumnKey<keyof T> })
   | DataTableSelectionColumn<T>
@@ -50,12 +50,20 @@ interface CheckColumn {
   checked: boolean;
 }
 
+/** 后端接收的分页参数字段配置类型 */
+interface PaginationParamNames {
+  page: string;
+  pageSize: string;
+}
+
 /** 表格配置 */
 type HookTableConfig<TableData, Fn extends ApiFn> = {
   /** 接口请求函数 */
   apiFn: Fn;
   /** 列表接口参数 */
   apiParams: any;
+  /** 后端接收的分页参数字段配置 */
+  paginationParamNames?: PaginationParamNames;
   /** 搜索参数格式化函数 */
   formatSearchParams?: (params: any) => GetApiFnParameters<Fn>;
   /** 列表接口返回数据转换 */
@@ -88,6 +96,10 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
   const {
     apiFn,
     apiParams,
+    paginationParamNames = {
+      page: 'page',
+      pageSize: 'pageSize'
+    },
     formatSearchParams = params => params,
     transformer,
     onPaginationChanged,
@@ -95,10 +107,13 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
     immediate = true
   } = config;
 
-  const { columns, filteredColumns, reloadColumns } = useTableColumn<TableData>(config.columns);
-
   const searchParams = reactive(cloneDeep(apiParams));
-  const requestParams = reactive({});
+  const requestParams = reactive<any>({});
+
+  const { columns, filteredColumns, reloadColumns, allColumns } = useTableColumn<TableData>(
+    config.columns,
+    searchParams
+  );
 
   const data = ref<TableData[]>([]);
 
@@ -126,14 +141,27 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
     Object.assign(pagination, update);
   }
 
+  /** 转换请求分页参数 */
+  function transformPaginationParams(params: Record<string, any>): Record<string, any> {
+    // 如果不需要分页或参数为空，直接返回
+    if (!isPaging || !paginationParamNames) return params;
+    const { page, pageSize, ...rest } = params;
+    return {
+      [paginationParamNames.page]: page,
+      [paginationParamNames.pageSize]: pageSize,
+      ...rest
+    };
+  }
+
   /** 设置请求分页参数 */
   function setRequestPaginationParams() {
     const { page, pageSize } = formatSearchParams(searchParams);
-    Object.assign(requestParams, { page, pageSize });
+    Object.assign(requestParams, transformPaginationParams({ page, pageSize }));
   }
   /** 设置请求参数 */
   function setRequestParams() {
-    Object.assign(requestParams, formatSearchParams(searchParams));
+    const formattedParams = formatSearchParams(searchParams);
+    Object.assign(requestParams, transformPaginationParams(formattedParams));
   }
 
   async function getData() {
@@ -157,21 +185,16 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
 
   /** 查询数据 */
   async function handleSearch() {
-    if (isPaging) updateSearchParams({ page: 1 });
+    if (isPaging && pagination) updateSearchParams({ page: 1 });
     setRequestParams();
     await getData();
   }
 
   /** 重置分页查询参数 */
-  function handleSearchPaginationParams(params: any) {
+  async function handleSearchPaginationParams(params: any) {
     updateSearchParams(params);
     setRequestPaginationParams();
-    getData();
-  }
-
-  /** 重置初始参数(特殊情况下使用,最好不要重复调用) */
-  function resetApiParams(params: any) {
-    Object.assign(apiParams, params);
+    await getData();
   }
 
   /**
@@ -181,6 +204,11 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
    */
   function updateSearchParams(params: any) {
     Object.assign(searchParams, params);
+  }
+
+  /** 重置初始参数(特殊情况下使用,最好不要重复调用) */
+  function resetApiParams(params: any) {
+    Object.assign(apiParams, params);
   }
 
   /** reset search params */
@@ -210,6 +238,7 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
     data,
     columns,
     filteredColumns,
+    allColumns,
     reloadColumns,
     pagination,
     updatePagination,
@@ -224,19 +253,19 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
   };
 }
 
-function useTableColumn<TableData>(factory: () => HookTableColumn<TableData>[]) {
+function useTableColumn<TableData>(factory: (p: any) => HookTableColumn<TableData>[], params: any) {
   const SELECTION_KEY = '__selection__';
   const EXPAND_KEY = '__expand__';
 
-  const allColumns = ref(factory());
+  const allColumns = ref(factory(params));
 
-  const filteredColumns = ref(getFilteredColumns(factory()));
+  const filteredColumns = ref(getFilteredColumns(factory(params)));
 
   const columns = computed(() => getColumns());
 
   function reloadColumns() {
-    allColumns.value = factory();
-    filteredColumns.value = getFilteredColumns(factory());
+    allColumns.value = factory(params);
+    filteredColumns.value = getFilteredColumns(factory(params));
   }
 
   function getFilteredColumns(aColumns: HookTableColumn<TableData>[]) {
@@ -290,7 +319,8 @@ function useTableColumn<TableData>(factory: () => HookTableColumn<TableData>[]) 
   return {
     columns,
     reloadColumns,
-    filteredColumns
+    filteredColumns,
+    allColumns
   };
 }
 
