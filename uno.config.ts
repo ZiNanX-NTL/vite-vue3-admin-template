@@ -1,5 +1,5 @@
 import { defineConfig } from '@unocss/vite';
-import presetUno from '@unocss/preset-uno';
+import presetWind4 from '@unocss/preset-wind4';
 import transformerDirectives from '@unocss/transformer-directives';
 import transformerVariantGroup from '@unocss/transformer-variant-group';
 import presetUnitToVw from 'unocss-preset-unit-to-vw';
@@ -11,7 +11,7 @@ export default defineConfig({
     }
   },
   presets: [
-    presetUno({ dark: 'class' }),
+    presetWind4({ dark: 'class' }),
     presetUnitToVw({
       baseFontSize: 1,
       baseWidth: 1920,
@@ -100,8 +100,10 @@ export default defineConfig({
       dark: '#18181c',
       invert: '#001428'
     },
-    fontSize: {
-      icon: '20px'
+    text: {
+      icon: {
+        fontSize: '20px'
+      }
     }
   }
 });
