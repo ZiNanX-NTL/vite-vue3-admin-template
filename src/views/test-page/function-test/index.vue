@@ -292,7 +292,7 @@ onMounted(() => {});
   <div class="flex-vertical-stretch overflow-hidden">
     <NCard title="测试" class="h-full">
       {{ loading }}
-      <div ref="threeMapRef" class="relative size-800px bg-black"></div>
+      <div ref="threeMapRef" class="bg-black size-800px relative"></div>
 
       <CountTo v-slot="{ value }" :end-value="123">
         <p class="mb-4px flex-center">

@@ -48,12 +48,12 @@ const logoWidth = computed(() => {
 
 <template>
   <DarkModeContainer
-    class="relative h-full shadow-[0_1px_2px_rgba(0,21,41,0.08)]"
+    class="h-full shadow-[0_1px_2px_rgba(0,21,41,0.08)] relative"
     :class="mode === 'vertical-mix' ? 'z-30' : 'z-10'"
     :inverted="theme.header.inverted"
     :style="{ height: theme.header.height + 'px' }"
   >
-    <NLayoutHeader class="h-full flex-y-center" :inverted="!theme.darkMode && theme.header.inverted">
+    <NLayoutHeader class="flex-y-center h-full" :inverted="!theme.darkMode && theme.header.inverted">
       <GlobalLogo
         v-if="showLogo"
         :show-title="true"
@@ -63,7 +63,7 @@ const logoWidth = computed(() => {
           width: logoWidth
         }"
       />
-      <div class="h-full flex-y-center flex-1-hidden">
+      <div class="flex-y-center flex-1-hidden h-full">
         <MenuCollapse
           v-if="
             mode !== 'horizontal' &&
@@ -77,7 +77,7 @@ const logoWidth = computed(() => {
         />
         <HeaderMenu v-if="showHeaderMenu || theme.layout.isMenuSeparation" />
       </div>
-      <div class="h-full flex justify-end">
+      <div class="flex h-full justify-end">
         <GlobalSearch />
         <FullScreen />
         <ThemeMode />

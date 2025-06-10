@@ -101,7 +101,7 @@ watch(
     <div
       v-for="item in tab.tabs"
       :key="item.fullPath"
-      class="relative h-32px flex flex-y-center cursor-pointer select-none border-1px border-#e5e7eb rounded-3px px-12px py-4px dark:border-#ffffff3d hover:border-[rgb(var(--primary-color)/0.3)] hover:text-primary dark:hover:border-[rgb(var(--primary-color)/0.3)]"
+      class="px-12px py-4px border-1px border-#e5e7eb rounded-3px flex flex-y-center h-32px cursor-pointer select-none relative hover:text-primary dark:border-#ffffff3d hover:border-[rgb(var(--primary-color)/0.3)] dark:hover:border-[rgb(var(--primary-color)/0.3)]"
       :class="{
         'text-primary bg-[rgb(var(--primary-color)/0.1)] dark:bg-[rgb(var(--primary-color)/0.15)] !border-[rgb(var(--primary-color)/0.3)]':
           tab.activeTab === item.fullPath
@@ -112,12 +112,12 @@ watch(
       <SvgIcon
         :icon="item.meta.icon"
         :local-icon="item.meta.localIcon"
-        class="mr-12px inline-block align-text-bottom text-16px"
+        class="text-16px mr-12px align-text-bottom inline-block"
       />
       <span>{{ item.meta.title }}</span>
       <icon-ic-round-close
         v-if="!(item.name === tab.homeTab.name || item.meta.affix)"
-        class="ml-12px h-16px w-16px rounded-50% text-14px transition-base hover:bg-#808695 hover:text-#fff dark:hover:bg-primary dark:hover:text-dark"
+        class="text-14px ml-12px rounded-50% h-16px w-16px transition-base hover:text-#fff hover:bg-#808695 dark:hover:text-dark dark:hover:bg-primary"
         @click.stop="tab.removeTab(item.fullPath)"
       />
     </div>

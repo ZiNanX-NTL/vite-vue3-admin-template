@@ -141,7 +141,7 @@ function handleDelete(_id) {
 
 <template>
   <div class="flex-vertical-full <sm:overflow-auto">
-    <NCard :bordered="false" size="small" title="表格" class="h-full card-wrapper">
+    <NCard :bordered="false" size="small" title="表格" class="card-wrapper h-full">
       <template #header-extra>
         <TableHeaderOperation
           v-model:columns="filteredColumns"

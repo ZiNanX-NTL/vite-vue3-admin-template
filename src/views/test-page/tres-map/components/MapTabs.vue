@@ -68,7 +68,7 @@ watch(
             </NConfigProvider>
 -->
       <div
-        class="title-item pointer-events-none h-4vh rounded-0.463vh bg-[rgba(25,25,25,0.5)] px-10px text-center text-16px text-#fff leading-4vh"
+        class="title-item text-16px text-#fff leading-4vh px-10px text-center rounded-0.463vh bg-[rgba(25,25,25,0.5)] h-4vh pointer-events-none"
         :style="{ background: `url(${mapTitleBg}) no-repeat center/100% 100%` }"
       >
         <span>{{ item.mc }}:</span>

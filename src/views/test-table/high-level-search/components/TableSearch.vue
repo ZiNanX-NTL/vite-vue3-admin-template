@@ -138,7 +138,7 @@ function handleCheckedKeysChange(checkedKeys: Array<string | number>) {
 
 <template>
   <NFlex :size="16" :wrap="false">
-    <NCard v-if="!collapsed" title="高级搜索" :bordered="false" size="small" class="w-350px card-wrapper">
+    <NCard v-if="!collapsed" title="高级搜索" :bordered="false" size="small" class="card-wrapper w-350px">
       <NScrollbar :style="{ height: treeHeight + 'px' }">
         <NTree
           check-strategy="parent"

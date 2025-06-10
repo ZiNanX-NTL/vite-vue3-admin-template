@@ -19,7 +19,7 @@ const TooltipContent = defineComponent(
         <n-config-provider theme={darkTheme}>
           <div class="flex-col items-center">
             <DvButton
-              class="map-btn pointer-events-auto relative mb-10px mt-15px before:absolute before:block before:size-full before:bg-#000000ab before:content-empty before:-z-1"
+              class="map-btn mb-10px mt-15px pointer-events-auto relative before:bg-#000000ab before:size-full before:block before:content-empty before:absolute before:-z-1"
               style=""
               color="#0ea8f8"
               font-color="#fff"

@@ -79,21 +79,21 @@ watch(
 
 <template>
   <DarkModeContainer
-    class="z-20 h-full flex-vertical-stretch shadow-[2px_0_8px_0_rgba(29,35,41,0.05)] !transition-base"
+    class="flex-vertical-stretch h-full shadow-[2px_0_8px_0_rgba(29,35,41,0.05)] !transition-base z-20"
     :class="theme.sider.inverted ? 'bg-invert' : ''"
     :inverted="theme.sider.inverted"
   >
     <GlobalLogo
       v-if="showLogo"
       :show-title="showTitle"
-      class="overflow-hidden transition-base"
+      class="transition-base overflow-hidden"
       :style="{
         width: logoWidth,
         height: theme.header.height + 'px'
       }"
     />
     <NLayoutSider
-      class="h-0 flex-1"
+      class="flex-1 h-0"
       :show-trigger="theme.sider.showTrigger !== 'headerIcon' && theme.sider.showTrigger"
       :trigger-style="theme.sider.showTrigger === 'arrow-circle' ? 'top: 240px' : ''"
       :collapsed-trigger-style="theme.sider.showTrigger === 'arrow-circle' ? 'top: 240px' : ''"
@@ -134,7 +134,7 @@ watch(
       <Transition name="fade">
         <div
           v-if="isMobile && !app.siderCollapse"
-          class="sider-mask absolute-lt z-200 size-full bg-[rgba(0,0,0,.2)]"
+          class="sider-mask bg-[rgba(0,0,0,.2)] size-full absolute-lt z-200"
           @click="app.setSiderCollapse(true)"
         ></div>
       </Transition>

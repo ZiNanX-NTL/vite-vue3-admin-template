@@ -28,7 +28,7 @@ function handleClose() {
         <NGrid :cols="8" :x-gap="16" :y-gap="8">
           <NGridItem v-for="i in item.data" :key="i.label">
             <ColorCheckbox
-              class="!h-36px !w-full !rounded-4px"
+              class="!rounded-4px !h-36px !w-full"
               :color="i.color"
               :checked="i.color === theme.themeColor"
               icon-class="text-20px"

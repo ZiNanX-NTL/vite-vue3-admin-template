@@ -42,7 +42,7 @@ function handleTo() {
     <div class="pb-12px">
       <template v-for="item in options" :key="item.path">
         <div
-          class="mt-8px h-56px flex-y-center cursor-pointer justify-between rounded-4px bg-#e5e7eb px-14px dark:bg-dark"
+          class="mt-8px px-14px rounded-4px bg-#e5e7eb flex-y-center h-56px cursor-pointer justify-between dark:bg-dark"
           :style="{
             background: item.path === active ? theme.themeColor : '',
             color: item.path === active ? '#fff' : ''
@@ -54,7 +54,7 @@ function handleTo() {
           <span class="ml-5px flex-1">
             {{ item.meta?.title }}
           </span>
-          <icon-ant-design-enter-outlined class="icon mr-3px p-2px text-20px" />
+          <icon-ant-design-enter-outlined class="icon text-20px mr-3px p-2px" />
         </div>
       </template>
     </div>

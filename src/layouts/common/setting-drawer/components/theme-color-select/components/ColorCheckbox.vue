@@ -21,7 +21,7 @@ const isWhite = computed(() => whiteColors.includes(props.color));
 </script>
 
 <template>
-  <div class="h-20px w-20px flex-center cursor-pointer rounded-2px shadow" :style="{ backgroundColor: color }">
+  <div class="rounded-2px flex-center h-20px w-20px cursor-pointer shadow" :style="{ backgroundColor: color }">
     <icon-ic-outline-check v-if="checked" :class="[iconClass, isWhite ? 'text-gray-700' : 'text-white']" />
   </div>
 </template>

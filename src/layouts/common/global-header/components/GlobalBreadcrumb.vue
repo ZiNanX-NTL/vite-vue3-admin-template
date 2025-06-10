@@ -28,7 +28,7 @@ function dropdownSelect(key) {
             <component
               :is="breadcrumb.icon"
               v-if="theme.header.crumb.showIcon"
-              class="mr-4px inline-block align-text-bottom text-16px"
+              class="text-16px mr-4px align-text-bottom inline-block"
             />
             <span>{{ breadcrumb.label }}</span>
           </span>
@@ -37,7 +37,7 @@ function dropdownSelect(key) {
           <component
             :is="breadcrumb.icon"
             v-if="theme.header.crumb.showIcon"
-            class="mr-4px inline-block align-text-bottom text-16px"
+            class="text-16px mr-4px align-text-bottom inline-block"
             :class="{ 'text-#BBBBBB': theme.header.inverted }"
           />
           <span :class="{ 'text-#BBBBBB': theme.header.inverted }">

@@ -126,7 +126,7 @@ watch(
   <Transition :name="transitionName" :appear="appear">
     <DarkModeContainer
       v-show="showTrigger && !isVisible"
-      class="absolute z-1000 transition-base"
+      class="transition-base absolute z-1000"
       :class="resultTriggerWrapClass"
     >
       <HoverContainer
@@ -137,17 +137,17 @@ watch(
         <slot v-if="!loading" name="trigger">
           <icon-ic-round-search />
         </slot>
-        <NSpin v-else :size="20" class="!static !translate-0" />
+        <NSpin v-else :size="20" class="!translate-0 !static" />
       </HoverContainer>
     </DarkModeContainer>
   </Transition>
   <Transition :name="transitionName" :appear="appear" @after-enter="emit('afterEnter')">
-    <div v-show="isVisible" class="pointer-events-none absolute-lt z-1000 m-0 size-full" :class="resultWrapperClass">
-      <div class="pointer-events-auto w-[fit-content]" :class="resultContentClass">
+    <div v-show="isVisible" class="m-0 size-full pointer-events-none absolute-lt z-1000" :class="resultWrapperClass">
+      <div class="w-[fit-content] pointer-events-auto" :class="resultContentClass">
         <slot></slot>
         <DarkModeContainer
           v-if="showFold"
-          class="group cursor-pointer bg-#fff transition-base dark:bg-dark"
+          class="group bg-#fff cursor-pointer transition-base dark:bg-dark"
           :class="resultHiddenTriggerClass"
           @click="isVisible = false"
         >

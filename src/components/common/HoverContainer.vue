@@ -35,7 +35,7 @@ const contentClassName = computed(
   <div v-if="showTooltip">
     <NTooltip :placement="placement" trigger="hover">
       <template #trigger>
-        <div class="h-full flex-center cursor-pointer dark:hover:bg-#333" :class="contentClassName">
+        <div class="flex-center h-full cursor-pointer dark:hover:bg-#333" :class="contentClassName">
           <slot></slot>
         </div>
       </template>

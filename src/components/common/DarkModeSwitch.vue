@@ -25,7 +25,7 @@ async function handleSwitch() {
 </script>
 
 <template>
-  <div class="flex-center cursor-pointer text-18px" @click="handleSwitch">
+  <div class="text-18px flex-center cursor-pointer" @click="handleSwitch">
     <icon-mdi-moon-waning-crescent v-if="darkMode" />
     <icon-mdi-white-balance-sunny v-else />
   </div>

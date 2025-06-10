@@ -15,13 +15,13 @@ const columns = defineModel<NaiveUI.TableColumnCheck[]>('columns', {
   <NPopover placement="bottom-end" trigger="click">
     <template #trigger>
       <NButton size="small" type="primary">
-        <icon-ant-design-setting-outlined class="mr-4px text-16px" />
+        <icon-ant-design-setting-outlined class="text-16px mr-4px" />
         表格列设置
       </NButton>
     </template>
     <VueDraggable v-model="columns">
-      <div v-for="item in columns" :key="item.key" class="h-36px flex-y-center rd-4px px-6px hover:bg-primary_active">
-        <icon-mdi-drag class="mr-8px cursor-move text-20px" />
+      <div v-for="item in columns" :key="item.key" class="px-6px rd-4px flex-y-center h-36px hover:bg-primary_active">
+        <icon-mdi-drag class="text-20px mr-8px cursor-move" />
         <NCheckbox v-model:checked="item.checked" class="flex-y-center">
           <template v-if="isString(item.title)">
             {{ item.title }}

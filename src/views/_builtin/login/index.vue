@@ -43,14 +43,14 @@ const bgColor = computed(() => {
 </script>
 
 <template>
-  <div class="relative size-full flex-center" :style="{ backgroundColor: bgColor }">
+  <div class="flex-center size-full relative" :style="{ backgroundColor: bgColor }">
     <DarkModeSwitch
       :dark="theme.darkMode"
-      class="absolute left-48px top-24px z-3 text-20px"
+      class="text-20px left-48px top-24px absolute z-3"
       @update:dark="theme.setDarkMode"
     />
-    <NCard :bordered="false" size="large" class="z-4 rounded-20px shadow-sm !w-auto">
-      <div class="w-300px py-10px sm:w-360px">
+    <NCard :bordered="false" size="large" class="rounded-20px shadow-sm z-4 !w-auto">
+      <div class="py-10px w-300px sm:w-360px">
         <header class="flex-y-center justify-between">
           <SystemLogo class="text-64px text-primary" />
           <NGradientText type="primary" :size="28">{{ title }}</NGradientText>

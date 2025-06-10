@@ -142,7 +142,7 @@ function handleDelete(_id) {
 <template>
   <div class="flex-vertical-full gap-16px <sm:overflow-auto">
     <TableSearch v-model:model="searchParams" @reset="resetSearchParams" @search="handleSearch"></TableSearch>
-    <NCard :bordered="false" size="small" title="表格" class="h-full card-wrapper">
+    <NCard :bordered="false" size="small" title="表格" class="card-wrapper h-full">
       <template #header-extra>
         <TableHeaderOperation
           v-model:columns="filteredColumns"

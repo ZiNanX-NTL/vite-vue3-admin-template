@@ -112,12 +112,12 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="relative size-full">
-      <div id="pane-container" class="absolute right-8px top-8px z-1 w-256px"></div>
+    <div class="size-full relative">
+      <div id="pane-container" class="w-256px right-8px top-8px absolute z-1"></div>
       <Transition name="fade">
         <div
           v-show="!hasFinishLoading"
-          class="absolute left-0 top-0 z-20 h-full w-full flex items-center justify-center bg-gray-600 text-white font-mono"
+          class="text-white font-mono bg-gray-600 flex h-full w-full items-center left-0 top-0 justify-center absolute z-20"
         >
           <div class="w-200px">Loading... {{ progress }} %</div>
         </div>

@@ -6,8 +6,8 @@ defineOptions({
 
 <template>
   <div>
-    <div class="size-full min-h-520px flex-vertical-center gap-24px overflow-hidden">
-      <div class="flex text-400px text-primary">
+    <div class="flex-vertical-center gap-24px size-full min-h-520px overflow-hidden">
+      <div class="text-400px text-primary flex">
         <SvgIcon local-icon="expectation" />
       </div>
       <slot>

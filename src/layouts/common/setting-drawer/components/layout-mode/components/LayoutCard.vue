@@ -42,13 +42,13 @@ const activeConfig = computed(() => layoutConfig[props.mode]);
 
 <template>
   <div
-    class="cursor-pointer border-2px rounded-6px hover:border-primary"
+    class="border-2px rounded-6px cursor-pointer hover:border-primary"
     :class="[checked ? 'border-primary' : 'border-transparent']"
   >
     <NTooltip :placement="activeConfig.placement" trigger="hover">
       <template #trigger>
         <div
-          class="layout-card__shadow h-64px w-96px gap-6px rd-4px p-6px"
+          class="layout-card__shadow p-6px rd-4px gap-6px h-64px w-96px"
           :class="[mode === 'vertical' ? 'flex' : 'flex-vertical']"
         >
           <slot></slot>

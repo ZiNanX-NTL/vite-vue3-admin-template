@@ -88,18 +88,18 @@ watch(isFullscreen, newValue => {
       <GlobalSider v-if="layoutProps.showMixSider" v-bind="siderProps" />
       <NLayoutContent
         ref="contentRef"
-        class="relative size-full"
+        class="size-full relative"
         :class="{ 'pt-52px': theme.tab.visible && !app.contentFull }"
         :native-scrollbar="false"
         :style="layoutContentStyle"
       >
         <template v-if="theme.tab.visible && contentMounted">
           <Teleport to=".n-layout-content">
-            <GlobalTab class="absolute top-0" :class="{ '!-top-52px': app.contentFull }"></GlobalTab>
+            <GlobalTab class="top-0 absolute" :class="{ '!-top-52px': app.contentFull }"></GlobalTab>
           </Teleport>
         </template>
         <!-- 不需要滚动时,view外层设置h-full,继承父级100%高度,需要滚动时外层不能继承父级100%高度 -->
-        <div class="w-full flex bg-#f6f9f8 dark:bg-#101014" :style="contentStyle">
+        <div class="bg-#f6f9f8 flex w-full dark:bg-#101014" :style="contentStyle">
           <GlobalContent class="w-full" />
         </div>
       </NLayoutContent>

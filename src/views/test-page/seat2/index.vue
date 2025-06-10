@@ -352,8 +352,8 @@ onMounted(() => {
 <template>
   <div class="w-full">
     <NCard title="选座" class="size-full">
-      <div class="relative size-full">
-        <div id="leafer-view" class="absolute-rt size-full"></div>
+      <div class="size-full relative">
+        <div id="leafer-view" class="size-full absolute-rt"></div>
       </div>
     </NCard>
   </div>

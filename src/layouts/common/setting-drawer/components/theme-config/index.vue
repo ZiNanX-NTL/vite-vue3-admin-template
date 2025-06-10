@@ -44,7 +44,7 @@ onUnmounted(() => {
 
 <template>
   <NDivider title-placement="center">主题配置</NDivider>
-  <textarea id="themeConfigCopyTarget" v-model="dataClipboardText" class="absolute opacity-0" />
+  <textarea id="themeConfigCopyTarget" v-model="dataClipboardText" class="opacity-0 absolute" />
   <NSpace vertical>
     <div ref="copyRef" data-clipboard-target="#themeConfigCopyTarget">
       <NButton type="primary" :block="true">拷贝当前配置</NButton>

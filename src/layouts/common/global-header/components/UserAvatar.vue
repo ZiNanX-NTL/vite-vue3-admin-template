@@ -45,7 +45,7 @@ function handleDropdown(optionKey) {
   <NDropdown :options="options" @select="handleDropdown">
     <HoverContainer class="px-12px" :inverted="theme.header.inverted">
       <icon-local-avatar class="text-32px" />
-      <span class="pl-8px text-16px font-medium">{{ auth.userInfo.userName }}</span>
+      <span class="text-16px font-medium pl-8px">{{ auth.userInfo.userName }}</span>
     </HoverContainer>
   </NDropdown>
 </template>

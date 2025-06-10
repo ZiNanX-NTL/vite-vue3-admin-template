@@ -12,7 +12,7 @@ const darkColor = computed(() => getColorPalette(themeColor, 6));
 </script>
 
 <template>
-  <div class="absolute-lt z-1 size-full overflow-hidden">
+  <div class="size-full absolute-lt z-1 overflow-hidden">
     <div class="absolute -right-300px -top-900px <sm:(-right-100px -top-1170px)">
       <CornerTop :start-color="lightColor" :end-color="darkColor" />
     </div>

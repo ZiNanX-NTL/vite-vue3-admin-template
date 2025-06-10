@@ -3,18 +3,18 @@ defineOptions({ name: 'SearchFooter' });
 </script>
 
 <template>
-  <div class="h-44px flex-y-center px-24px">
+  <div class="px-24px flex-y-center h-44px">
     <span class="mr-14px flex-y-center">
-      <icon-mdi-keyboard-return class="icon mr-6px p-2px text-20px" />
+      <icon-mdi-keyboard-return class="icon text-20px mr-6px p-2px" />
       <span>确认</span>
     </span>
     <span class="mr-14px flex-y-center">
-      <icon-mdi-arrow-up-thin class="icon mr-5px p-2px text-20px" />
-      <icon-mdi-arrow-down-thin class="icon mr-6px p-2px text-20px" />
+      <icon-mdi-arrow-up-thin class="icon text-20px mr-5px p-2px" />
+      <icon-mdi-arrow-down-thin class="icon text-20px mr-6px p-2px" />
       <span>切换</span>
     </span>
     <span class="flex-y-center">
-      <icon-mdi-keyboard-esc class="icon mr-6px p-2px text-20px" />
+      <icon-mdi-keyboard-esc class="icon text-20px mr-6px p-2px" />
       <span>关闭</span>
     </span>
   </div>

@@ -39,11 +39,11 @@ defineExpose(
 </script>
 
 <template>
-  <NCard class="m-[-16px_-16px_0] w-unset rounded-0 shadow-sm" :class="outCardClass" :bordered="false">
+  <NCard class="m-[-16px_-16px_0] rounded-0 w-unset shadow-sm" :class="outCardClass" :bordered="false">
     <component :is="h(NPageHeader, $attrs)" ref="pageHeaderRef" v-model="model">
       <template #back>
         <NButton v-if="showBack" text class="text-16px">
-          <icon-ion-arrow-back class="mr-4px text-18px" />
+          <icon-ion-arrow-back class="text-18px mr-4px" />
           返回
         </NButton>
         <div v-else>

@@ -42,13 +42,13 @@ watch(
 </script>
 
 <template>
-  <div class="h-full flex-1-hidden px-10px">
+  <div class="px-10px flex-1-hidden h-full">
     <NScrollbar
       :x-scrollable="theme.headerMenu.overflowMode === 'scroll'"
-      class="h-full flex-1-hidden"
+      class="flex-1-hidden h-full"
       content-class="h-full"
     >
-      <div v-if="reloadFlag" class="h-full flex-y-center">
+      <div v-if="reloadFlag" class="flex-y-center h-full">
         <NMenu
           v-if="!theme.layout.isMenuSeparation"
           :value="activeKey"

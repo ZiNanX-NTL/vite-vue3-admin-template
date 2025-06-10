@@ -39,17 +39,17 @@ function handleScroll(clientX) {
 
 <template>
   <DarkModeContainer class="h-52px w-full shadow-[0_1px_2px_rgba(0,21,41,0.08)]" :class="flippable && 'pl-16px'">
-    <div class="h-full flex flex-y-center transition-base">
+    <div class="flex flex-y-center h-full transition-base">
       <div
         ref="navWrap"
-        class="relative h-full w-[calc(100%-64px)] flex flex-y-center"
+        class="flex flex-y-center h-full w-[calc(100%-64px)] relative"
         :class="{ 'px-37px': flippable }"
       >
         <template v-if="flippable">
-          <HoverContainer class="absolute left-0 h-32px w-32px" @click="scrollPrev">
+          <HoverContainer class="h-32px w-32px left-0 absolute" @click="scrollPrev">
             <icon-material-symbols-chevron-left-rounded class="text-30px" />
           </HoverContainer>
-          <HoverContainer class="absolute right-0 h-32px w-32px" @click="scrollNext">
+          <HoverContainer class="h-32px w-32px right-0 absolute" @click="scrollNext">
             <icon-material-symbols-chevron-right-rounded class="text-30px" />
           </HoverContainer>
         </template>
@@ -62,7 +62,7 @@ function handleScroll(clientX) {
             'shadow-[inset_5px_0_5px_-5px_rgba(204,204,204,0.8),inset_-5px_0_5px_-5px_rgba(204,204,204,0.8)] dark:shadow-[inset_5px_0_5px_-5px_rgba(204,204,204,0.3),inset_-5px_0_5px_-5px_rgba(204,204,204,0.3)]'
           "
         >
-          <div ref="navScroll" class="relative h-full flex-1 px-16px py-10px">
+          <div ref="navScroll" class="px-16px py-10px flex-1 h-full relative">
             <TabDetail @scroll="handleScroll" />
           </div>
         </NScrollbar>

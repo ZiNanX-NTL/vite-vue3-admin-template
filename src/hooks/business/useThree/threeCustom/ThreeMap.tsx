@@ -158,7 +158,7 @@ export class ThreeMap extends ThreeBase {
         return () => {
           return (
             <div
-              class="asdfasd pointer-events-none h-4vh rounded-0.463vh bg-[rgba(25,25,25,0.5)] px-10px text-center text-16px text-#fff leading-4vh"
+              class="asdfasd text-16px text-#fff leading-4vh px-10px text-center rounded-0.463vh bg-[rgba(25,25,25,0.5)] h-4vh pointer-events-none"
               style={{ background: `url(${img}) no-repeat`, backgroundSize: '100% 100%' }}
             >
               <span>{mc}: </span>
@@ -249,7 +249,7 @@ export class ThreeMap extends ThreeBase {
       () => {
         return () => {
           return (
-            <div class="pointer-events-none absolute block rounded-5px bg-[rgba(25,25,25,0.5)] px-10px py-5px text-16px text-#fff">
+            <div class="text-16px text-#fff px-10px py-5px rounded-5px bg-[rgba(25,25,25,0.5)] block pointer-events-none absolute">
               {{ name }}
             </div>
           );

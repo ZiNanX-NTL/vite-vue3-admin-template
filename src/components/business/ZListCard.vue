@@ -83,7 +83,7 @@ defineExpose({
         </NScrollbar>
         <NEmpty
           v-if="!listData.length && !loading"
-          class="absolute-lt size-full flex-center"
+          class="flex-center size-full absolute-lt"
           description="暂无数据"
         ></NEmpty>
       </NSpin>

@@ -104,7 +104,7 @@ const TooltipComponent = defineComponent({
   name: 'TooltipComponent',
   setup() {
     return () => (
-      <div class="pointer-events-none invisible absolute z-10 block rounded-5px bg-[rgba(25,25,25,0.5)] px-10px py-5px text-16px text-#fff transition-all -translate-x-1/2 -translate-y-[calc(100%+10px)]">
+      <div class="text-16px text-#fff px-10px py-5px rounded-5px bg-[rgba(25,25,25,0.5)] block invisible pointer-events-none transition-all absolute z-10 -translate-x-1/2 -translate-y-[calc(100%+10px)]">
         {name.value}
       </div>
     );
