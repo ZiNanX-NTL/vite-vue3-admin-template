@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { Text } from 'leafer-ui';
-import { App, Box, Group, Image, MoveEvent, PointerEvent, ZoomEvent } from 'leafer-ui';
+import { App, Box, Group, Image, LeaferEvent, MoveEvent, PointerEvent, ZoomEvent } from 'leafer-ui';
 import '@leafer-in/editor';
 import '@leafer-in/view';
+import '@leafer-in/viewport';
 import '@leafer-in/state';
+import '@leafer-in/find';
 import { ScrollBar } from '@leafer-in/scroll';
 import { useThemeStore } from '@/store';
 import freeSeat from '@/assets/images/seat_free_2x.png';
@@ -18,6 +20,7 @@ function init() {
       selector: false
     },
     ground: { type: 'custom' },
+    tree: { type: 'viewport' },
     move: { drag: 'auto', dragAnimate: true }
   });
   // console.log(app.ground.width);
@@ -243,7 +246,7 @@ function init() {
   app.tree.add(group);
 
   group.on(PointerEvent.TAP, (e: PointerEvent) => {
-    // console.log('asdfasdfsad', e.target.data?.seat);
+    console.log('asdfasdfsad', e.target.data?.seat);
     const seat = e.target.data?.seat as NonNullable<(typeof renderMap)[0][0]>;
     if (!seat) return;
     if ((e.target as Image).url === freeSeat) {
@@ -284,8 +287,9 @@ function init() {
     }
   });
   app.ground.on(MoveEvent.BEFORE_MOVE, (e: MoveEvent) => {
-    if (xRulerGroup) xRulerGroup.moveWorld(e.moveX, 0);
-    if (yRulerGroup) yRulerGroup.moveWorld(0, e.moveY);
+    const { x, y } = app.ground.getValidMove(e.moveX, e.moveY);
+    if (xRulerGroup) xRulerGroup.move(x, 0);
+    if (yRulerGroup) yRulerGroup.move(0, y);
   });
 
   /** 更新选中刻度尺刻度 */
@@ -321,11 +325,20 @@ function init() {
     }
   }
 
-  setTimeout(() => {
-    app.tree.zoom(group, [250, 100]);
-    updateRulerPosition();
-    updateRulerScale(seatData[0]);
+  app.on(LeaferEvent.VIEW_READY, () => {
+    console.log('View is ready');
+    setTimeout(() => {
+      app.tree.zoom(group, [250, 100]);
+      updateRulerPosition();
+      updateRulerScale(seatData[0]);
+    }, 50);
   });
+  // setTimeout(() => {
+  //   // app.tree.zoom('in');
+  //   app.tree.zoom(group, [250, 100]);
+  //   updateRulerPosition();
+  //   updateRulerScale(seatData[0]);
+  // }, 100);
   // setTimeout(() => {
   //   app.tree.zoom('in');
   //   updateRulerPosition();
