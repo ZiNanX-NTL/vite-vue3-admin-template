@@ -5,7 +5,7 @@ import { geoMercator } from 'd3';
 import { gsap } from 'gsap';
 import { useEventListener } from '@vueuse/core';
 import { getColorPalettes, instantiatedComponent } from '@/utils';
-import HLJZone from '@/assets/json/HLJZone.json';
+import HLJZone from '@/assets/json/_HLJZone.json';
 import mapTitleBg from '@/assets/images/map_title_bg.png';
 import { LightSweepMaterial } from '../shaders/lightSweep';
 import type { ThreeBaseOptions } from '../three';
