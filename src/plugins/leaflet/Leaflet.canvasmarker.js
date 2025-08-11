@@ -1168,14 +1168,21 @@
             // 图标屏幕坐标
             const pointPos = self._map.latLngToContainerPoint(e.data.getLatLng());
             const iconSize = e.data.options.icon.options.iconSize;
-            const adj_x = iconSize[0] / 2;
-            const adj_y = iconSize[1] / 2;
+            const iconAnchor = e.data.options.icon.options.iconAnchor;
+            let maxX;
+            let maxY;
+            let minX;
+            let minY;
+            minX = pointPos.x - iconAnchor[0];
+            maxX = minX + iconSize[0];
+            minY = pointPos.y - iconAnchor[1];
+            maxY = minY + iconSize[1];
 
             const newCoords = {
-              minX: pointPos.x - adj_x,
-              minY: pointPos.y - adj_y,
-              maxX: pointPos.x + adj_x,
-              maxY: pointPos.y + adj_y,
+              minX,
+              minY,
+              maxX,
+              maxY,
               data: e.data,
               pointPos
             };
