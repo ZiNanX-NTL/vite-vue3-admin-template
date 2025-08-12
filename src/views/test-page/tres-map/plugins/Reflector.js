@@ -11,7 +11,6 @@ import {
   Vector4,
   WebGLRenderTarget
 } from 'three';
-
 import { ReflectorBlurMaterial } from './ReflectorBlurMaterial.ts';
 
 export function getFullscreenTriangle() {

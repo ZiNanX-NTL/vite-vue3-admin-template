@@ -1,8 +1,8 @@
 import { nextTick, unref } from 'vue';
 import { defineStore } from 'pinia';
 import { router } from '@/router';
-import { localStg, useRouterPush } from '@/utils';
 import { fetchLogin, fetchUserInfo } from '@/api';
+import { localStg, useRouterPush } from '@/utils';
 import { useRouteStore } from '../route';
 import { clearAuthStorage, getToken, getUserInfo } from './helpers';
 

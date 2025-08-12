@@ -3,7 +3,7 @@
  simpleheat, a tiny JavaScript library for drawing heatmaps with Canvas
  https://github.com/mourner/simpleheat
 */
-!(function () {
+(!(function () {
   function t(i) {
     return this instanceof t
       ? ((this._canvas = i = typeof i === 'string' ? document.getElementById(i) : i),
@@ -14,20 +14,20 @@
         void this.clear())
       : new t(i);
   }
-  (t.prototype = {
+  ((t.prototype = {
     defaultRadius: 25,
     defaultGradient: { 0.4: 'blue', 0.6: 'cyan', 0.7: 'lime', 0.8: 'yellow', 1: 'red' },
     data(t, i) {
-      return (this._data = t), this;
+      return ((this._data = t), this);
     },
     max(t) {
-      return (this._max = t), this;
+      return ((this._max = t), this);
     },
     add(t) {
-      return this._data.push(t), this;
+      return (this._data.push(t), this);
     },
     clear() {
-      return (this._data = []), this;
+      return ((this._data = []), this);
     },
     radius(t, i) {
       i ||= 15;
@@ -50,27 +50,27 @@
       const i = document.createElement('canvas');
       const a = i.getContext('2d');
       const s = a.createLinearGradient(0, 0, 0, 256);
-      (i.width = 1), (i.height = 256);
+      ((i.width = 1), (i.height = 256));
       for (const e in t) s.addColorStop(e, t[e]);
-      return (a.fillStyle = s), a.fillRect(0, 0, 1, 256), (this._grad = a.getImageData(0, 0, 1, 256).data), this;
+      return ((a.fillStyle = s), a.fillRect(0, 0, 1, 256), (this._grad = a.getImageData(0, 0, 1, 256).data), this);
     },
     draw(t) {
-      this._circle || this.radius(this.defaultRadius), this._grad || this.gradient(this.defaultGradient);
+      (this._circle || this.radius(this.defaultRadius), this._grad || this.gradient(this.defaultGradient));
       const i = this._ctx;
       i.clearRect(0, 0, this._width, this._height);
       for (var a, s = 0, e = this._data.length; e > s; s++)
-        (a = this._data[s]),
+        ((a = this._data[s]),
           (i.globalAlpha = Math.max(a[2] / this._max, t || 0.05)),
-          i.drawImage(this._circle, a[0] - this._r, a[1] - this._r);
+          i.drawImage(this._circle, a[0] - this._r, a[1] - this._r));
       const n = i.getImageData(0, 0, this._width, this._height);
-      return this._colorize(n.data, this._grad), i.putImageData(n, 0, 0), this;
+      return (this._colorize(n.data, this._grad), i.putImageData(n, 0, 0), this);
     },
     _colorize(t, i) {
       for (var a, s = 3, e = t.length; e > s; s += 4)
-        (a = 4 * t[s]), a && ((t[s - 3] = i[a]), (t[s - 2] = i[a + 1]), (t[s - 1] = i[a + 2]));
+        ((a = 4 * t[s]), a && ((t[s - 3] = i[a]), (t[s - 2] = i[a + 1]), (t[s - 1] = i[a + 2])));
     }
   }),
-    (window.simpleheat = t);
+    (window.simpleheat = t));
 })(),
   /*
  (c) 2014, Vladimir Agafonkin
@@ -290,7 +290,7 @@
         this._canvas.style[L.DomUtil.TRANSFORM] = `${L.DomUtil.getTranslateString(offset)} scale(${scale})`;
       }
     }
-  }));
+  })));
 
 L.heatLayer = function (latlngs, options) {
   return new L.HeatLayer(latlngs, options);

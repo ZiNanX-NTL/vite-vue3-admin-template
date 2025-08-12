@@ -1,9 +1,9 @@
 import type { PluginOption } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
-import unocss from '@unocss/vite';
 import progress from 'vite-plugin-progress';
 import VueDevtools from 'vite-plugin-vue-devtools';
+import unocss from '@unocss/vite';
 import icons from './unpluginIcons';
 import components from './unpluginVueComponents';
 import autoImport from './unpluginAutoImport';

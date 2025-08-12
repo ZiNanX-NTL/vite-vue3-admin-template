@@ -1,9 +1,9 @@
+import { useEventListener } from '@vueuse/core';
 import * as THREE from 'three';
 import { CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 import type { GeoProjection } from 'd3';
 import { geoMercator } from 'd3';
 import { gsap } from 'gsap';
-import { useEventListener } from '@vueuse/core';
 import { getColorPalettes, instantiatedComponent } from '@/utils';
 import HLJZone from '@/assets/json/_HLJZone.json';
 import mapTitleBg from '@/assets/images/map_title_bg.png';

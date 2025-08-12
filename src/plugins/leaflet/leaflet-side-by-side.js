@@ -66,7 +66,7 @@ L.Control.SideBySide = L.Control.extend({
         if (document.getElementsByTagName('style')[0]) {
           document.getElementsByTagName('style')[0].appendChild(document.createTextNode(cssrl));
         } else {
-          (head = document.getElementsByTagName('head')[0]), (style = document.createElement('style'));
+          ((head = document.getElementsByTagName('head')[0]), (style = document.createElement('style')));
           style.type = 'text/css';
           style.appendChild(document.createTextNode(cssrl));
           head.appendChild(style);
@@ -79,7 +79,7 @@ L.Control.SideBySide = L.Control.extend({
         if (document.getElementsByTagName('style')[0]) {
           document.getElementsByTagName('style')[0].appendChild(document.createTextNode(csstb));
         } else {
-          (head = document.getElementsByTagName('head')[0]), (style = document.createElement('style'));
+          ((head = document.getElementsByTagName('head')[0]), (style = document.createElement('style')));
           style.type = 'text/css';
           style.appendChild(document.createTextNode(csstb));
           head.appendChild(style);

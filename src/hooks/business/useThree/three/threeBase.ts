@@ -1,7 +1,7 @@
+import { useEventListener } from '@vueuse/core';
 import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as THREE from 'three';
-import { useEventListener } from '@vueuse/core';
 import { isFunction } from '@/utils';
 import { ThreeCore } from './threeCore';
 

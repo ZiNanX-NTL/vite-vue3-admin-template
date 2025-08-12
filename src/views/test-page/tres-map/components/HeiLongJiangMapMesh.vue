@@ -1,12 +1,12 @@
 <script setup lang="tsx">
+import { useThrottleFn } from '@vueuse/core';
 import type { ThreeEvent } from '@tresjs/core';
 import * as THREE from 'three';
 import { geoMercator } from 'd3';
 import { acceleratedRaycast, computeBoundsTree, disposeBoundsTree } from 'three-mesh-bvh';
 import { gsap } from 'gsap';
-import { useThrottleFn } from '@vueuse/core';
-import { instantiatedComponent, loadGeojson } from '@/utils';
 import { useThemeStore } from '@/store';
+import { instantiatedComponent, loadGeojson } from '@/utils';
 
 interface Parent {
   adcode: number;
