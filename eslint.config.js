@@ -18,6 +18,7 @@ export default defineConfig(
           ignores: ['/^icon-/', 'primitive']
         }
       ],
+      'vue/no-v-model-argument': 'off',
       'no-underscore-dangle': 'off'
     }
   }
