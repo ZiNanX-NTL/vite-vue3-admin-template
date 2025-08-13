@@ -50,6 +50,18 @@ const tableRoute: AuthRoute.Route = {
         permissions: ['super', 'admin', 'user'],
         icon: 'ic:round-tab'
       }
+    },
+    {
+      name: 'test-table_form',
+      path: '/test-table/form',
+      component: 'self',
+      meta: {
+        title: '动态表单',
+        requiresAuth: true,
+        keepAlive: false,
+        permissions: ['super', 'admin', 'user'],
+        icon: 'ic:round-tab'
+      }
     }
   ],
   meta: {
