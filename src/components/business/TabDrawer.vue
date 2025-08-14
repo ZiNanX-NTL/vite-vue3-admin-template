@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onClickOutside } from '@vueuse/core';
 const visibleModel = defineModel<boolean>();
 const {
   visible = undefined,
@@ -6,6 +7,7 @@ const {
   showTrigger = true,
   appear = true,
   selectMode = false,
+  clickOutside = false,
   position = 'left',
   triggerWrapClass = '',
   triggerClass = '',
@@ -22,6 +24,7 @@ const {
   /** 出现时过渡 */
   appear?: boolean;
   selectMode?: boolean;
+  clickOutside?: boolean;
   position?: 'left' | 'right' | 'top' | 'bottom';
   triggerWrapClass?: string;
   triggerClass?: string;
@@ -151,6 +154,14 @@ function handleToggleVisible(contentVisible: boolean = isVisible.value as boolea
   if (loading) return;
   isVisible.value = !contentVisible;
 }
+
+// 点击外部关闭
+const content = useTemplateRef('contentRef');
+onClickOutside(content, () => {
+  if (clickOutside) {
+    isVisible.value = false;
+  }
+});
 </script>
 
 <template>
@@ -173,7 +184,12 @@ function handleToggleVisible(contentVisible: boolean = isVisible.value as boolea
     </DarkModeContainer>
   </Transition>
   <Transition :name="transitionName" :appear="appear" @after-enter="emit('afterEnter')">
-    <div v-show="isVisible" class="m-0 size-full pointer-events-none absolute-lt z-1000" :class="resultWrapperClass">
+    <div
+      v-show="isVisible"
+      ref="contentRef"
+      class="m-0 size-full pointer-events-none absolute-lt z-1000"
+      :class="resultWrapperClass"
+    >
       <div class="w-[fit-content] pointer-events-auto" :class="resultContentClass">
         <slot></slot>
         <DarkModeContainer
