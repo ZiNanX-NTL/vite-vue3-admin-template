@@ -5,6 +5,7 @@ const {
   showFold = true,
   showTrigger = true,
   appear = true,
+  selectMode = false,
   position = 'left',
   triggerWrapClass = '',
   triggerClass = '',
@@ -20,6 +21,7 @@ const {
   showTrigger?: boolean;
   /** 出现时过渡 */
   appear?: boolean;
+  selectMode?: boolean;
   position?: 'left' | 'right' | 'top' | 'bottom';
   triggerWrapClass?: string;
   triggerClass?: string;
@@ -57,82 +59,111 @@ const isVisible = computed({
   }
 });
 
-const classPatterns = [
-  {
-    name: 'left',
-    defaultTriggerWrapClass: 'top-10px left-0 ',
-    defaultTriggerClass: 'p-[10px_15px_10px_20px] rounded-r-full',
-    defaultWrapperClass: 'flex items-start',
-    defaultContentClass: 'flex-y-center ml-10px mt-10px',
-    defaultHiddenTriggerClass: 'rounded-r-4px p-[15px_5px_15px_5px]'
+// 位置配置映射
+const positionConfig = {
+  left: {
+    triggerWrap: 'top-10px left-0',
+    trigger: 'p-[10px_15px_10px_20px] rounded-r-full',
+    wrapper: 'flex items-start',
+    content: 'flex-y-center mt-10px',
+    hiddenTrigger: 'rounded-r-4px p-[15px_5px_15px_5px]',
+    margin: 'ml'
   },
-  {
-    name: 'right',
-    defaultTriggerWrapClass: 'top-10px right-0',
-    defaultTriggerClass: 'p-[10px_20px_10px_15px]  rounded-l-full',
-    defaultWrapperClass: 'flex items-start flex-row-reverse',
-    defaultContentClass: 'flex-y-center flex-row-reverse mr-10px mt-10px',
-    defaultHiddenTriggerClass: 'rounded-l-4px p-[15px_5px_15px_5px]'
+  right: {
+    triggerWrap: 'top-10px right-0',
+    trigger: 'p-[10px_20px_10px_15px] rounded-l-full',
+    wrapper: 'flex items-start flex-row-reverse',
+    content: 'flex-y-center flex-row-reverse mt-10px',
+    hiddenTrigger: 'rounded-l-4px p-[15px_5px_15px_5px]',
+    margin: 'mr'
   },
-  {
-    name: 'top',
-    defaultTriggerWrapClass: 'top-0 left-10px',
-    defaultTriggerClass: 'p-12px rounded-b-full',
-    defaultWrapperClass: 'flex-vertical items-start',
-    defaultContentClass: 'flex-vertical items-center ml-10px mt-10px',
-    defaultHiddenTriggerClass: 'rounded-b-4px p-[5px_15px_5px_15px]'
+  top: {
+    triggerWrap: 'top-0 left-10px',
+    trigger: 'p-12px rounded-b-full',
+    wrapper: 'flex-vertical items-start',
+    content: 'flex-vertical items-center ml-10px mt-10px',
+    hiddenTrigger: 'rounded-b-4px p-[5px_15px_5px_15px]',
+    margin: 'ml'
   },
-  {
-    name: 'bottom',
-    defaultTriggerWrapClass: 'bottom-0 left-0 right-0 mx-auto w-[fit-content]',
-    defaultTriggerClass: 'p-12px rounded-t-full',
-    defaultWrapperClass: 'flex-vertical items-start flex-col-reverse',
-    defaultContentClass: 'flex-vertical items-center flex-col-reverse mb-10px ml-10px',
-    defaultHiddenTriggerClass: 'rounded-t-4px p-[5px_15px_5px_15px]'
+  bottom: {
+    triggerWrap: 'bottom-0 left-0 right-0 mx-auto w-[fit-content]',
+    trigger: 'p-12px rounded-t-full',
+    wrapper: 'flex-vertical items-start flex-col-reverse',
+    content: 'flex-vertical items-center flex-col-reverse mb-10px ml-10px',
+    hiddenTrigger: 'rounded-t-4px p-[5px_15px_5px_15px]',
+    margin: 'ml'
   }
-];
+} as const;
+
+// 选择模式样式
+const selectModeClasses = computed(() => {
+  if (!selectMode) return '';
+  if (isVisible.value) return ' !bg-primary_3 !text-#fff translate-x-0';
+  if (position === 'left') return '-translate-x-10px';
+  if (position === 'right') return 'translate-x-10px';
+  return '';
+});
+
+// 计算最终样式类
+const config = computed(() => positionConfig[position]);
 
 const transitionName = computed(() => `fade-slide-${position}`);
-const resultTriggerWrapClass = computed(
-  () => `${classPatterns.find(i => i.name === position)?.defaultTriggerWrapClass} ${triggerWrapClass} `
+
+const resultTriggerWrapClass = computed(() => `${config.value.triggerWrap} ${triggerWrapClass}`.trim());
+
+const resultTriggerClass = computed(() =>
+  `${config.value.trigger} ${selectModeClasses.value} ${triggerClass} ${loading ? '!cursor-wait' : ''}`.trim()
 );
-const resultTriggerClass = computed(
-  () =>
-    `${classPatterns.find(i => i.name === position)?.defaultTriggerClass} ${triggerClass} ${
-      loading ? '!cursor-wait' : ''
-    }`
-);
-const resultWrapperClass = computed(
-  () => `${classPatterns.find(i => i.name === position)?.defaultWrapperClass} ${wrapperClass} `
-);
-const resultContentClass = computed(
-  () => `${classPatterns.find(i => i.name === position)?.defaultContentClass} ${contentClass} `
-);
-const resultHiddenTriggerClass = computed(
-  () => `${classPatterns.find(i => i.name === position)?.defaultHiddenTriggerClass} ${hiddenTriggerClass} `
-);
+
+const resultWrapperClass = computed(() => `${config.value.wrapper} ${wrapperClass}`.trim());
+
+const resultContentClass = computed(() => {
+  const marginClass = selectMode ? `${config.value.margin}-60px` : `${config.value.margin}-10px`;
+  const baseContent = config.value.content;
+  // 对于 top 和 bottom 位置，不应用水平边距
+  const finalContent = position === 'top' || position === 'bottom' ? baseContent : `${baseContent} ${marginClass}`;
+  return `${finalContent} ${contentClass}`.trim();
+});
+
+const resultHiddenTriggerClass = computed(() => `${config.value.hiddenTrigger} ${hiddenTriggerClass}`.trim());
+
+// 箭头图标映射
+const arrowIconMap = {
+  left: 'ep-arrow-left-bold',
+  right: 'ep-arrow-right-bold',
+  top: 'ep-arrow-up-bold',
+  bottom: 'ep-arrow-down-bold'
+} as const;
+
+// 获取当前位置的箭头图标组件
+const ArrowIcon = computed(() => arrowIconMap[position]);
 
 watch(
   () => loading,
-  val => {
+  (val: boolean) => {
     if (val) {
       isVisible.value = false;
     }
   }
 );
+
+function handleToggleVisible(contentVisible: boolean = isVisible.value as boolean) {
+  if (loading) return;
+  isVisible.value = !contentVisible;
+}
 </script>
 
 <template>
   <Transition :name="transitionName" :appear="appear">
     <DarkModeContainer
-      v-show="showTrigger && !isVisible"
+      v-show="selectMode || (showTrigger && !isVisible)"
       class="transition-base absolute z-1000"
       :class="resultTriggerWrapClass"
     >
       <HoverContainer
-        :content-class="`bg-#fff text-icon shadow-[0_1px_2px_rgba(0,21,41,0.08)] dark:bg-dark hover:text-primary ${resultTriggerClass}`"
+        :content-class="`bg-#fff text-icon shadow-[0_1px_2px_rgba(0,21,41,0.08)] dark:bg-dark hover:text-primary  transition-base ${resultTriggerClass}`"
         v-bind="hoverProps"
-        @click="!loading && (isVisible = true)"
+        @click="handleToggleVisible()"
       >
         <slot v-if="!loading" name="trigger">
           <icon-ic-round-search />
@@ -146,24 +177,12 @@ watch(
       <div class="w-[fit-content] pointer-events-auto" :class="resultContentClass">
         <slot></slot>
         <DarkModeContainer
-          v-if="showFold"
+          v-if="showFold && !selectMode"
           class="group bg-#fff cursor-pointer transition-base dark:bg-dark"
           :class="resultHiddenTriggerClass"
           @click="isVisible = false"
         >
-          <icon-ep-arrow-left-bold
-            v-if="position === 'left'"
-            class="text-icon transition-base group-hover:text-primary"
-          />
-          <icon-ep-arrow-right-bold
-            v-if="position === 'right'"
-            class="text-icon transition-base group-hover:text-primary"
-          />
-          <icon-ep-arrow-up-bold v-if="position === 'top'" class="text-icon transition-base group-hover:text-primary" />
-          <icon-ep-arrow-down-bold
-            v-if="position === 'bottom'"
-            class="text-icon transition-base group-hover:text-primary"
-          />
+          <SvgIcon :icon="ArrowIcon" class="text-icon transition-base group-hover:text-primary" />
         </DarkModeContainer>
       </div>
     </div>
