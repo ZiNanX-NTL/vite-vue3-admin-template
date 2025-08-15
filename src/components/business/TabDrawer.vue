@@ -69,32 +69,28 @@ const positionConfig = {
     trigger: 'p-[10px_15px_10px_20px] rounded-r-full',
     wrapper: 'flex items-start',
     content: 'flex-y-center mt-10px',
-    hiddenTrigger: 'rounded-r-4px p-[15px_5px_15px_5px]',
-    margin: 'ml'
+    hiddenTrigger: 'rounded-r-4px p-[15px_5px_15px_5px]'
   },
   right: {
     triggerWrap: 'top-10px right-0',
     trigger: 'p-[10px_20px_10px_15px] rounded-l-full',
     wrapper: 'flex items-start flex-row-reverse',
     content: 'flex-y-center flex-row-reverse mt-10px',
-    hiddenTrigger: 'rounded-l-4px p-[15px_5px_15px_5px]',
-    margin: 'mr'
+    hiddenTrigger: 'rounded-l-4px p-[15px_5px_15px_5px]'
   },
   top: {
     triggerWrap: 'top-0 left-10px',
     trigger: 'p-12px rounded-b-full',
     wrapper: 'flex-vertical items-start',
     content: 'flex-vertical items-center ml-10px mt-10px',
-    hiddenTrigger: 'rounded-b-4px p-[5px_15px_5px_15px]',
-    margin: 'ml'
+    hiddenTrigger: 'rounded-b-4px p-[5px_15px_5px_15px]'
   },
   bottom: {
     triggerWrap: 'bottom-0 left-0 right-0 mx-auto w-[fit-content]',
     trigger: 'p-12px rounded-t-full',
     wrapper: 'flex-vertical items-start flex-col-reverse',
     content: 'flex-vertical items-center flex-col-reverse mb-10px ml-10px',
-    hiddenTrigger: 'rounded-t-4px p-[5px_15px_5px_15px]',
-    margin: 'ml'
+    hiddenTrigger: 'rounded-t-4px p-[5px_15px_5px_15px]'
   }
 } as const;
 
@@ -121,7 +117,13 @@ const resultTriggerClass = computed(() =>
 const resultWrapperClass = computed(() => `${config.value.wrapper} ${wrapperClass}`.trim());
 
 const resultContentClass = computed(() => {
-  const marginClass = selectMode ? `${config.value.margin}-60px` : `${config.value.margin}-10px`;
+  let marginClass = '';
+  if (position === 'left') {
+    marginClass = selectMode ? 'ml-60px' : 'ml-10px';
+  } else if (position === 'right') {
+    marginClass = selectMode ? 'mr-60px' : 'mr-10px';
+  }
+
   const baseContent = config.value.content;
   // 对于 top 和 bottom 位置，不应用水平边距
   const finalContent = position === 'top' || position === 'bottom' ? baseContent : `${baseContent} ${marginClass}`;
