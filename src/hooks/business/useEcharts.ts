@@ -106,7 +106,7 @@ interface OtherOptions {
  * @param optionsFactory echarts options factory function
  * @param darkMode dark mode
  */
-export function useEcharts<T extends ECOption>(
+export function useEcharts<T extends Record<string, any> = ECOption>(
   optionsFactory: () => T,
   hooks: ChartHooks = {},
   oOptions: OtherOptions = {}
@@ -224,7 +224,7 @@ export function useEcharts<T extends ECOption>(
    * @param callback 更新回调函数
    * @returns Promise
    */
-  async function updateOptions(callback: (opts: T, optsFactory: () => T) => ECOption = () => chartOptions) {
+  async function updateOptions(callback: (opts: T, optsFactory: () => T) => T = () => chartOptions) {
     if (isRendered() && otherOptions.clear) {
       chartInstance.value?.clear();
     }
