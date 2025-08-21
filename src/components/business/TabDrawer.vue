@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core';
-const visibleModel = defineModel<boolean>();
+const isVisible = defineModel<boolean>('visible', { default: false });
 const {
-  visible = undefined,
   showFold = true,
   showTrigger = true,
   appear = true,
@@ -17,7 +16,6 @@ const {
   hoverProps = {},
   loading = false
 } = defineProps<{
-  visible?: boolean;
   showFold?: boolean;
   /** 是否显示触发器 */
   showTrigger?: boolean;
@@ -41,26 +39,8 @@ const {
   loading?: boolean;
 }>();
 const emit = defineEmits<{
-  'update:value': [value: boolean | undefined];
   afterEnter: [];
 }>();
-
-// 受控与非受控模式
-const visibleProp = ref(visible);
-const isVisible = computed({
-  get: () => {
-    if (visible !== undefined) return visibleProp.value;
-    return visibleModel.value;
-  },
-  set: val => {
-    if (visible !== undefined) {
-      visibleProp.value = val;
-      emit('update:value', val);
-    } else {
-      visibleModel.value = val;
-    }
-  }
-});
 
 // 位置配置映射
 const positionConfig = {
