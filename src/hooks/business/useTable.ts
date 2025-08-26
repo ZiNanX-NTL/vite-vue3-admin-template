@@ -110,7 +110,7 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
   const searchParams = reactive(cloneDeep(apiParams));
   const requestParams = reactive<any>({});
 
-  const { columns, filteredColumns, reloadColumns, allColumns } = useTableColumn<TableData>(
+  const { columns, filteredColumns, reloadColumns, allColumns, columnsWidth } = useTableColumn<TableData>(
     config.columns,
     searchParams
   );
@@ -239,6 +239,7 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
     columns,
     filteredColumns,
     allColumns,
+    columnsWidth,
     reloadColumns,
     pagination,
     updatePagination,
@@ -262,6 +263,15 @@ function useTableColumn<TableData>(factory: (p: any) => HookTableColumn<TableDat
   const filteredColumns = ref(getFilteredColumns(factory(params)));
 
   const columns = computed(() => getColumns());
+
+  const columnsWidth = computed(() => {
+    let totalWidth = 0;
+    columns.value.forEach(column => {
+      const width = typeof column.width === 'string' ? Number.parseInt(column.width, 10) : column.width || 0;
+      totalWidth += width;
+    });
+    return totalWidth;
+  });
 
   function reloadColumns() {
     allColumns.value = factory(params);
@@ -320,7 +330,8 @@ function useTableColumn<TableData>(factory: (p: any) => HookTableColumn<TableDat
     columns,
     reloadColumns,
     filteredColumns,
-    allColumns
+    allColumns,
+    columnsWidth
   };
 }
 
