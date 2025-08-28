@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Slots } from 'vue';
+import type { ComponentInstance, Slots } from 'vue';
 import { h } from 'vue';
 import { NCard } from 'naive-ui';
 
@@ -25,21 +25,6 @@ const collapse = defineModel<boolean>('collapse', { default: false });
 const slots = useSlots();
 
 const model = defineModel<any>();
-const cardRef = ref();
-
-defineExpose(
-  new Proxy(
-    {},
-    {
-      get(_target, prop) {
-        return cardRef.value?.[prop];
-      },
-      has(_target, prop) {
-        return prop in cardRef.value;
-      }
-    }
-  )
-);
 
 /** 排除header-extra slots */
 const resultSlots = computed(() => {
@@ -51,10 +36,19 @@ const resultSlots = computed(() => {
   return resSlots as Slots;
 });
 const contentPadding = computed(() => (collapse.value ? 0 : 'var(--n-padding-bottom)'));
+
+const vm = getCurrentInstance();
+function changeRef(ref: Element | ComponentPublicInstance | null) {
+  const formInstance = ref;
+  vm!.exposeProxy = formInstance || {};
+  vm!.exposed = formInstance || {};
+}
+
+defineExpose({} as ComponentInstance<typeof NCard>);
 </script>
 
 <template>
-  <component :is="h(NCard, $attrs)" ref="cardRef" v-model="model">
+  <component :is="h(NCard, { ...$attrs, ref: changeRef })" v-model="model">
     <template v-if="title" #header>
       <NFlex align="center">
         <NH4 :prefix="showPrefix ? 'bar' : undefined" align-text class="mb-0" :class="titleClass">

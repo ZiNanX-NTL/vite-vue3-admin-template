@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { ComponentPublicInstance } from 'vue';
-import { type FormInst, NFormItemGi, NGridItem, NInput, NInputNumber, NSelect } from 'naive-ui';
+import type { ComponentInstance } from 'vue';
+import { type FormInst, NForm, NFormItemGi, NGridItem, NInput, NInputNumber, NSelect } from 'naive-ui';
 import { omit } from 'lodash-es';
 const {
   formItems,
@@ -49,6 +49,8 @@ function changeRef(ref: Element | ComponentPublicInstance | null) {
   vm!.exposeProxy = formInstance || {};
   vm!.exposed = formInstance || {};
 }
+
+defineExpose({} as ComponentInstance<typeof NForm>);
 </script>
 
 <template>
