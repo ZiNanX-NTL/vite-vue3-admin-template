@@ -1,24 +1,24 @@
 import type { Reactive } from 'vue';
 
 /** 重置配置 */
-type ResettableConfig<T> = {
-  transformerState?: (params: T) => any;
+type ResettableConfig<T, R = T> = {
+  transformerState?: (params: T) => R;
 };
 
 function defaultClone(value: any) {
   if (value === null || typeof value !== 'object') return value;
   return JSON.parse(JSON.stringify(value));
 }
-export default function useResettableReactive<T extends object>(
+export default function useResettableReactive<T extends object, R extends object = T>(
   value: T,
-  config?: ResettableConfig<Reactive<T>>,
+  config?: ResettableConfig<Reactive<T>, R>,
   clone = defaultClone
 ) {
   const defaultValue = value;
   const state = reactive<T>(clone(defaultValue));
-  const formatState = reactive<T>({} as T);
+  const formatState = reactive<R>({} as R);
 
-  const transformerState = config?.transformerState || ((params: Reactive<T>) => params);
+  const transformerState = config?.transformerState || ((params: Reactive<T>) => params as unknown as R);
 
   /** 设置默认值 */
   const setDefaultValue = (val: T) => {
