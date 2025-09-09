@@ -70,6 +70,13 @@ type HookTableConfig<TableData, Fn extends ApiFn> = {
   transformer: Transformer<TableData, Service.RequestResult<GetApiFnReturnType<Fn>>>;
   /** 列表分页参数 */
   pagination?: PaginationProps;
+  /** 分页参数是否分离 */
+  isSeparatePagination?: boolean;
+  /** 分页参数分离状态分页参数 */
+  paginationParams?: {
+    pageNum: number;
+    pageSize: number;
+  };
   /** 列表列 */
   columns: () => HookTableColumn<TableData>[];
   /** 分页参数更新 */
@@ -100,17 +107,23 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
       page: 'page',
       pageSize: 'pageSize'
     },
+    paginationParams = {
+      pageNum: 1,
+      pageSize: 10
+    },
     formatSearchParams = params => params,
     transformer,
     onPaginationChanged,
     isPaging = true,
-    immediate = true
+    immediate = true,
+    isSeparatePagination = false
   } = config;
 
   const searchParams = reactive(cloneDeep(apiParams));
   const requestParams = reactive<any>({});
+  const paginationSearchParams = reactive(cloneDeep(paginationParams));
 
-  const { columns, filteredColumns, reloadColumns, allColumns, columnsWidth } = useTableColumn<TableData>(
+  const { columns, filteredColumns, reloadColumns, columnsWidth, allColumns } = useTableColumn<TableData>(
     config.columns,
     searchParams
   );
@@ -145,6 +158,12 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
   function transformPaginationParams(params: Record<string, any>): Record<string, any> {
     // 如果不需要分页或参数为空，直接返回
     if (!isPaging || !paginationParamNames) return params;
+    if (isSeparatePagination)
+      return {
+        ...params,
+        [paginationParamNames.page]: paginationSearchParams.pageNum,
+        [paginationParamNames.pageSize]: paginationSearchParams.pageSize
+      };
     const { page, pageSize, ...rest } = params;
     return {
       [paginationParamNames.page]: page,
@@ -203,7 +222,24 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
    * @param params
    */
   function updateSearchParams(params: any) {
-    Object.assign(searchParams, params);
+    if (isSeparatePagination) {
+      // 提取分页参数
+      const { page, pageSize, ...restParams } = params;
+
+      // 更新分离的分页参数
+      if (page !== undefined) {
+        paginationSearchParams.pageNum = page;
+      }
+      if (pageSize !== undefined) {
+        paginationSearchParams.pageSize = pageSize;
+      }
+
+      // 更新非分页参数
+      Object.assign(searchParams, restParams);
+    } else {
+      // 非分离模式，直接合并所有参数
+      Object.assign(searchParams, params);
+    }
   }
 
   /** 重置初始参数(特殊情况下使用,最好不要重复调用) */
@@ -238,8 +274,8 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
     data,
     columns,
     filteredColumns,
-    allColumns,
     columnsWidth,
+    allColumns,
     reloadColumns,
     pagination,
     updatePagination,
@@ -250,7 +286,8 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
     updateSearchParams,
     resetApiParams,
     resetSearchParams,
-    requestParams
+    requestParams,
+    paginationSearchParams
   };
 }
 
@@ -266,10 +303,22 @@ function useTableColumn<TableData>(factory: (p: any) => HookTableColumn<TableDat
 
   const columnsWidth = computed(() => {
     let totalWidth = 0;
-    columns.value.forEach(column => {
+
+    function calculateColumnWidth(column: any): number {
+      // 如果是多级表头，递归计算子列宽度
+      if (column.children && Array.isArray(column.children)) {
+        return column.children.reduce((sum: number, child: any) => sum + calculateColumnWidth(child), 0);
+      }
+
+      // 计算单列宽度
       const width = typeof column.width === 'string' ? Number.parseInt(column.width, 10) : column.width || 0;
-      totalWidth += width;
+      return width;
+    }
+
+    columns.value.forEach(column => {
+      totalWidth += calculateColumnWidth(column);
     });
+
     return totalWidth;
   });
 
@@ -330,17 +379,17 @@ function useTableColumn<TableData>(factory: (p: any) => HookTableColumn<TableDat
     columns,
     reloadColumns,
     filteredColumns,
-    allColumns,
-    columnsWidth
+    columnsWidth,
+    allColumns
   };
 }
 
 export function useTableOperate(getData: () => Promise<any>) {
   const { bool: modalVisible, setTrue: openModal, setFalse: closeModal } = useBoolean();
 
-  const operateType = ref('add');
+  const operateType = ref<'add' | 'edit'>('add');
   /** the editing row data */
-  const editingData = ref(null);
+  const editingData = ref<Record<string, any> | null>(null);
 
   function handleAdd() {
     operateType.value = 'add';
