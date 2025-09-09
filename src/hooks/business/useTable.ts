@@ -158,13 +158,13 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
   function transformPaginationParams(params: Record<string, any>): Record<string, any> {
     // 如果不需要分页或参数为空，直接返回
     if (!isPaging || !paginationParamNames) return params;
+    const { page, pageSize, ...rest } = params;
     if (isSeparatePagination)
       return {
-        ...params,
         [paginationParamNames.page]: paginationSearchParams.pageNum,
-        [paginationParamNames.pageSize]: paginationSearchParams.pageSize
+        [paginationParamNames.pageSize]: paginationSearchParams.pageSize,
+        ...rest
       };
-    const { page, pageSize, ...rest } = params;
     return {
       [paginationParamNames.page]: page,
       [paginationParamNames.pageSize]: pageSize,
@@ -175,13 +175,7 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
   /** 设置请求分页参数 */
   function setRequestPaginationParams() {
     const { page, pageSize } = formatSearchParams(searchParams);
-    Object.assign(
-      requestParams,
-      transformPaginationParams({
-        ...(page && { page }),
-        ...(pageSize && { pageSize })
-      })
-    );
+    Object.assign(requestParams, transformPaginationParams({ page, pageSize }));
   }
   /** 设置请求参数 */
   function setRequestParams() {
