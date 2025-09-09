@@ -175,7 +175,13 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
   /** 设置请求分页参数 */
   function setRequestPaginationParams() {
     const { page, pageSize } = formatSearchParams(searchParams);
-    Object.assign(requestParams, transformPaginationParams({ page, pageSize }));
+    Object.assign(
+      requestParams,
+      transformPaginationParams({
+        ...(page && { page }),
+        ...(pageSize && { pageSize })
+      })
+    );
   }
   /** 设置请求参数 */
   function setRequestParams() {
