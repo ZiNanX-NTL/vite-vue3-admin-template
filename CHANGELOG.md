@@ -1,6 +1,78 @@
 # Changelog
 
 
+## [v0.1.3](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/compare/v0.1.2...v0.1.3) (2025-09-15)
+
+### &nbsp;&nbsp;&nbsp;🚀 Features
+
+- **components**:
+  - 新增HoverTip组件 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(c1a35)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/c1a3541)
+  - (TabDrawer)添加选择模式支持及位置配置优化 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(c5328)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/c5328d7)
+  - (TabDrawer)添加点击外部关闭功能及相关属性支持 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(600a6)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/600a69b)
+- **dependencies**:
+  - 更新依赖项版本，替换presetUno为presetWind4，优化配置 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(fccc8)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/fccc8ff)
+  - 更新leafer-in系列依赖版本以支持新功能和优化性能 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(3b72f)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/3b72f55)
+- **hooks**:
+  - 在useTable中添加columnsWidth计算，支持列宽度总和的动态计算 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(f52b6)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/f52b620)
+  - 添加分页参数分离功能，支持独立管理分页状态 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(d776a)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/d776aa9)
+- **projects**:
+  - 新增tresMap示例页面 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(07a14)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/07a14ec)
+  - 新增地图标签组件和数据，优化地图参数设置 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(20eed)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/20eedeb)
+  - 添加动态表单组件及其验证规则示例 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(a7ece)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/a7ecee7)
+- **tres-map**:
+  - 添加TODO注释以统计标签 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(eefaa)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/eefaa2a)
+- **useTable**:
+  - 增强表格配置，支持自定义分页参数，优化请求参数处理 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(bef15)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/bef15a8)
+- **utils**:
+  - routerBack和routerReplace新增是否仅删除tab选项 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(d3ecb)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/d3ecbe5)
+  - 新增local.get方法获取没有过期时间的数据 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(59f94)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/59f9486)
+
+### &nbsp;&nbsp;&nbsp;🐞 Bug Fixes
+
+- **components**:
+  - 优化TabDrawer组件的边距配置逻辑 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(00b8f)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/00b8fa6)
+  - 修复TabDrawer组件的可见性模型，简化属性定义 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(32de2)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/32de261)
+  - 修复ZCard,FormBuilder组件的引用暴露逻辑，优化类型导入 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(8432c)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/8432cf9)
+- **dependencies**:
+  - 降级leafer-in系列依赖版本以解决兼容性问题 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(9da44)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/9da4445)
+- **eslint**:
+  - 移除vue/no-v-model-argument规则的关闭设置 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(116c2)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/116c28e)
+- **hooks**:
+  - 修复useEcharts主题颜色显示问题 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(92b64)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/92b6483)
+  - 修复useEcharts函数的类型定义以支持更灵活的选项 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(2120c)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/2120c27)
+  - 更新useAuth中的hasAuth函数以支持数字类型的权限代码 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(7688f)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/7688f08)
+  - 更新useResettableReactive的类型定义以支持更灵活的transformerState和formatState &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(4b303)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/4b3039d)
+  - 优化请求分页参数设置逻辑，确保仅在存在值时传递分页参数 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(5f27d)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/5f27d55)
+  - 优化分页参数转换逻辑，简化请求参数设置 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(7434f)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/7434f7d)
+- **icon**:
+  - 修正图标坐标计算以使用iconAnchor属性 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(4435f)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/4435f7e)
+- **import**:
+  - 修改HLJZone.json文件路径以确保正确导入 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(55ed5)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/55ed5bc)
+- **projects**:
+  - 修复useEcharts,useLeaflet初始更新数据失败问题,优化样式,新增resizeObserverFix &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(95065)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/95065e7)
+- **styles**:
+  - 修复左侧菜单模式logo反转色无效问题 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(404c8)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/404c847)
+  - 侧边菜布局单logo背景颜色过渡调整 &nbsp;-&nbsp; by **ZiNanX_NTL** [<samp>(02d92)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/02d9259)
+
+### &nbsp;&nbsp;&nbsp;🔥 Performance
+
+- **other**: 简化geojson &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(b237a)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/b237a58)
+
+### &nbsp;&nbsp;&nbsp;💅 Refactors
+
+- **projects**: 重构：重新排序类属性以实现组件之间的一致性 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(fff8c)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/fff8cf6)
+
+### &nbsp;&nbsp;&nbsp;🏡 Chore
+
+- **projects**:
+  - Changes that do not affect the meaning of the code &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(bbc9c)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/bbc9cfe)
+  - eslint配置优化 &nbsp;-&nbsp; by **ZiNanX-NTL** [<samp>(eda96)</samp>](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/commit/eda96e2)
+
+### &nbsp;&nbsp;&nbsp;❤️ Contributors
+
+
+[ZiNanX-NTL](mailto:702668400@qq.com)
+
 ## [v0.1.2](https://github.com/ZiNanX-NTL/vite-vue3-admin-template/compare/v0.1.1...v0.1.2) (2024-12-24)
 
 ### &nbsp;&nbsp;&nbsp;🏡 Chore
