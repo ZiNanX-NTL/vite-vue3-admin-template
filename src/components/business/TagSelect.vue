@@ -5,14 +5,6 @@ defineOptions({
   name: 'TagSelect'
 });
 
-interface Props {
-  label?: string;
-  labelClass?: string;
-  multiple?: boolean;
-  options?: any[];
-  valueField?: string;
-  labelField?: string;
-}
 const {
   label,
   labelClass,
@@ -21,7 +13,14 @@ const {
   valueField = 'value',
   labelField = 'label'
 } = defineProps<Props>();
-
+interface Props {
+  label?: string;
+  labelClass?: string;
+  multiple?: boolean;
+  options?: any[];
+  valueField?: string;
+  labelField?: string;
+}
 // 拿到options所有选项的value属性的值的类型
 type OperationalKey = (typeof options)[number]['value'][];
 const modelValue = defineModel<number | string | OperationalKey>({ required: true });
@@ -83,7 +82,9 @@ watch([modelValue, () => options], () => updateOptions());
 <template>
   <NFlex align="center">
     <label v-if="label" :class="labelClass">{{ label }}：</label>
-    <NTag v-if="multiple" :checked="isAll" checkable @click="handleCheck">全部</NTag>
+    <NTag v-if="multiple" :checked="isAll" checkable @click="handleCheck">
+      全部
+    </NTag>
     <NTag
       v-for="item in tagOptions"
       :key="item[valueField]"

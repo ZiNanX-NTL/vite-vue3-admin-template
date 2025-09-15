@@ -11,7 +11,9 @@ defineOptions({
         <SvgIcon local-icon="expectation" />
       </div>
       <slot>
-        <h3 class="text-28px text-primary font-500">敬请期待</h3>
+        <h3 class="text-28px text-primary font-500">
+          敬请期待
+        </h3>
       </slot>
     </div>
   </div>

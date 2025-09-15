@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { h } from 'vue';
-import type { Slots } from 'vue';
 import type { PaginationProps } from 'naive-ui';
+import type { Slots } from 'vue';
+import { h } from 'vue';
 import ZCard from './ZCard.vue';
 
 defineOptions({
@@ -76,16 +76,16 @@ defineExpose({
       </slot>
     </template>
     <template v-for="(_value, name) in resultSlots" #[name]="slotData">
-      <slot v-if="!['default'].includes(name as string)" :name="name" v-bind="slotData || {}"></slot>
+      <slot v-if="!['default'].includes(name as string)" :name="name" v-bind="slotData || {}" />
       <NSpin v-if="name === 'default'" :key="name" :show="loading" class="h-full" content-class="h-full relative">
         <NScrollbar id="image-scroll-container" class="h-full">
-          <slot :name="name" v-bind="{ ...slotData, list: listData }"></slot>
+          <slot :name="name" v-bind="{ ...slotData, list: listData }" />
         </NScrollbar>
         <NEmpty
           v-if="!listData.length && !loading"
           class="flex-center size-full absolute-lt"
           description="暂无数据"
-        ></NEmpty>
+        />
       </NSpin>
     </template>
     <template #footer="slotData">

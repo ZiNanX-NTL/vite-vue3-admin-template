@@ -1,6 +1,6 @@
 <script setup>
-import { useAppStore, useAuthStore } from '@/store';
 import { useAuth, useLoading } from '@/hooks';
+import { useAppStore, useAuthStore } from '@/store';
 
 const appStore = useAppStore();
 const authStore = useAuthStore();
@@ -71,16 +71,28 @@ async function handleToggleAccount(account) {
     </NCard>
     <NCard title="MAC权限钩子函数 `hasAuth`" :bordered="false" size="small" segmented class="card-wrapper">
       <NSpace>
-        <NButton v-if="hasAuth(['super'])">超级管理员可见</NButton>
-        <NButton v-if="hasAuth(['super', 'admin'])">管理员可见</NButton>
-        <NButton v-if="hasAuth(['super', 'admin', 'user'])">用户可见</NButton>
+        <NButton v-if="hasAuth(['super'])">
+          超级管理员可见
+        </NButton>
+        <NButton v-if="hasAuth(['super', 'admin'])">
+          管理员可见
+        </NButton>
+        <NButton v-if="hasAuth(['super', 'admin', 'user'])">
+          用户可见
+        </NButton>
       </NSpace>
     </NCard>
     <NCard title="RBAC权限钩子函数 `hasAuth`" :bordered="false" size="small" segmented class="card-wrapper">
       <NSpace>
-        <NButton v-if="hasAuth('B_CODE1')">超级管理员可见</NButton>
-        <NButton v-if="hasAuth('B_CODE2')">管理员可见</NButton>
-        <NButton v-if="hasAuth('B_CODE3')">用户可见</NButton>
+        <NButton v-if="hasAuth('B_CODE1')">
+          超级管理员可见
+        </NButton>
+        <NButton v-if="hasAuth('B_CODE2')">
+          管理员可见
+        </NButton>
+        <NButton v-if="hasAuth('B_CODE3')">
+          用户可见
+        </NButton>
       </NSpace>
     </NCard>
   </NSpace>

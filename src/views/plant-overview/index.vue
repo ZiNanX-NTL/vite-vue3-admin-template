@@ -1,6 +1,6 @@
 <script setup>
-import { useAppStore } from '@/store';
 import { useGlobalLoading } from '@/hooks';
+import { useAppStore } from '@/store';
 
 const { start, end, isLoading } = useGlobalLoading();
 
@@ -20,9 +20,15 @@ function handlere() {
 <template>
   <div>
     <!-- <div class="h-full bg-red overflow-hidden"> -->
-    <div class="color-primary_10">测试</div>
-    <NButton @click="handleLoading">aasdfas</NButton>
-    <NButton type="primary" @click="handlere">aasdfas</NButton>
+    <div class="color-primary_10">
+      测试
+    </div>
+    <NButton @click="handleLoading">
+      aasdfas
+    </NButton>
+    <NButton type="primary" @click="handlere">
+      aasdfas
+    </NButton>
 
     <div>{{ app.reloadFlag }}</div>
     <div>{{ isLoading }}</div>
@@ -82,9 +88,15 @@ function handlere() {
     <div>{{ isLoading }}</div>
     <div>{{ isLoading }}</div>
     <NTabs type="line">
-      <NTab name="幸福">寂寞围绕着电视</NTab>
-      <NTab name="的">垂死坚持</NTab>
-      <NTab name="旁边">在两点半消失</NTab>
+      <NTab name="幸福">
+        寂寞围绕着电视
+      </NTab>
+      <NTab name="的">
+        垂死坚持
+      </NTab>
+      <NTab name="旁边">
+        在两点半消失
+      </NTab>
     </NTabs>
     <!-- <AppLoading></AppLoading> -->
     <!-- </div> -->

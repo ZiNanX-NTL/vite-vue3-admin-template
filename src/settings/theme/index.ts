@@ -1,6 +1,6 @@
-import theme from './theme.json';
-import jsonNaiveTheme from './naive-ui-theme-overrides.json';
 import colorJson from './color.json';
+import jsonNaiveTheme from './naive-ui-theme-overrides.json';
+import theme from './theme.json';
 
 interface TraditionColorDetail {
   label: string;

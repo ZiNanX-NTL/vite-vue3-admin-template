@@ -1,5 +1,6 @@
 export function adapterOfFetchUserList(data: any) {
-  if (!data) return {};
+  if (!data)
+    return {};
 
   data.records = data.records.map((item: any, index: number) => {
     const user = {

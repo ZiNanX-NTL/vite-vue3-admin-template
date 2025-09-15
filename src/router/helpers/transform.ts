@@ -93,8 +93,8 @@ export function transformAuthRouteToVueRoute(item: AuthRoute.Route) {
     } else {
       const parentPath = itemRoute.path;
 
-      const layout =
-        item.meta.singleLayout && layoutTypes.includes(item.meta.singleLayout)
+      const layout
+        = item.meta.singleLayout && layoutTypes.includes(item.meta.singleLayout)
           ? getLayoutComponent(item.meta.singleLayout)
           : getLayoutComponent('blank');
 
@@ -141,7 +141,8 @@ export function transformAuthRouteToVueRoute(item: AuthRoute.Route) {
  * @param treeMap
  */
 export function transformAuthRouteToSearchMenus(routes: AuthRoute.Route[], treeMap: AuthRoute.Route[] = []) {
-  if (routes && routes.length === 0) return [];
+  if (routes && routes.length === 0)
+    return [];
   return routes.reduce((acc, cur) => {
     if (!cur.meta?.hide && !cur.meta?.hideOfSimple) {
       acc.push(cur);
@@ -156,7 +157,8 @@ export function transformAuthRouteToSearchMenus(routes: AuthRoute.Route[], treeM
 /** 将路由名字转换成路由路径 */
 export function transformRouteNameToRoutePath(name: string) {
   const rootPath = '/';
-  if (name === 'root') return rootPath;
+  if (name === 'root')
+    return rootPath;
 
   const splitMark = '_';
   const pathSplitMark = '/';
@@ -167,7 +169,8 @@ export function transformRouteNameToRoutePath(name: string) {
 
 /** 将路由路径转换成路由名字 */
 export function transformRoutePathToRouteName(path: string) {
-  if (path === '/') return 'root';
+  if (path === '/')
+    return 'root';
 
   const pathSplitMark = '/';
   const routeSplitMark = '_';
@@ -264,9 +267,11 @@ export function getTopLevelMenu(
   menus: App.GlobalMenuOption[],
   depth = 0
 ): App.GlobalMenuOption | undefined {
-  if (depth > 10) return undefined; // 设置最大递归深度为10
+  if (depth > 10)
+    return undefined; // 设置最大递归深度为10
   return menus.find(item => {
-    if (item.routeName === routeName) return true;
+    if (item.routeName === routeName)
+      return true;
     if (Array.isArray(item.children)) {
       return getTopLevelMenu(routeName, item.children, depth + 1);
     }

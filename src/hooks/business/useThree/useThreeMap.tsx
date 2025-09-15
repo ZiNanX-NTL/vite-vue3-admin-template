@@ -27,7 +27,8 @@ export function useThreeMap(mapData: any) {
    * @param callback callback function
    */
   async function update(callback: (instance: ThreeMap | null) => void = () => {}) {
-    if (!isRendered()) return;
+    if (!isRendered())
+      return;
 
     callback(instance.value);
   }

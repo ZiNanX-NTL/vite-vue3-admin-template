@@ -1,7 +1,7 @@
-import { useEventListener } from '@vueuse/core';
 import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { useEventListener } from '@vueuse/core';
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { isFunction } from '@/utils';
 import { ThreeCore } from './threeCore';
 
@@ -105,7 +105,8 @@ export class ThreeBase extends ThreeCore {
   ) {
     const mixer = new THREE.AnimationMixer(mesh);
     const clip = THREE.AnimationClip.findByName(animations, animationName);
-    if (!clip) return undefined;
+    if (!clip)
+      return undefined;
     const action = mixer.clipAction(clip);
     action.play();
     this.mixers.push(mixer);

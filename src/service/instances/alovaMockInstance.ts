@@ -1,9 +1,9 @@
+import { axiosRequestAdapter } from '@alova/adapter-axios';
 import { createAlova } from 'alova';
 import VueHook from 'alova/vue';
-import { axiosRequestAdapter } from '@alova/adapter-axios';
 import { localStg } from '@/utils';
-import { Request } from '../request';
 import { transformRequestData } from '../helpers';
+import { Request } from '../request';
 
 export const mockAlova = createAlova({
   baseURL: '/mock',

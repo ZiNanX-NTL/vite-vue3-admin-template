@@ -27,7 +27,7 @@ const columns = defineModel<NaiveUI.TableColumnCheck[]>('columns', {
             {{ item.title }}
           </template>
           <template v-else>
-            <component :is="item.title"></component>
+            <component :is="item.title" />
           </template>
         </NCheckbox>
       </div>

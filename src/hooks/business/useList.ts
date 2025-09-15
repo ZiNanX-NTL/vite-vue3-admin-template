@@ -1,7 +1,7 @@
-import type { Reactive } from 'vue';
-import { reactive, ref, watch } from 'vue';
 import type { PaginationProps } from 'naive-ui';
+import type { Reactive } from 'vue';
 import { cloneDeep } from 'lodash-es';
+import { reactive, ref, watch } from 'vue';
 import { useIsMobile } from '@/utils';
 import { useBoolean, useLoading } from '../common';
 
@@ -27,7 +27,7 @@ type Transformer<ListData, Response> = (response: Response) => {
 };
 
 /** 表格配置 */
-type HookListConfig<ListData, Fn extends ApiFn> = {
+interface HookListConfig<ListData, Fn extends ApiFn> {
   /** 接口请求函数 */
   apiFn: Fn;
   /** 列表接口参数 */
@@ -52,7 +52,7 @@ type HookListConfig<ListData, Fn extends ApiFn> = {
    * @default true
    */
   immediate?: boolean;
-};
+}
 
 /** 通用表格 hook */
 export function useList<ListData, Fn extends ApiFn>(config: HookListConfig<ListData, Fn>) {
@@ -129,7 +129,8 @@ export function useList<ListData, Fn extends ApiFn>(config: HookListConfig<ListD
 
   /** 查询数据 */
   async function handleSearch() {
-    if (isPaging) updateSearchParams({ pageNum: 1 });
+    if (isPaging)
+      updateSearchParams({ pageNum: 1 });
     setRequestParams();
     await getData();
   }

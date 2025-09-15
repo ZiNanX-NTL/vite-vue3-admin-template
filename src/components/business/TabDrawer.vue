@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core';
-const isVisible = defineModel<boolean>('visible', { default: false });
+
 const {
   showFold = true,
   showTrigger = true,
@@ -41,7 +41,7 @@ const {
 const emit = defineEmits<{
   afterEnter: [];
 }>();
-
+const isVisible = defineModel<boolean>('visible', { default: false });
 // 位置配置映射
 const positionConfig = {
   left: {
@@ -76,10 +76,14 @@ const positionConfig = {
 
 // 选择模式样式
 const selectModeClasses = computed(() => {
-  if (!selectMode) return '';
-  if (isVisible.value) return ' !bg-primary_3 !text-#fff translate-x-0';
-  if (position === 'left') return '-translate-x-10px';
-  if (position === 'right') return 'translate-x-10px';
+  if (!selectMode)
+    return '';
+  if (isVisible.value)
+    return ' !bg-primary_3 !text-#fff translate-x-0';
+  if (position === 'left')
+    return '-translate-x-10px';
+  if (position === 'right')
+    return 'translate-x-10px';
   return '';
 });
 
@@ -133,7 +137,8 @@ watch(
 );
 
 function handleToggleVisible(contentVisible: boolean = isVisible.value as boolean) {
-  if (loading) return;
+  if (loading)
+    return;
   isVisible.value = !contentVisible;
 }
 
@@ -173,7 +178,7 @@ onClickOutside(content, () => {
       :class="resultWrapperClass"
     >
       <div class="w-[fit-content] pointer-events-auto" :class="resultContentClass">
-        <slot></slot>
+        <slot />
         <DarkModeContainer
           v-if="showFold && !selectMode"
           class="group bg-#fff cursor-pointer transition-base dark:bg-dark"

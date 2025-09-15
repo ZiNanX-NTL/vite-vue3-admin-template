@@ -1,7 +1,7 @@
 import dayjs, { extend } from 'dayjs';
-import 'dayjs/locale/zh-cn';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import localeData from 'dayjs/plugin/localeData';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import 'dayjs/locale/zh-cn';
 
 export function setupDayjs() {
   dayjs.locale('zh-cn');

@@ -8,12 +8,11 @@ defineOptions({
   name: 'TableSearch'
 });
 
+const emit = defineEmits<Emits>();
 interface Emits {
   (e: 'reset'): void;
   (e: 'search'): void;
 }
-const emit = defineEmits<Emits>();
-
 const { formRef, validate, restoreValidation } = useNaiveForm();
 
 const model = defineModel<Record<string, any>>('model', { required: true });
@@ -139,7 +138,7 @@ function handleCheckedKeysChange(checkedKeys: Array<string | number>) {
 <template>
   <NFlex :size="16" :wrap="false">
     <NCard v-if="!collapsed" title="高级搜索" :bordered="false" size="small" class="card-wrapper w-350px">
-      <NScrollbar :style="{ height: treeHeight + 'px' }">
+      <NScrollbar :style="{ height: `${treeHeight}px` }">
         <NTree
           check-strategy="parent"
           :selectable="false"
@@ -196,14 +195,14 @@ function handleCheckedKeysChange(checkedKeys: Array<string | number>) {
                 label-class="w-100px text-right"
                 label="数据集类型"
                 :options="dataTypeOptions"
-              ></TagSelect>
+              />
               <NDivider class="!my-14px" />
               <TagSelect
                 v-model="model.dataSources"
                 label-class="w-100px text-right"
                 label="数据来源"
                 :options="dataSourceOptions"
-              ></TagSelect>
+              />
             </div>
           </NFormItemGi>
           <NGi span="2 xl:1" suffix :show-feedback="false" #="{ overflow }">

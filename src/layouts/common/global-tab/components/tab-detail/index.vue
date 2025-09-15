@@ -104,7 +104,7 @@ watch(
       class="px-12px py-4px border-1px border-#e5e7eb rounded-3px flex flex-y-center h-32px cursor-pointer select-none relative hover:text-primary dark:border-#ffffff3d hover:border-[rgb(var(--primary-color)/0.3)] dark:hover:border-[rgb(var(--primary-color)/0.3)]"
       :class="{
         'text-primary bg-[rgb(var(--primary-color)/0.1)] dark:bg-[rgb(var(--primary-color)/0.15)] !border-[rgb(var(--primary-color)/0.3)]':
-          tab.activeTab === item.fullPath
+          tab.activeTab === item.fullPath,
       }"
       @click="tab.handleClickTab(item.fullPath)"
       @contextmenu="handleContextMenu($event, item.fullPath, item.meta.affix)"

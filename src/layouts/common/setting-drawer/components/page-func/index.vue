@@ -8,7 +8,9 @@ const theme = useThemeStore();
 </script>
 
 <template>
-  <NDivider title-placement="center">界面功能</NDivider>
+  <NDivider title-placement="center">
+    界面功能
+  </NDivider>
   <NSpace vertical size="large">
     <SettingMenu label="滚动模式">
       <NSelect

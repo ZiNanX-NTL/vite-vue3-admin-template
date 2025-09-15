@@ -8,7 +8,9 @@ const theme = useThemeStore();
 </script>
 
 <template>
-  <NDivider title-placement="center">主题模式</NDivider>
+  <NDivider title-placement="center">
+    主题模式
+  </NDivider>
   <NSpace vertical size="large">
     <SettingMenu label="深色主题">
       <NSwitch :value="theme.darkMode" @update:value="theme.setDarkMode">

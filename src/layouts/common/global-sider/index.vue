@@ -3,8 +3,8 @@ import type { MenuOption } from 'naive-ui';
 import { getActiveKeyPathsOfMenus } from '@/router';
 import { useAppStore, useRouteStore, useThemeStore } from '@/store';
 import { useBasicLayout, useIsMobile } from '@/utils';
-import GlobalLogo from '../global-logo/index.vue';
 import { useMenu, useMixMenuContext } from '../../context';
+import GlobalLogo from '../global-logo/index.vue';
 
 defineOptions({ name: 'GlobalSider' });
 defineProps<{
@@ -50,14 +50,18 @@ const showTitle = computed(() => !app.siderCollapse);
 /** 折叠后的宽度 */
 const collapsedWidth = computed(() => {
   const width = isMobile.value || theme.sider.showTrigger === 'bar' ? 0 : theme.sider.collapsedWidth;
-  if (!(theme.layout.isMenuSeparation && theme.layout.isMenuInverted)) return width;
-  if (childLevelMenus.value.length) return width;
+  if (!(theme.layout.isMenuSeparation && theme.layout.isMenuInverted))
+    return width;
+  if (childLevelMenus.value.length)
+    return width;
   return 0;
 });
 /** sider的宽度 */
 const siderWidth = computed(() => {
-  if (!(theme.layout.isMenuSeparation && theme.layout.isMenuInverted)) return theme.sider.width;
-  if (childLevelMenus.value.length) return theme.sider.width;
+  if (!(theme.layout.isMenuSeparation && theme.layout.isMenuInverted))
+    return theme.sider.width;
+  if (childLevelMenus.value.length)
+    return theme.sider.width;
   return 0;
 });
 /** logo的宽度 */
@@ -89,7 +93,7 @@ watch(
       class="transition-base overflow-hidden"
       :style="{
         width: logoWidth,
-        height: theme.header.height + 'px'
+        height: `${theme.header.height}px`,
       }"
     />
     <NLayoutSider
@@ -136,7 +140,7 @@ watch(
           v-if="isMobile && !app.siderCollapse"
           class="sider-mask bg-[rgba(0,0,0,.2)] size-full absolute-lt z-200"
           @click="app.setSiderCollapse(true)"
-        ></div>
+        />
       </Transition>
     </Teleport>
   </DarkModeContainer>

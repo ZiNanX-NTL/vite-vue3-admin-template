@@ -53,12 +53,12 @@ declare namespace Service {
   /** 多个请求数据结果 */
   type MultiRequestResult<T extends any[]> = T extends [infer First, ...infer Rest]
     ? [First] extends [any]
-      ? Rest extends any[]
-        ? [Service.RequestResult<First>, ...MultiRequestResult<Rest>]
-        : [Service.RequestResult<First>]
-      : Rest extends any[]
-        ? MultiRequestResult<Rest>
-        : []
+        ? Rest extends any[]
+          ? [Service.RequestResult<First>, ...MultiRequestResult<Rest>]
+          : [Service.RequestResult<First>]
+        : Rest extends any[]
+          ? MultiRequestResult<Rest>
+          : []
     : [];
 
   /** 请求结果的适配器函数 */

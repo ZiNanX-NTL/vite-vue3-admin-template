@@ -53,7 +53,9 @@ const bgColor = computed(() => {
       <div class="py-10px w-300px sm:w-360px">
         <header class="flex-y-center justify-between">
           <SystemLogo class="text-64px text-primary" />
-          <NGradientText type="primary" :size="28">{{ title }}</NGradientText>
+          <NGradientText type="primary" :size="28">
+            {{ title }}
+          </NGradientText>
         </header>
         <main class="pt-24px">
           <h3 class="text-18px text-primary font-medium">

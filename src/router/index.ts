@@ -1,8 +1,8 @@
 import type { App } from 'vue';
 import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router';
-import { constantRoutes } from './routes';
-import { scrollBehavior, transformAuthRouteToVueRoutes } from './helpers';
 import { createRouterGuard } from './guard';
+import { scrollBehavior, transformAuthRouteToVueRoutes } from './helpers';
+import { constantRoutes } from './routes';
 
 const { VITE_HASH_ROUTE = 'Y', VITE_BASE_URL } = import.meta.env;
 
@@ -19,6 +19,6 @@ export async function setupRouter(app: App) {
   await router.isReady();
 }
 
-export * from './routes';
-export * from './modules';
 export * from './helpers';
+export * from './modules';
+export * from './routes';

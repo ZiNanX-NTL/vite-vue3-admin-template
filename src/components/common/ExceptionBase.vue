@@ -19,7 +19,9 @@ defineProps({
       <icon-local-service-error v-if="type === '500'" />
     </div>
     <RouterLink :to="{ name: 'root' }">
-      <NButton type="primary">回到首页</NButton>
+      <NButton type="primary">
+        回到首页
+      </NButton>
     </RouterLink>
   </div>
 </template>

@@ -7,8 +7,8 @@ export default (viteEnv: ImportMetaEnv) => {
     mockPath: 'mock',
     prodEnabled: prodMock,
     injectCode: `
-			import { setupMockServer } from '../mock';
-			setupMockServer();
-		`
+      import { setupMockServer } from '../mock';
+      setupMockServer();
+    `
   });
 };

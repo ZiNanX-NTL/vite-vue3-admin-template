@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type * as THREE from 'three';
-import { GridHelper, Mesh, PlaneGeometry, RepeatWrapping } from 'three';
 import { useTexture } from '@tresjs/core';
+import { GridHelper, Mesh, PlaneGeometry, RepeatWrapping } from 'three';
 import { Reflector } from '../plugins/Reflector';
 import { ReflectorDudvMaterial } from '../plugins/ReflectorDudvMaterial';
 

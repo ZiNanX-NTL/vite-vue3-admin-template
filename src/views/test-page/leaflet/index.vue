@@ -1,12 +1,12 @@
 <script setup lang="jsx">
-import { darkTheme } from 'naive-ui';
 import { Button as DvButton } from '@kjgl77/datav-vue3';
 import L from 'leaflet';
+import { darkTheme } from 'naive-ui';
+import soyPoint from '@/assets/images/soy_point.png';
+import pointList from '@/assets/json/pointList.json';
 import { TIANDITU_KEY } from '@/config';
 import { useLeaflet } from '@/hooks';
 import { instantiatedComponent } from '@/utils';
-import pointList from '@/assets/json/pointList.json';
-import soyPoint from '@/assets/images/soy_point.png';
 
 // 定义提示内容组件
 const TooltipContent = defineComponent(
@@ -35,7 +35,7 @@ const TooltipContent = defineComponent(
   {
     name: 'TooltipContent',
     props: {
-      // eslint-disable-next-line vue/no-unused-properties
+
       item: {
         type: Object,
         default: () => ({})
@@ -134,7 +134,7 @@ const { domRef } = useLeaflet(
 
 <template>
   <div class="leaflet-map w-full overflow-hidden !p-0">
-    <div ref="domRef" class="size-full overflow-hidden"></div>
+    <div ref="domRef" class="size-full overflow-hidden" />
   </div>
 </template>
 

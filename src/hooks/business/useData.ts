@@ -1,5 +1,5 @@
-import { reactive, ref } from 'vue';
 import { cloneDeep } from 'lodash-es';
+import { reactive, ref } from 'vue';
 import { useLoading } from '../common';
 
 /** 接口请求函数 */
@@ -21,7 +21,7 @@ type Transformer<Data, Response> = (response: Response) => {
 };
 
 /** 表格配置 */
-type HookListConfig<Data, Fn extends ApiFn> = {
+interface HookListConfig<Data, Fn extends ApiFn> {
   /** 接口请求函数 */
   apiFn: Fn;
   /** 列表接口参数 */
@@ -36,7 +36,7 @@ type HookListConfig<Data, Fn extends ApiFn> = {
    * @default true
    */
   immediate?: boolean;
-};
+}
 
 /** 通用表格 hook */
 export function useData<Data, Fn extends ApiFn>(config: HookListConfig<Data, Fn>) {

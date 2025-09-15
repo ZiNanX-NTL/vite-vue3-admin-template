@@ -1,12 +1,13 @@
 import type { Reactive } from 'vue';
 
 /** 重置配置 */
-type ResettableConfig<T, R = T> = {
+interface ResettableConfig<T, R = T> {
   transformerState?: (params: T) => R;
-};
+}
 
 function defaultClone(value: any) {
-  if (value === null || typeof value !== 'object') return value;
+  if (value === null || typeof value !== 'object')
+    return value;
   return JSON.parse(JSON.stringify(value));
 }
 export default function useResettableReactive<T extends object, R extends object = T>(

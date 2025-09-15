@@ -15,7 +15,8 @@ function getClipboardText() {
 }
 
 function clipboardEventListener() {
-  if (!copyRef.value) return;
+  if (!copyRef.value)
+    return;
   const copy = new Clipboard(copyRef.value);
   copy.on('success', () => {
     window.$dialog?.success({
@@ -43,11 +44,15 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <NDivider title-placement="center">主题配置</NDivider>
+  <NDivider title-placement="center">
+    主题配置
+  </NDivider>
   <textarea id="themeConfigCopyTarget" v-model="dataClipboardText" class="opacity-0 absolute" />
   <NSpace vertical>
     <div ref="copyRef" data-clipboard-target="#themeConfigCopyTarget">
-      <NButton type="primary" :block="true">拷贝当前配置</NButton>
+      <NButton type="primary" :block="true">
+        拷贝当前配置
+      </NButton>
     </div>
   </NSpace>
 </template>

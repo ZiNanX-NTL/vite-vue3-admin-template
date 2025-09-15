@@ -1,4 +1,4 @@
-import CornerTop from './corner-top.vue';
 import CornerBottom from './corner-bottom.vue';
+import CornerTop from './corner-top.vue';
 
-export { CornerTop, CornerBottom };
+export { CornerBottom, CornerTop };

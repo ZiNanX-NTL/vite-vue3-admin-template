@@ -45,7 +45,7 @@ function handleTo() {
           class="mt-8px px-14px rounded-4px bg-#e5e7eb flex-y-center h-56px cursor-pointer justify-between dark:bg-dark"
           :style="{
             background: item.path === active ? theme.themeColor : '',
-            color: item.path === active ? '#fff' : ''
+            color: item.path === active ? '#fff' : '',
           }"
           @click="handleTo"
           @mouseenter="handleMouse(item)"

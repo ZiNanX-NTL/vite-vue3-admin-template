@@ -2,8 +2,8 @@ import type { RouteLocationNormalizedLoaded } from 'vue-router';
 import { defineStore } from 'pinia';
 import { router } from '@/router';
 import { localStg, useRouterPush } from '@/utils';
-import { useThemeStore } from '../theme';
 import { useRouteStore } from '../route';
+import { useThemeStore } from '../theme';
 import {
   getIndexInTabRoutes,
   getIndexInTabRoutesByRouteName,
@@ -166,7 +166,8 @@ export const useTabStore = defineStore('tab-store', {
       const isActive = this.activeTab === fullPath;
       if (!isActive) {
         const navigationFailure = await routerPush(fullPath);
-        if (!navigationFailure) this.setActiveTab(fullPath);
+        if (!navigationFailure)
+          this.setActiveTab(fullPath);
       }
     },
     /**
@@ -230,7 +231,8 @@ export const useTabStore = defineStore('tab-store', {
       });
 
       const updateTabs = this.tabs.filter(tab => remain.includes(tab.fullPath));
-      if (hasActive) this.tabs = updateTabs;
+      if (hasActive)
+        this.tabs = updateTabs;
       if (!hasActive && updateTabs.length) {
         const activePath = updateTabs[updateTabs.length - 1].fullPath;
         const navigationFailure = await routerPush(activePath);

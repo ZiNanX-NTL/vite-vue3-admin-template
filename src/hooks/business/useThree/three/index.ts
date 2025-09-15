@@ -1,2 +1,2 @@
-export * from './threeCore';
 export * from './threeBase';
+export * from './threeCore';

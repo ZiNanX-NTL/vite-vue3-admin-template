@@ -39,11 +39,13 @@ const contentStyle = computed(() => {
 });
 
 const verticalNativeScroll = computed(() => {
-  if (mode.value === 'vertical' && theme.scrollMode === 'wrapper') return false;
+  if (mode.value === 'vertical' && theme.scrollMode === 'wrapper')
+    return false;
   return true;
 });
 const horizontalNativeScroll = computed(() => {
-  if (mode.value === 'horizontal' && theme.scrollMode === 'wrapper') return false;
+  if (mode.value === 'horizontal' && theme.scrollMode === 'wrapper')
+    return false;
   return true;
 });
 
@@ -95,7 +97,7 @@ watch(isFullscreen, newValue => {
       >
         <template v-if="theme.tab.visible && contentMounted">
           <Teleport to=".n-layout-content">
-            <GlobalTab class="top-0 absolute" :class="{ '!-top-52px': app.contentFull }"></GlobalTab>
+            <GlobalTab class="top-0 absolute" :class="{ '!-top-52px': app.contentFull }" />
           </Teleport>
         </template>
         <!-- 不需要滚动时,view外层设置h-full,继承父级100%高度,需要滚动时外层不能继承父级100%高度 -->

@@ -93,7 +93,7 @@ watch(visible, () => {
     preset="card"
     :title="title"
     :segmented="{
-      content: true
+      content: true,
     }"
     size="small"
     class="w-700px"
@@ -126,8 +126,12 @@ watch(visible, () => {
     </NForm>
     <template #action>
       <NSpace :size="24" justify="center">
-        <NButton class="w-72px" @click="closeModal">取消</NButton>
-        <NButton class="w-72px" type="primary" @click="handleSubmit">确定</NButton>
+        <NButton class="w-72px" @click="closeModal">
+          取消
+        </NButton>
+        <NButton class="w-72px" type="primary" @click="handleSubmit">
+          确定
+        </NButton>
       </NSpace>
     </template>
   </NModal>

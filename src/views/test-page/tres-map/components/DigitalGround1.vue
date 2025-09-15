@@ -68,7 +68,8 @@ const { onLoop } = useRenderLoop();
 onLoop(({ elapsed }) => {
   const elapsedTime = elapsed / props.speed;
   const stage = (elapsedTime / T) % 2;
-  if (stage < 1) tsmConfig.uniforms.innerRadius.value = 1.5 * Math.abs(Math.sin(elapsedTime));
+  if (stage < 1)
+    tsmConfig.uniforms.innerRadius.value = 1.5 * Math.abs(Math.sin(elapsedTime));
   else tsmConfig.uniforms.innerRadius.value = 0;
 });
 </script>

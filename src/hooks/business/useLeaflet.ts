@@ -1,11 +1,11 @@
-import { effectScope, onScopeDispose, ref } from 'vue';
 import { useScriptTag } from '@vueuse/core';
 import L from 'leaflet';
-import '@/plugins/leaflet/leaflet-marker.js';
-import 'leaflet-easybutton';
+import { effectScope, onScopeDispose, ref } from 'vue';
 import { ESRI_LEAFLET_CDN, TIANDITU_KEY } from '@/config';
 import { router } from '@/router';
 import { useRender } from '../common';
+import '@/plugins/leaflet/leaflet-marker.js';
+import 'leaflet-easybutton';
 
 interface MapHooks {
   onRender?: (map: L.Map) => void | Promise<void>;
@@ -60,13 +60,15 @@ export function useLeaflet(options: L.MapOptions = {}, hooks: MapHooks = {}) {
       instance?.value?.invalidateSize();
     },
     async destroy(instance, isForce = false) {
-      if (!instance?.value) return;
+      if (!instance?.value)
+        return;
 
       await onDestroy?.(instance?.value);
       if (!isKeepAlive || isForce) {
         instance?.value?.off();
         instance?.value?.remove();
-        if (!instance.value) return;
+        if (!instance.value)
+          return;
         instance.value = null;
       }
     }
@@ -84,18 +86,20 @@ export function useLeaflet(options: L.MapOptions = {}, hooks: MapHooks = {}) {
 
   // 处理队列中的更新操作
   const processQueue = async () => {
-    if (!isRendered() || updateQueue.value.length === 0) return;
+    if (!isRendered() || updateQueue.value.length === 0)
+      return;
 
     while (updateQueue.value.length > 0) {
       const operation = updateQueue.value.shift();
-      // eslint-disable-next-line no-continue
-      if (!operation) continue;
+
+      if (!operation)
+        continue;
 
       try {
         const { callback, resolve } = operation;
 
         callback(mapInstance.value!);
-        // eslint-disable-next-line no-await-in-loop
+
         await onUpdated?.(mapInstance.value!);
         resolve();
       } catch (error) {

@@ -12,7 +12,7 @@ defineProps({
 <template>
   <div class="flex-y-center justify-between">
     <span>{{ label }}</span>
-    <slot></slot>
+    <slot />
   </div>
 </template>
 

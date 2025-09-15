@@ -2,8 +2,6 @@
 import { getThemeSettings } from '@/settings';
 import { getAppInfo, getRgbOfColor, sessionStg } from '@/utils';
 
-const { title: appTitle } = getAppInfo();
-
 defineOptions({ name: 'AppLoading' });
 
 const props = defineProps({
@@ -16,6 +14,8 @@ const props = defineProps({
     default: ''
   }
 });
+
+const { title: appTitle } = getAppInfo();
 
 const loadingTitle = computed(() => props.title || appTitle);
 
@@ -51,12 +51,14 @@ if (props.addThemeToBody) {
           :key="index"
           class="rounded-8px bg-primary h-16px w-16px absolute animate-pulse"
           :class="item"
-        ></div>
+        />
       </div>
     </div>
 
     <slot>
-      <h2 class="text-28px text-#646464 font-500">{{ loadingTitle }}</h2>
+      <h2 class="text-28px text-#646464 font-500">
+        {{ loadingTitle }}
+      </h2>
     </slot>
   </div>
 </template>

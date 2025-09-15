@@ -17,7 +17,7 @@ const props = defineProps({
 });
 
 const layoutConfig = {
-  vertical: {
+  'vertical': {
     placement: 'bottom',
     headerClass: '',
     menuClass: 'w-1/3 h-full',
@@ -29,7 +29,7 @@ const layoutConfig = {
     menuClass: 'w-1/4 h-full',
     mainClass: 'w-2/3 h-3/4'
   },
-  horizontal: {
+  'horizontal': {
     placement: 'bottom',
     headerClass: '',
     menuClass: 'w-full h-1/4',
@@ -51,7 +51,7 @@ const activeConfig = computed(() => layoutConfig[props.mode]);
           class="layout-card__shadow p-6px rd-4px gap-6px h-64px w-96px"
           :class="[mode === 'vertical' ? 'flex' : 'flex-vertical']"
         >
-          <slot></slot>
+          <slot />
         </div>
       </template>
       <span>{{ label }}</span>

@@ -146,7 +146,8 @@ async function init() {
     }
   });
   group1.on('mouseup', options => {
-    if (!group1.isClick) return;
+    if (!group1.isClick)
+      return;
     group1.isClick = false;
 
     const target = options.subTargets[0];
@@ -170,14 +171,17 @@ async function init() {
 
   // 监听鼠标滚轮事件
   canvas.on('mouse:wheel', opt => {
-    if (opt.e.altKey !== true) return;
+    if (opt.e.altKey !== true)
+      return;
     const delta = opt.e.deltaY; // 滚轮向上滚一下是 -100，向下滚一下是 100
     let zoom = canvas.getZoom(); // 获取画布当前缩放值
 
     // 控制缩放范围在 0.01~20 的区间内
     zoom *= 0.999 ** delta;
-    if (zoom > 20) zoom = 20;
-    if (zoom < 0.01) zoom = 0.01;
+    if (zoom > 20)
+      zoom = 20;
+    if (zoom < 0.01)
+      zoom = 0.01;
 
     // 设置画布缩放比例
     // 关键点！！！
@@ -229,7 +233,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <canvas id="canvas" class="border-1px border-#ccc"></canvas>
+    <canvas id="canvas" class="border-1px border-#ccc" />
   </div>
 </template>
 

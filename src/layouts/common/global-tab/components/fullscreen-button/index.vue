@@ -1,8 +1,9 @@
 <script setup>
 import { useAppStore } from '@/store';
-const app = useAppStore();
 
 defineOptions({ name: 'FullscreenButton' });
+
+const app = useAppStore();
 
 function handleFullscreen() {
   app.setContentFull(true);

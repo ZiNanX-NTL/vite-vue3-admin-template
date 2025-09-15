@@ -21,7 +21,9 @@ function handleClose() {
 <template>
   <NModal :show="visible" preset="card" class="h-480px w-640px" :z-index="10001" @close="handleClose">
     <div class="flex-x-center">
-      <NGradientText type="primary" :size="24">中国传统颜色</NGradientText>
+      <NGradientText type="primary" :size="24">
+        中国传统颜色
+      </NGradientText>
     </div>
     <NTabs>
       <NTabPane v-for="item in traditionColors" :key="item.label" :name="item.label" :tab="item.label">
@@ -34,7 +36,9 @@ function handleClose() {
               icon-class="text-20px"
               @click="theme.setThemeColor(i.color)"
             />
-            <p class="text-center">{{ i.label }}</p>
+            <p class="text-center">
+              {{ i.label }}
+            </p>
           </NGridItem>
         </NGrid>
       </NTabPane>

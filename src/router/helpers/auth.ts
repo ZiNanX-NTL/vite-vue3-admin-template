@@ -43,11 +43,11 @@ export function filterAuthRoutesByUserPermission(routes: AuthRoute.Route[], perm
  */
 function filterAuthRouteByUserPermission(route: AuthRoute.Route, permissions: string[]): AuthRoute.Route[] {
   const filterRoute = { ...route };
-  const hasPermission =
-    !route.meta.permissions ||
-    permissions.some(permission => {
-      return route.meta.permissions?.includes(permission);
-    });
+  const hasPermission
+    = !route.meta.permissions
+      || permissions.some(permission => {
+        return route.meta.permissions?.includes(permission);
+      });
 
   if (filterRoute.children) {
     const filterChildren = filterRoute.children.map(item => filterAuthRouteByUserPermission(item, permissions)).flat(1);

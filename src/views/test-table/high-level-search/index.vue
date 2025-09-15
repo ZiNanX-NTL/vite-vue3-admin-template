@@ -1,7 +1,7 @@
 <script setup lang="jsx">
 import { NButton, NPopconfirm, NSpace } from 'naive-ui';
-import { genderEnum, userStatusEnum } from '@/constants';
 import { fetchUserList } from '@/api';
+import { genderEnum, userStatusEnum } from '@/constants';
 import { useTable, useTableOperate } from '@/hooks';
 import { useIsMobile } from '@/utils';
 import TableActionModal from './components/TableActionModal.vue';
@@ -154,7 +154,7 @@ function handleDelete(_id) {
 
 <template>
   <div class="flex-vertical-full gap-16px <sm:overflow-auto">
-    <TableSearch v-model:model="searchParams" @reset="resetSearchParams" @search="handleSearch"></TableSearch>
+    <TableSearch v-model:model="searchParams" @reset="resetSearchParams" @search="handleSearch" />
     <NCard :bordered="false" size="small" title="表格" class="card-wrapper h-full">
       <template #header-extra>
         <TableHeaderOperation

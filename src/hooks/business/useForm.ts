@@ -1,5 +1,5 @@
-import { ref } from 'vue';
 import type { FormInst, FormItemRule } from 'naive-ui';
+import { ref } from 'vue';
 import { REG_EMAIL, REG_PHONE, REG_PWD, REG_USER_NAME } from '@/config';
 
 export function useFormRules() {

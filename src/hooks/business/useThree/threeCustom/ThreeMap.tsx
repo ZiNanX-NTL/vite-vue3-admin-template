@@ -1,14 +1,14 @@
-import { useEventListener } from '@vueuse/core';
-import * as THREE from 'three';
-import { CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 import type { GeoProjection } from 'd3';
+import type { ThreeBaseOptions } from '../three';
+import { useEventListener } from '@vueuse/core';
 import { geoMercator } from 'd3';
 import { gsap } from 'gsap';
-import { getColorPalettes, instantiatedComponent } from '@/utils';
-import HLJZone from '@/assets/json/_HLJZone.json';
+import * as THREE from 'three';
+import { CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 import mapTitleBg from '@/assets/images/map_title_bg.png';
+import HLJZone from '@/assets/json/_HLJZone.json';
+import { getColorPalettes, instantiatedComponent } from '@/utils';
 import { LightSweepMaterial } from '../shaders/lightSweep';
-import type { ThreeBaseOptions } from '../three';
 import { ThreeBase } from '../three';
 
 interface ThreeMapOptions extends ThreeBaseOptions {
@@ -64,7 +64,7 @@ export class ThreeMap extends ThreeBase {
       [100, 100, -100]
     ];
     LIGHT_LIST.forEach(([x, y, z]) => {
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 6);
+      const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 6);
       directionalLight.position.set(x, y, z);
       this.scene?.add(directionalLight);
     });
@@ -161,9 +161,14 @@ export class ThreeMap extends ThreeBase {
               class="asdfasd text-16px text-#fff leading-4vh px-10px text-center rounded-0.463vh bg-[rgba(25,25,25,0.5)] h-4vh pointer-events-none"
               style={{ background: `url(${img}) no-repeat`, backgroundSize: '100% 100%' }}
             >
-              <span>{mc}: </span>
+              <span>
+                {mc}
+                :
+                {' '}
+              </span>
               <span class="text-20px" style={`color: ${this.colorArr[4]}`}>
-                {area}{' '}
+                {area}
+                {' '}
               </span>
               <span>万亩</span>
             </div>
@@ -232,7 +237,8 @@ export class ThreeMap extends ThreeBase {
       const elapsedTime = clock.getElapsedTime() / 3;
       const stage = (elapsedTime / T) % 2;
 
-      if (stage < 1) ground.material.uniforms.innerRadius.value = 1.5 * Math.abs(Math.sin(elapsedTime));
+      if (stage < 1)
+        ground.material.uniforms.innerRadius.value = 1.5 * Math.abs(Math.sin(elapsedTime));
       else ground.material.uniforms.innerRadius.value = 0;
       ground.material.uniforms.ringWidth.value = ringWidth;
     });

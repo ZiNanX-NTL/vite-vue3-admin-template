@@ -1,12 +1,13 @@
 import type { RouteRecordRaw } from 'vue-router';
 import { defineStore } from 'pinia';
+import { fetchGetUserRoutes } from '@/api';
 import {
-  ROOT_ROUTE,
   constantRoutes,
   filterAuthRoutesByUserPermission,
   filterAuthRoutesByUserRole,
   getCacheRoutes,
   getConstantRouteNames,
+  ROOT_ROUTE,
   router,
   sortRoutesByOrder,
   routes as staticRoutes,
@@ -16,9 +17,8 @@ import {
   transformRouteNameToRoutePath,
   transformRoutePathToRouteName
 } from '@/router';
-import { fetchGetUserRoutes } from '@/api';
-import { useAuthStore } from '../auth';
 import { useAppStore } from '../app';
+import { useAuthStore } from '../auth';
 import { useTabStore } from '../tab';
 
 interface RouteState {

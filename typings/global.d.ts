@@ -11,5 +11,5 @@ declare namespace Common {
   type StrategyAction = [boolean, () => void];
 
   /** 选项数据 */
-  type OptionWithKey<K> = { value: K; label: string };
+  interface OptionWithKey<K> { value: K; label: string }
 }

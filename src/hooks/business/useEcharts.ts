@@ -1,15 +1,3 @@
-import { computed, effectScope, nextTick, onScopeDispose, ref, unref, watch } from 'vue';
-import * as echarts from 'echarts/core';
-import {
-  BarChart,
-  GaugeChart,
-  LineChart,
-  MapChart,
-  PictorialBarChart,
-  PieChart,
-  RadarChart,
-  ScatterChart
-} from 'echarts/charts';
 import type {
   BarSeriesOption,
   GaugeSeriesOption,
@@ -20,9 +8,29 @@ import type {
   RadarSeriesOption,
   ScatterSeriesOption
 } from 'echarts/charts';
+import type {
+  DatasetComponentOption,
+  DataZoomComponentOption,
+  GridComponentOption,
+  LegendComponentOption,
+  TimelineComponentOption,
+  TitleComponentOption,
+  ToolboxComponentOption,
+  TooltipComponentOption
+} from 'echarts/components';
 import {
-  DataZoomComponent,
+  BarChart,
+  GaugeChart,
+  LineChart,
+  MapChart,
+  PictorialBarChart,
+  PieChart,
+  RadarChart,
+  ScatterChart
+} from 'echarts/charts';
+import {
   DatasetComponent,
+  DataZoomComponent,
   GridComponent,
   LegendComponent,
   TimelineComponent,
@@ -31,18 +39,10 @@ import {
   TooltipComponent,
   TransformComponent
 } from 'echarts/components';
-import type {
-  DataZoomComponentOption,
-  DatasetComponentOption,
-  GridComponentOption,
-  LegendComponentOption,
-  TimelineComponentOption,
-  TitleComponentOption,
-  ToolboxComponentOption,
-  TooltipComponentOption
-} from 'echarts/components';
+import * as echarts from 'echarts/core';
 import { LabelLayout, UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
+import { computed, effectScope, nextTick, onScopeDispose, ref, unref, watch } from 'vue';
 import { router } from '@/router';
 import { useThemeStore } from '@/store';
 import { useRender } from '../common';
@@ -104,7 +104,9 @@ interface OtherOptions {
  * use echarts
  *
  * @param optionsFactory echarts options factory function
- * @param darkMode dark mode
+ * @param hooks echarts hooks
+ * @param oOptions other options
+ * @returns echarts instance and methods
  */
 export function useEcharts<T extends Record<string, any> = ECOption>(
   optionsFactory: () => T,
@@ -132,7 +134,8 @@ export function useEcharts<T extends Record<string, any> = ECOption>(
     const textColor = darkMode.value ? 'rgb(224, 224, 224)' : 'rgb(31, 31, 31)';
     const maskColor = darkMode.value ? 'rgba(0, 0, 0, 0.4)' : 'rgba(255, 255, 255, 0.8)';
 
-    if (!instance) return;
+    if (!instance)
+      return;
     instance.showLoading({
       color: themeStore.colorScheme[0],
       textColor,
@@ -142,7 +145,8 @@ export function useEcharts<T extends Record<string, any> = ECOption>(
   };
 
   const hideLoading = (instance: echarts.ECharts | null) => {
-    if (!instance) return;
+    if (!instance)
+      return;
     instance.hideLoading();
   };
 
@@ -172,7 +176,8 @@ export function useEcharts<T extends Record<string, any> = ECOption>(
       instance?.value?.resize();
     },
     async destroy(instance, isForce = false) {
-      if (!instance?.value) return;
+      if (!instance?.value)
+        return;
       await onDestroy?.(instance?.value);
       if (!isKeepAlive || isForce) {
         instance?.value?.dispose();
@@ -193,12 +198,14 @@ export function useEcharts<T extends Record<string, any> = ECOption>(
 
   // 处理队列中的更新操作
   const processQueue = async () => {
-    if (!isRendered() || updateQueue.value.length === 0) return;
+    if (!isRendered() || updateQueue.value.length === 0)
+      return;
 
     while (updateQueue.value.length > 0) {
       const operation = updateQueue.value.shift();
-      // eslint-disable-next-line no-continue
-      if (!operation) continue;
+
+      if (!operation)
+        continue;
 
       try {
         const { callback, resolve } = operation;
@@ -209,7 +216,7 @@ export function useEcharts<T extends Record<string, any> = ECOption>(
         chartInstance.value?.setOption({ ...updatedOpts, backgroundColor: 'transparent' });
 
         hideLoading(chartInstance.value!);
-        // eslint-disable-next-line no-await-in-loop
+
         await onUpdated?.(chartInstance.value!);
         resolve();
       } catch (error) {

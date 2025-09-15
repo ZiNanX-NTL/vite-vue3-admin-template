@@ -11,11 +11,13 @@ export default function setupNetworkDirective(app: App) {
 
   const networkDirective: Directive<HTMLElement, boolean | undefined> = {
     mounted(el, binding) {
-      if (binding.value === false) return;
+      if (binding.value === false)
+        return;
       el.addEventListener('click', listenerHandler, { capture: true });
     },
     unmounted(el, binding) {
-      if (binding.value === false) return;
+      if (binding.value === false)
+        return;
       el.removeEventListener('click', listenerHandler);
     }
   };

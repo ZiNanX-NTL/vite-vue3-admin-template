@@ -17,7 +17,9 @@ function handleToTab() {
         <div>{{ route.meta }}</div>
         <div>当前路由的查询数据(query)：</div>
         <div>{{ route.query }}</div>
-        <NButton @click="handleToTab">返回Tab</NButton>
+        <NButton @click="handleToTab">
+          返回Tab
+        </NButton>
       </NSpace>
     </NCard>
   </NSpace>

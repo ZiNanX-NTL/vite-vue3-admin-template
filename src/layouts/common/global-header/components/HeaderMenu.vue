@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { MenuOption } from 'naive-ui';
-import { useRouteStore, useThemeStore } from '@/store';
 import { useReload } from '@/hooks';
+import { useRouteStore, useThemeStore } from '@/store';
 import { useMenu, useMixMenuContext } from '../../../context';
 
 const routeStore = useRouteStore();

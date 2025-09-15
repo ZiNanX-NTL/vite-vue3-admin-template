@@ -16,7 +16,9 @@ function handleToTab() {
       <NSpace :vertical="true" :size="12">
         <div>当前路由的描述数据(meta)：</div>
         <div>{{ route.meta }}</div>
-        <NButton @click="handleToTab">返回Tab</NButton>
+        <NButton @click="handleToTab">
+          返回Tab
+        </NButton>
       </NSpace>
     </NCard>
   </NSpace>

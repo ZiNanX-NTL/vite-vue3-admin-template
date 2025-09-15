@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { h } from 'vue';
 import Editor from '@tinymce/tinymce-vue';
+import { h } from 'vue';
 // import { fetchUploadFiles } from '@/api';
 defineOptions({
   inheritAttrs: false

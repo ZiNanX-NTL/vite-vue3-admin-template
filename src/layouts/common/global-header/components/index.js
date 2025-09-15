@@ -1,9 +1,9 @@
-import MenuCollapse from './MenuCollapse.vue';
+import FullScreen from './FullScreen.vue';
 import GlobalBreadcrumb from './GlobalBreadcrumb.vue';
 import HeaderMenu from './HeaderMenu.vue';
-import FullScreen from './FullScreen.vue';
-import ThemeMode from './ThemeMode.vue';
+import MenuCollapse from './MenuCollapse.vue';
 import SettingButton from './SettingButton.vue';
+import ThemeMode from './ThemeMode.vue';
 import UserAvatar from './UserAvatar.vue';
 
-export { MenuCollapse, GlobalBreadcrumb, HeaderMenu, FullScreen, ThemeMode, SettingButton, UserAvatar };
+export { FullScreen, GlobalBreadcrumb, HeaderMenu, MenuCollapse, SettingButton, ThemeMode, UserAvatar };

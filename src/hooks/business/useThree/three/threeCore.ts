@@ -1,6 +1,6 @@
+import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
-import * as THREE from 'three';
 
 /** treejs核心类 */
 export class ThreeCore {

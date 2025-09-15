@@ -1,6 +1,6 @@
 import { localStg } from '@/utils';
-import { ZNRequest } from '../request';
 import { transformRequestData } from '../helpers';
+import { ZNRequest } from '../request';
 
 export const mockInstance = new ZNRequest({
   baseURL: '/mock',

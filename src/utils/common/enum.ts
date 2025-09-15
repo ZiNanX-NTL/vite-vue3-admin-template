@@ -32,8 +32,8 @@ export class EnumFactory<T extends Record<any, any> = Record<string, any>> {
   /**
    * 创建一个枚举工厂实例。
    *
-   * @param {Object} enumObj 枚举值，支持标准模式 {key:{text,type},}，简单模式 {key:text,}（会自动转换为标准模式）
-   * @param {Object} options 额外的选项，例如 { allowNullText: true } 允许 text 为空
+   * @param {object} enumObj 枚举值，支持标准模式 {key:{text,type},}，简单模式 {key:text,}（会自动转换为标准模式）
+   * @param {object} options 额外的选项，例如 { allowNullText: true } 允许 text 为空
    * @param {Function} options.keyParseFunc key 的转换函数，默认 undefined，如果 key 为整数则传 parseInt
    */
   constructor(enumObj: T, options: EnumFactoryOptions = {}) {
@@ -84,9 +84,9 @@ export class EnumFactory<T extends Record<any, any> = Record<string, any>> {
   /**
    * 从枚举项中提取文本，支持标准模式和简单模式
    *
-   * @param {string | Object} item 枚举项
+   * @param {string | object} item 枚举项
    * @param {string} key 枚举的 key
-   * @param {Object} options 额外的选项
+   * @param {object} options 额外的选项
    * @returns {string} 枚举项的文本
    */
   extractTextFromItem(item: any, key: string, options: EnumFactoryOptions) {
@@ -104,7 +104,7 @@ export class EnumFactory<T extends Record<any, any> = Record<string, any>> {
    * 根据 key 获取对应的枚举项
    *
    * @param {keyof T} key 枚举的 key
-   * @returns {Object | null} 包含 key 和 text 的枚举项，或者 null
+   * @returns {object | null} 包含 key 和 text 的枚举项，或者 null
    */
   get(key: keyof T): T[keyof T] | null {
     const parseKey = this.keyParseFunc ? this.keyParseFunc(key) : String(key);
@@ -139,7 +139,7 @@ export class EnumFactory<T extends Record<any, any> = Record<string, any>> {
    * 根据 key 获取对应的枚举项，如果不存在则返回 null
    *
    * @param {string} key 枚举的 key
-   * @returns {Object | null} 包含 key 和 text 的枚举项，或者 null
+   * @returns {object | null} 包含 key 和 text 的枚举项，或者 null
    */
   getEnumByKey(key: keyof T): T[keyof T] | null {
     const parseKey = this.keyParseFunc ? this.keyParseFunc(key) : String(key);
@@ -150,7 +150,7 @@ export class EnumFactory<T extends Record<any, any> = Record<string, any>> {
    * 根据文本值获取对应的枚举项，如果不存在则返回 null
    *
    * @param {string} text 枚举项的文本值
-   * @returns {Object | null} 包含 key 和 text 的枚举项，或者 null
+   * @returns {object | null} 包含 key 和 text 的枚举项，或者 null
    */
   getEnumByText(text: string): T[keyof T] | null {
     return this.values!.find(v => v[this.labelKey] === text) || null;

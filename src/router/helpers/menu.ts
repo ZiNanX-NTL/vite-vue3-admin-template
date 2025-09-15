@@ -31,7 +31,8 @@ export function transformAuthRouteToMenu(routes: AuthRoute.Route[]): App.GlobalM
       children: menuChildren
     });
 
-    if (!meta.hide && !hideOfSimple) globalMenu.push(menuItem);
+    if (!meta.hide && !hideOfSimple)
+      globalMenu.push(menuItem);
   });
 
   return globalMenu;

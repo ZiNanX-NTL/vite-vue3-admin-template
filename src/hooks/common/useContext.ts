@@ -1,56 +1,56 @@
-import { inject, provide } from 'vue';
 import type { InjectionKey } from 'vue';
+import { inject, provide } from 'vue';
 
 /**
  * Use context
  *
  * @example
  *   ```ts
- *   	  // there are three vue files: A.vue, B.vue, C.vue, and A.vue is the parent component of B.vue and C.vue
+ *   // there are three vue files: A.vue, B.vue, C.vue, and A.vue is the parent component of B.vue and C.vue
  *
- *   	  // context.ts
- *   	  import { ref } from 'vue';
- *   	  import { useContext } from '@/hooks';
+ *   // context.ts
+ *   import { ref } from 'vue';
+ *   import { useContext } from '@/hooks';
  *
- *   	  export const { setupStore, useStore } = useContext('demo', () => {
- *   	    const count = ref(0);
+ *   export const { setupStore, useStore } = useContext('demo', () => {
+ *     const count = ref(0);
  *
- *   	    function increment() {
- *   	      count.value++;
- *   	    }
+ *     function increment() {
+ *       count.value++;
+ *     }
  *
- *   	    function decrement() {
- *   	      count.value--;
- *   	    }
+ *     function decrement() {
+ *       count.value--;
+ *     }
  *
- *   	    return {
- *   	      count,
- *   	      increment,
- *   	      decrement
- *   	    };
- *   	  })
- *   	  ``` // A.vue
+ *     return {
+ *       count,
+ *       increment,
+ *       decrement
+ *     };
+ *   })
+ *   ``` // A.vue
  *   ```vue
- *   	  <template>
- *   	    <div>A</div>
- *   	  </template>
- *   	  <script setup lang="ts">
- *   	  import { setupStore } from './context';
+ *    <template>
+ *       <div>A</div>
+ *    </template>
+ *    <script setup lang="ts">
+ *    import { setupStore } from './context';
  *
- *   	  setupStore();
- *   	  // const { increment } = setupStore(); // also can control the store in the parent component
- *   	  </script>
- *   	  ``` // B.vue
+ *    setupStore();
+ *    // const { increment } = setupStore(); // also can control the store in the parent component
+ *    </script>
+ *   ``` // B.vue
  *   ```vue
- *   	  <template>
- *   	   <div>B</div>
- *   	  </template>
- *   	  <script setup lang="ts">
- *   	  import { useStore } from './context';
+ *    <template>
+ *       <div>B</div>
+ *    </template>
+ *    <script setup lang="ts">
+ *      import { useStore } from './context';
  *
- *   	  const { count, increment } = useStore();
- *   	  </script>
- *   	  ```;
+ *      const { count, increment } = useStore();
+ *    </script>
+ *   ``` // C.vue
  *
  *   // C.vue is same as B.vue
  *

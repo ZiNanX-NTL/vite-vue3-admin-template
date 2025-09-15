@@ -2,8 +2,8 @@
 import { onKeyStroke, useDebounceFn } from '@vueuse/core';
 import { useRouteStore } from '@/store';
 import { useIsMobile } from '@/utils';
-import SearchResult from './SearchResult.vue';
 import SearchFooter from './SearchFooter.vue';
+import SearchResult from './SearchResult.vue';
 
 defineOptions({ name: 'SearchModal' });
 
@@ -64,7 +64,8 @@ function handleClose() {
 /** key up */
 function handleUp() {
   const { length } = resultOptions.value;
-  if (length === 0) return;
+  if (length === 0)
+    return;
   const index = resultOptions.value.findIndex(item => item.path === activePath.value);
   if (index === 0) {
     activePath.value = resultOptions.value[length - 1].path;
@@ -76,7 +77,8 @@ function handleUp() {
 /** key down */
 function handleDown() {
   const { length } = resultOptions.value;
-  if (length === 0) return;
+  if (length === 0)
+    return;
   const index = resultOptions.value.findIndex(item => item.path === activePath.value);
   if (index + 1 === length) {
     activePath.value = resultOptions.value[0].path;
@@ -88,7 +90,8 @@ function handleDown() {
 /** key enter */
 function handleEnter() {
   const { length } = resultOptions.value;
-  if (length === 0 || activePath.value === '') return;
+  if (length === 0 || activePath.value === '')
+    return;
   const routeItem = resultOptions.value.find(item => item.path === activePath.value);
   if (routeItem?.meta?.href) {
     window.open(activePath.value, '__blank');
@@ -121,7 +124,9 @@ onKeyStroke('ArrowDown', handleDown);
           <icon-uil-search class="text-15px text-#c2c2c2" />
         </template>
       </NInput>
-      <NButton v-if="isMobile" type="primary" ghost @click="handleClose">取消</NButton>
+      <NButton v-if="isMobile" type="primary" ghost @click="handleClose">
+        取消
+      </NButton>
     </NInputGroup>
 
     <div class="mt-20px">

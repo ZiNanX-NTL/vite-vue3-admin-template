@@ -3,18 +3,16 @@ defineOptions({
   name: 'TableHeaderOperation'
 });
 
+defineProps<Props>();
+const emit = defineEmits<Emits>();
 interface Props {
   itemAlign?: NaiveUI.Align;
   loading?: boolean;
 }
-defineProps<Props>();
-
 interface Emits {
   (e: 'add'): void;
   (e: 'refresh'): void;
 }
-const emit = defineEmits<Emits>();
-
 const columns = defineModel<NaiveUI.TableColumnCheck[]>('columns', {
   default: () => []
 });
@@ -30,7 +28,7 @@ function refresh() {
 
 <template>
   <NSpace :align="itemAlign" wrap justify="end" class="<sm:w-200px">
-    <slot name="prefix"></slot>
+    <slot name="prefix" />
     <slot name="default">
       <NButton size="small" ghost type="primary" @click="add">
         <template #icon>
@@ -46,7 +44,7 @@ function refresh() {
       刷新
     </NButton>
     <TableColumnSetting v-model:columns="columns" />
-    <slot name="suffix"></slot>
+    <slot name="suffix" />
   </NSpace>
 </template>
 

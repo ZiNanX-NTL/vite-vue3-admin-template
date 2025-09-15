@@ -26,7 +26,7 @@ interface IconStyle {
  *
  * - 用于vue的render函数
  */
-export const useIconRender = () => {
+export function useIconRender() {
   /**
    * 图标渲染
    *
@@ -58,4 +58,4 @@ export const useIconRender = () => {
   return {
     iconRender
   };
-};
+}

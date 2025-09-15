@@ -95,7 +95,9 @@ async function handleSubmit() {
     <FormBuilder ref="formRef" v-model="formData" :form-items="formItems" :rules="rules" :collapsed="collapsed">
       <template #handle="{ overflow }">
         <NSpace class="w-full" justify="end">
-          <NButton @click="handleSubmit">Validate{{ overflow }}</NButton>
+          <NButton @click="handleSubmit">
+            Validate{{ overflow }}
+          </NButton>
           <NButton circle ghost @click="collapsed = !collapsed">
             <template #icon>
               <icon-ep-arrow-up-bold v-if="!overflow" class="text-icon" />

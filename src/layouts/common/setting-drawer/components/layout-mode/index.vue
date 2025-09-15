@@ -11,7 +11,9 @@ const { mode } = useBasicLayout();
 </script>
 
 <template>
-  <NDivider title-placement="center">布局模式</NDivider>
+  <NDivider title-placement="center">
+    布局模式
+  </NDivider>
   <NSpace justify="space-around" :wrap="true" :size="24" class="px-12px">
     <LayoutCard
       v-for="item in theme.layout.modeList"
@@ -22,23 +24,23 @@ const { mode } = useBasicLayout();
       @click="theme.setLayoutMode(item.value)"
     >
       <template v-if="item.value === 'vertical'">
-        <div class="rd-4px bg-primary:50 h-full w-18px"></div>
+        <div class="rd-4px bg-primary:50 h-full w-18px" />
         <div class="flex-vertical flex-1 gap-6px">
-          <div class="rd-4px bg-primary h-16px"></div>
-          <div class="rd-4px bg-primary:25 flex-1"></div>
+          <div class="rd-4px bg-primary h-16px" />
+          <div class="rd-4px bg-primary:25 flex-1" />
         </div>
       </template>
       <template v-if="item.value === 'horizontal'">
-        <div class="rd-4px bg-primary h-16px"></div>
+        <div class="rd-4px bg-primary h-16px" />
         <div class="flex flex-1 gap-6px">
-          <div class="rd-4px bg-primary:25 flex-1"></div>
+          <div class="rd-4px bg-primary:25 flex-1" />
         </div>
       </template>
       <template v-if="item.value === 'vertical-mix'">
-        <div class="rd-4px bg-primary h-16px"></div>
+        <div class="rd-4px bg-primary h-16px" />
         <div class="flex flex-1 gap-6px">
-          <div class="rd-4px bg-primary:50 w-18px"></div>
-          <div class="rd-4px bg-primary:25 flex-1"></div>
+          <div class="rd-4px bg-primary:50 w-18px" />
+          <div class="rd-4px bg-primary:25 flex-1" />
         </div>
       </template>
     </LayoutCard>

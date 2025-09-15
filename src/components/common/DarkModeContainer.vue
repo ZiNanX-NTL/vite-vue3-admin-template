@@ -11,7 +11,7 @@ defineProps({
 
 <template>
   <div class="transition-all dark:text-white dark:text-opacity-82" :class="inverted ? 'text-white' : 'text-#333639'">
-    <slot></slot>
+    <slot />
   </div>
 </template>
 

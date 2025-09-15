@@ -1,9 +1,12 @@
-import { defineConfig } from '@soybeanjs/eslint-config';
+import defineConfig from '@antfu/eslint-config';
 
 export default defineConfig(
   { vue: true, unocss: true, ignores: ['src/plugins/leaflet/**'] },
   {
     rules: {
+      'no-underscore-dangle': 'off',
+      'no-console': 'warn',
+
       'vue/multi-word-component-names': [
         'warn',
         {
@@ -18,10 +21,27 @@ export default defineConfig(
           ignores: ['/^icon-/', 'primitive']
         }
       ],
-      'vue/no-v-model-argument': 'off',
-      'vue/no-multiple-template-root': 'off',
-      'vue/no-v-for-template-key': 'off',
-      'no-underscore-dangle': 'off'
+
+      'style/no-multiple-empty-lines': 'warn',
+      'style/semi': ['warn', 'always'],
+      'style/comma-dangle': ['warn', 'never'],
+      'style/arrow-parens': ['warn', 'as-needed'],
+      'style/member-delimiter-style': [
+        'error',
+        {
+          multiline: {
+            delimiter: 'semi',
+            requireLast: true
+          },
+          singleline: {
+            delimiter: 'semi',
+            requireLast: false
+          }
+        }
+      ],
+      'style/brace-style': ['error', '1tbs'],
+
+      'antfu/if-newline': 'warn'
     }
   }
 );

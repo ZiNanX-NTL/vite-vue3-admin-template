@@ -1,5 +1,3 @@
-import type { Reactive } from 'vue';
-import { computed, reactive, ref, watch } from 'vue';
 import type {
   DataTableBaseColumn,
   DataTableColumns,
@@ -7,8 +5,10 @@ import type {
   DataTableSelectionColumn,
   PaginationProps
 } from 'naive-ui';
-import { cloneDeep } from 'lodash-es';
 import type { TableColumnGroup, TableColumnGroupTitle, TableColumnTitle } from 'naive-ui/es/data-table/src/interface';
+import type { Reactive } from 'vue';
+import { cloneDeep } from 'lodash-es';
+import { computed, reactive, ref, watch } from 'vue';
 import { useIsMobile } from '@/utils';
 import { useBoolean, useLoading } from '../common';
 
@@ -37,11 +37,11 @@ type Transformer<TableData, Response> = (response: Response) => {
 type CustomColumnKey<K = never> = K | 'action';
 
 /** 表格的列 */
-export type HookTableColumn<T = Record<string, unknown>> =
-  | (Omit<TableColumnGroup<T>, 'key'> & { key: CustomColumnKey<keyof T> })
-  | (Omit<DataTableBaseColumn<T>, 'key'> & { key: CustomColumnKey<keyof T> })
-  | DataTableSelectionColumn<T>
-  | DataTableExpandColumn<T>;
+export type HookTableColumn<T = Record<string, unknown>>
+  = | (Omit<TableColumnGroup<T>, 'key'> & { key: CustomColumnKey<keyof T> })
+    | (Omit<DataTableBaseColumn<T>, 'key'> & { key: CustomColumnKey<keyof T> })
+    | DataTableSelectionColumn<T>
+    | DataTableExpandColumn<T>;
 
 /** 表格操作列 */
 interface CheckColumn {
@@ -57,7 +57,7 @@ interface PaginationParamNames {
 }
 
 /** 表格配置 */
-type HookTableConfig<TableData, Fn extends ApiFn> = {
+interface HookTableConfig<TableData, Fn extends ApiFn> {
   /** 接口请求函数 */
   apiFn: Fn;
   /** 列表接口参数 */
@@ -93,7 +93,7 @@ type HookTableConfig<TableData, Fn extends ApiFn> = {
    * @default true
    */
   immediate?: boolean;
-};
+}
 
 /** 通用表格 hook */
 export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<TableData, Fn>) {
@@ -157,14 +157,16 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
   /** 转换请求分页参数 */
   function transformPaginationParams(params: Record<string, any>): Record<string, any> {
     // 如果不需要分页或参数为空，直接返回
-    if (!isPaging || !paginationParamNames) return params;
+    if (!isPaging || !paginationParamNames)
+      return params;
     const { page, pageSize, ...rest } = params;
-    if (isSeparatePagination)
+    if (isSeparatePagination) {
       return {
         [paginationParamNames.page]: paginationSearchParams.pageNum,
         [paginationParamNames.pageSize]: paginationSearchParams.pageSize,
         ...rest
       };
+    }
     return {
       [paginationParamNames.page]: page,
       [paginationParamNames.pageSize]: pageSize,
@@ -204,7 +206,8 @@ export function useTable<TableData, Fn extends ApiFn>(config: HookTableConfig<Ta
 
   /** 查询数据 */
   async function handleSearch() {
-    if (isPaging && pagination) updateSearchParams({ page: 1 });
+    if (isPaging && pagination)
+      updateSearchParams({ page: 1 });
     setRequestParams();
     await getData();
   }

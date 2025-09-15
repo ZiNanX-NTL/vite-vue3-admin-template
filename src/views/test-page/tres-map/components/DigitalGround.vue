@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import * as THREE from 'three';
 import { useRenderLoop, useTexture } from '@tresjs/core';
+import * as THREE from 'three';
 
 const props = withDefaults(
   defineProps<{

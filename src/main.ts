@@ -1,10 +1,10 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import GlobalLoading from './components/common/GlobalLoading.vue';
-import { fixResizeObserver, setupAssets, setupDayjs, setupLoading } from './plugins';
-import { setupStore } from './store';
 import { setupDirectives } from './directives';
+import { fixResizeObserver, setupAssets, setupDayjs, setupLoading } from './plugins';
 import { setupRouter } from './router';
+import { setupStore } from './store';
 
 async function bootstrapApp() {
   // import assets: js、css

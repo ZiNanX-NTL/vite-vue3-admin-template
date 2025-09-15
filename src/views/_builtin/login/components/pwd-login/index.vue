@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useAuthStore, useRememberStore } from '@/store';
 import { useFormRules } from '@/hooks';
+import { useAuthStore, useRememberStore } from '@/store';
 import { useRouterPush } from '@/utils';
 
 const auth = useAuthStore();
@@ -30,7 +30,8 @@ watchEffect(() => {
 
 /** check remember */
 function initModel() {
-  if (!remember.rememberMe) return;
+  if (!remember.rememberMe)
+    return;
   model.userName = remember.userName;
   model.password = remember.password;
 }
@@ -71,8 +72,12 @@ async function handleSubmit() {
         确定
       </NButton>
       <div class="flex-y-center justify-between">
-        <NCheckbox v-model:checked="remember.rememberMe">记住我</NCheckbox>
-        <NButton :text="true" @click="toLoginModule('reset-pwd')">忘记密码？</NButton>
+        <NCheckbox v-model:checked="remember.rememberMe">
+          记住我
+        </NCheckbox>
+        <NButton :text="true" @click="toLoginModule('reset-pwd')">
+          忘记密码？
+        </NButton>
       </div>
     </NSpace>
   </NForm>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useEcharts, useThreeMap } from '@/hooks';
+
 const index = ref(1);
 function add() {
   index.value += 1;
@@ -292,14 +293,14 @@ onMounted(() => {});
   <div class="flex-vertical-stretch overflow-hidden">
     <NCard title="测试" class="h-full">
       {{ loading }}
-      <div ref="threeMapRef" class="bg-black size-800px relative"></div>
+      <div ref="threeMapRef" class="bg-black size-800px relative" />
 
       <CountTo v-slot="{ value }" :end-value="123">
         <p class="mb-4px flex-center">
           <NGradientText
             :gradient="{
               from: '#19c6fe',
-              to: '#fff'
+              to: '#fff',
             }"
             class="text-30px font-600"
           >
@@ -308,7 +309,7 @@ onMounted(() => {});
           <NGradientText
             :gradient="{
               from: '#19c6fe',
-              to: '#fff'
+              to: '#fff',
             }"
             class="text-20px font-600"
           >
@@ -354,10 +355,12 @@ onMounted(() => {});
       </div>
 
       <NCard :bordered="false" class="card-wrapper">
-        <div ref="domRef" class="h-360px overflow-hidden"></div>
+        <div ref="domRef" class="h-360px overflow-hidden" />
       </NCard>
 
-      <NButton @click="add">+</NButton>
+      <NButton @click="add">
+        +
+      </NButton>
     </NCard>
   </div>
 </template>

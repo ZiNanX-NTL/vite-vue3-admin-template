@@ -1,15 +1,15 @@
 import type { PluginOption } from 'vite';
+import unocss from '@unocss/vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import progress from 'vite-plugin-progress';
 import VueDevtools from 'vite-plugin-vue-devtools';
-import unocss from '@unocss/vite';
+import autoImport from './unpluginAutoImport';
 import icons from './unpluginIcons';
 import components from './unpluginVueComponents';
-import autoImport from './unpluginAutoImport';
-import svgIcons from './vitePluginSvgIcons';
 import compression from './vitePluginCompression';
 import mock from './vitePluginMock';
+import svgIcons from './vitePluginSvgIcons';
 
 export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | PluginOption[])[] {
   return [

@@ -2,8 +2,8 @@
 import { Html } from '@tresjs/cientos';
 import { geoMercator } from 'd3';
 import { gsap } from 'gsap';
-import { useThemeStore } from '@/store';
 import mapTitleBg from '@/assets/images/map_title_bg.png';
+import { useThemeStore } from '@/store';
 import pointList from '../data/pointList.json';
 
 const { htmlState } = defineProps<{
@@ -73,7 +73,7 @@ watch(
       >
         <span>{{ item.mc }}:</span>
         <span class="text-20px" :style="`color: ${theme.colorScheme[0]}`">
-          {{ item.area + ' ' }}
+          {{ `${item.area} ` }}
         </span>
         <span>万亩</span>
       </div>

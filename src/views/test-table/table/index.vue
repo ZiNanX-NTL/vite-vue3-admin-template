@@ -1,7 +1,7 @@
 <script setup lang="jsx">
 import { NButton, NPopconfirm, NSpace } from 'naive-ui';
-import { genderEnum, userStatusEnum } from '@/constants';
 import { fetchUserList } from '@/api';
+import { genderEnum, userStatusEnum } from '@/constants';
 import { useTable, useTableOperate } from '@/hooks';
 import { useIsMobile } from '@/utils';
 import TableActionModal from './components/TableActionModal.vue';

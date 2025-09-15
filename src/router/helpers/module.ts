@@ -7,7 +7,8 @@ export function sortRoutesByOrder(routes: AuthRoute.Route[]) {
   return routes
     .sort((next, pre) => Number(next.meta?.order) - Number(pre.meta?.order))
     .map(i => {
-      if (i.children) sortRoutesByOrder(i.children);
+      if (i.children)
+        sortRoutesByOrder(i.children);
       return i;
     });
 }

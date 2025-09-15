@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import type { Text } from 'leafer-ui';
+import { ScrollBar } from '@leafer-in/scroll';
 import { App, Box, Group, Image, LeaferEvent, MoveEvent, PointerEvent, ZoomEvent } from 'leafer-ui';
+import freeSeat from '@/assets/images/seat_free_2x.png';
+import selectedSeat from '@/assets/images/seat_selected_2x.png';
+import { useThemeStore } from '@/store';
 import '@leafer-in/editor';
 import '@leafer-in/view';
 import '@leafer-in/viewport';
 import '@leafer-in/state';
 import '@leafer-in/find';
-import { ScrollBar } from '@leafer-in/scroll';
-import { useThemeStore } from '@/store';
-import freeSeat from '@/assets/images/seat_free_2x.png';
-import selectedSeat from '@/assets/images/seat_selected_2x.png';
 
 const themeStore = useThemeStore();
 let scroll: ScrollBar;
@@ -248,7 +248,8 @@ function init() {
   group.on(PointerEvent.TAP, (e: PointerEvent) => {
     console.log('asdfasdfsad', e.target.data?.seat);
     const seat = e.target.data?.seat as NonNullable<(typeof renderMap)[0][0]>;
-    if (!seat) return;
+    if (!seat)
+      return;
     if ((e.target as Image).url === freeSeat) {
       seat.status = '1';
       (e.target as Image).url = selectedSeat;
@@ -288,16 +289,21 @@ function init() {
   });
   app.ground.on(MoveEvent.BEFORE_MOVE, (e: MoveEvent) => {
     const { x, y } = app.ground.getValidMove(e.moveX, e.moveY);
-    if (xRulerGroup) xRulerGroup.move(x, 0);
-    if (yRulerGroup) yRulerGroup.move(0, y);
+    if (xRulerGroup)
+      xRulerGroup.move(x, 0);
+    if (yRulerGroup)
+      yRulerGroup.move(0, y);
   });
 
   /** 更新选中刻度尺刻度 */
   function updateRulerScale(seat?: NonNullable<(typeof renderMap)[0][0]>) {
     const [xRulerList, yRulerList] = drawRulerScale((type, index) => {
-      if (!seat) return '';
-      if (type === 'row' && index === seat.row - 1) return 'rgb(255, 0, 0)';
-      if (type === 'col' && index === seat.col - 1) return 'rgb(255, 0, 0)';
+      if (!seat)
+        return '';
+      if (type === 'row' && index === seat.row - 1)
+        return 'rgb(255, 0, 0)';
+      if (type === 'col' && index === seat.col - 1)
+        return 'rgb(255, 0, 0)';
       return '';
     });
     if (xRulerGroup) {
@@ -314,7 +320,8 @@ function init() {
   function updateRulerPosition() {
     const groupBoundsData = group.getBounds();
     const rulerBgGroup = app.ground.findId('rulerBgGroup');
-    if (rulerBgGroup) rulerBgGroup.scale = app.tree.scale!;
+    if (rulerBgGroup)
+      rulerBgGroup.scale = app.tree.scale!;
     if (xRulerGroup) {
       xRulerGroup.x = groupBoundsData.x;
       xRulerGroup.scale = app.tree.scale!;
@@ -366,7 +373,7 @@ onMounted(() => {
   <div class="w-full">
     <NCard title="选座" class="size-full">
       <div class="size-full relative">
-        <div id="leafer-view" class="size-full absolute-rt"></div>
+        <div id="leafer-view" class="size-full absolute-rt" />
       </div>
     </NCard>
   </div>

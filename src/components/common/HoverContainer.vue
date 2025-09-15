@@ -36,14 +36,14 @@ const contentClassName = computed(
     <NTooltip :placement="placement" trigger="hover">
       <template #trigger>
         <div class="flex-center h-full cursor-pointer dark:hover:bg-#333" :class="contentClassName">
-          <slot></slot>
+          <slot />
         </div>
       </template>
       {{ tooltipContent }}
     </NTooltip>
   </div>
   <div v-else class="flex-center cursor-pointer dark:hover:bg-#333" :class="contentClassName">
-    <slot></slot>
+    <slot />
   </div>
 </template>
 

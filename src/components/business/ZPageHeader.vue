@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { h } from 'vue';
 import { NPageHeader } from 'naive-ui';
+import { h } from 'vue';
 
 defineOptions({
   inheritAttrs: false
@@ -47,11 +47,11 @@ defineExpose(
           返回
         </NButton>
         <div v-else>
-          <slot name="back"></slot>
+          <slot name="back" />
         </div>
       </template>
       <template v-for="(_value, name) in $slots" #[name]="slotData">
-        <slot :name="name" v-bind="slotData || {}"></slot>
+        <slot :name="name" v-bind="slotData || {}" />
       </template>
     </component>
   </NCard>

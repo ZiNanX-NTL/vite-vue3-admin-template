@@ -1,9 +1,9 @@
 <script setup>
 import { useThemeStore } from '@/store';
 import { useBasicLayout, useIsMobile } from '@/utils';
+import { useMixMenuContext } from '../../context';
 import GlobalLogo from '../global-logo/index.vue';
 import GlobalSearch from '../global-search/index.vue';
-import { useMixMenuContext } from '../../context';
 import {
   FullScreen,
   GlobalBreadcrumb,
@@ -51,7 +51,7 @@ const logoWidth = computed(() => {
     class="h-full shadow-[0_1px_2px_rgba(0,21,41,0.08)] relative"
     :class="mode === 'vertical-mix' ? 'z-30' : 'z-10'"
     :inverted="theme.header.inverted"
-    :style="{ height: theme.header.height + 'px' }"
+    :style="{ height: `${theme.header.height}px` }"
   >
     <NLayoutHeader class="flex-y-center h-full" :inverted="!theme.darkMode && theme.header.inverted">
       <GlobalLogo
@@ -60,16 +60,16 @@ const logoWidth = computed(() => {
         class="h-full"
         :class="{ 'px-25px': !theme.logo.isCustomizeWidth }"
         :style="{
-          width: logoWidth
+          width: logoWidth,
         }"
       />
       <div class="flex-y-center flex-1-hidden h-full">
         <MenuCollapse
           v-if="
-            mode !== 'horizontal' &&
-            (showMenuCollapse || isMobile) &&
-            theme.sider.showTrigger === 'headerIcon' &&
-            showMenuCollapseForMenuInverted
+            mode !== 'horizontal'
+              && (showMenuCollapse || isMobile)
+              && theme.sider.showTrigger === 'headerIcon'
+              && showMenuCollapseForMenuInverted
           "
         />
         <GlobalBreadcrumb

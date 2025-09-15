@@ -5,7 +5,7 @@ import { adapterOfFetchUserList } from './userList.adapter';
 /**
  * 获取分页用户列表数据
  *
- * @param {Object} params - 负载参数
+ * @param {object} params - 负载参数
  */
 export function fetchUserList(params: any) {
   return mockAlova.Post(
@@ -20,8 +20,6 @@ export function fetchUserList(params: any) {
 }
 /**
  * 获取所有用户列表数据
- *
- * @param {Object} params - 负载参数
  */
 export async function fetchAllUserList() {
   const data = await mockInstance.get({ url: '/allUserList' });

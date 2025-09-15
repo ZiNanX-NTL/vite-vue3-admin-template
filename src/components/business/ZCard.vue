@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ComponentInstance, Slots } from 'vue';
-import { h } from 'vue';
 import { NCard } from 'naive-ui';
+import { h } from 'vue';
 
 defineOptions({
   inheritAttrs: false
@@ -54,12 +54,12 @@ defineExpose({} as ComponentInstance<typeof NCard>);
         <NH4 :prefix="showPrefix ? 'bar' : undefined" align-text class="mb-0" :class="titleClass">
           {{ title }}
         </NH4>
-        <slot name="tip"></slot>
+        <slot name="tip" />
       </NFlex>
     </template>
     <template #header-extra="slotData">
       <NFlex justify="end" align="center">
-        <slot name="header-extra" v-bind="slotData || {}"></slot>
+        <slot name="header-extra" v-bind="slotData || {}" />
         <NButton v-if="showCollapse" text icon-placement="right" @click="collapse = !collapse">
           <template #icon>
             <icon-ep-arrow-up-bold
@@ -71,9 +71,9 @@ defineExpose({} as ComponentInstance<typeof NCard>);
       </NFlex>
     </template>
     <template v-for="(_value, name) in resultSlots" #[name]="slotData">
-      <slot v-if="!['default'].includes(name as string)" :name="name" v-bind="slotData || {}"></slot>
+      <slot v-if="!['default'].includes(name as string)" :name="name" v-bind="slotData || {}" />
       <NCollapseTransition v-if="name === 'default'" :key="name" class="h-full" :show="!collapse" :appear="appear">
-        <slot :name="name" v-bind="slotData || {}"></slot>
+        <slot :name="name" v-bind="slotData || {}" />
       </NCollapseTransition>
     </template>
   </component>

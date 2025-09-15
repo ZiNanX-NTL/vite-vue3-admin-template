@@ -1,6 +1,6 @@
 import type { MenuOption } from 'naive-ui';
-import { useRouteStore } from '@/store';
 import { useContext } from '@/hooks';
+import { useRouteStore } from '@/store';
 import { useRouterPush } from '@/utils';
 
 export const { setupStore: setupMixMenuContext, useStore: useMixMenuContext } = useContext('mix-menu', useMixMenu);

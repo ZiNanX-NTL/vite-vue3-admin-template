@@ -1,6 +1,6 @@
 <script setup>
-import { useThemeStore } from '@/store';
 import { useBoolean } from '@/hooks';
+import { useThemeStore } from '@/store';
 import { SearchModal } from './components';
 
 defineOptions({ name: 'GlobalSearch' });

@@ -1,10 +1,10 @@
 <script setup lang="tsx">
-import { useThrottleFn } from '@vueuse/core';
 import type { ThreeEvent } from '@tresjs/core';
-import * as THREE from 'three';
+import { useThrottleFn } from '@vueuse/core';
 import { geoMercator } from 'd3';
-import { acceleratedRaycast, computeBoundsTree, disposeBoundsTree } from 'three-mesh-bvh';
 import { gsap } from 'gsap';
+import * as THREE from 'three';
+import { acceleratedRaycast, computeBoundsTree, disposeBoundsTree } from 'three-mesh-bvh';
 import { useThemeStore } from '@/store';
 import { instantiatedComponent, loadGeojson } from '@/utils';
 
@@ -54,11 +54,11 @@ const { extrudeSettings } = defineProps<{
 
 const { colorScheme } = useThemeStore();
 
-const initMeshBvh = () => {
+function initMeshBvh() {
   THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
   THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
   THREE.Mesh.prototype.raycast = acceleratedRaycast;
-};
+}
 initMeshBvh();
 
 // 墨卡托投影转换
@@ -76,7 +76,8 @@ function makeAreaPrimary() {
       const shape = new THREE.Shape();
       coordinate.forEach((item, idx) => {
         const [x, y] = projection(item) as [number, number];
-        if (idx === 0) shape.moveTo(x, -y);
+        if (idx === 0)
+          shape.moveTo(x, -y);
         else shape.lineTo(x, -y);
       });
       areaList.push({ type: 'shape', shape, properties: elem.properties });
@@ -90,8 +91,10 @@ function makeAreaPrimary() {
       areaList.push({ type: 'Line', points: new Float32Array(points), properties: elem.properties });
     }
     coordinates.forEach(coordinate => {
-      if (type === 'MultiPolygon') coordinate.forEach(item => handlePolygon(item));
-      if (type === 'Polygon') handlePolygon(coordinate as unknown as [number, number][]);
+      if (type === 'MultiPolygon')
+        coordinate.forEach(item => handlePolygon(item));
+      if (type === 'Polygon')
+        handlePolygon(coordinate as unknown as [number, number][]);
     });
   });
 }
@@ -118,7 +121,7 @@ function pEnter(intersection: ThreeEvent<MouseEvent>) {
   intersection.stopPropagation();
   const object = intersection.object as any;
   if (object) {
-    object.material[0].color.set(0xff0000);
+    object.material[0].color.set(0xFF0000);
     // 添加地块动效
     gsap.to(object.position, {
       z: 1,
@@ -196,7 +199,7 @@ const pMove = useThrottleFn(pointerMove, 10, true);
         :position-z="extrudeSettings.depth + 0.01"
       >
         <TresBufferGeometry :position="[item.points, 3]" />
-        <TresLineBasicMaterial :color="0xffffff" :linewidth="1" />
+        <TresLineBasicMaterial :color="0xFFFFFF" :linewidth="1" />
       </TresLineLoop>
     </template>
   </TresGroup>

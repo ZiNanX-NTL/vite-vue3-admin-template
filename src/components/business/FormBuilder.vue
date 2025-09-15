@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import type { FormInst } from 'naive-ui';
 import type { ComponentInstance } from 'vue';
-import { type FormInst, NForm, NFormItemGi, NGridItem, NInput, NInputNumber, NSelect } from 'naive-ui';
 import { omit } from 'lodash-es';
+import { NForm, NFormItemGi, NGridItem, NInput, NInputNumber, NSelect } from 'naive-ui';
+
 const {
   formItems,
   rules,
@@ -39,7 +41,8 @@ function getComponent(item: any) {
 
 const rootProps = ['label', 'field', 'type', 'hidden', 'span', 'showFeedback'];
 function getProps(item: any) {
-  if (item.props) return item.props;
+  if (item.props)
+    return item.props;
   return omit(item, rootProps);
 }
 
@@ -72,7 +75,7 @@ defineExpose({} as ComponentInstance<typeof NForm>);
               :is="getComponent(item)"
               v-bind="getProps(item)"
               v-model:value="modelValue[item.field]"
-            ></component>
+            />
           </slot>
         </template>
       </component>

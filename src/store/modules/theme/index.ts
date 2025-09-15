@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia';
 import { darkTheme } from 'naive-ui';
+import { defineStore } from 'pinia';
 import { generateColorScheme, sessionStg } from '@/utils';
 import { getOverrides, initThemeSettings } from './helpers';
 

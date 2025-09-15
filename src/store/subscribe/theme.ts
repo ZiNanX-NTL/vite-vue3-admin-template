@@ -1,7 +1,7 @@
-import { effectScope, onScopeDispose, watch } from 'vue';
 import type { GlobalThemeOverrides } from 'naive-ui';
-import { useOsTheme } from 'naive-ui';
 import { kebabCase } from 'lodash-es';
+import { useOsTheme } from 'naive-ui';
+import { effectScope, onScopeDispose, watch } from 'vue';
 import { getColorPalettes, getRgbOfColor, sessionStg } from '@/utils';
 import { useThemeStore } from '../modules';
 

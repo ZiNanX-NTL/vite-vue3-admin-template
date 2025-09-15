@@ -1,5 +1,5 @@
-import type { Ref } from 'vue';
 import type { FormItemRule } from 'naive-ui';
+import type { Ref } from 'vue';
 import { REG_CODE_SIX, REG_EMAIL, REG_PHONE, REG_PWD } from '@/config';
 
 /** 创建自定义错误信息的必填表单规则 */

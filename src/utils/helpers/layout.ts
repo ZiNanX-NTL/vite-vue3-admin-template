@@ -1,5 +1,5 @@
-import { computed, watch } from 'vue';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
+import { computed, watch } from 'vue';
 import { useAppStore, useThemeStore } from '@/store';
 
 interface Props {
@@ -19,9 +19,9 @@ interface Props {
   };
 }
 interface Layout {
-  vertical: Props;
+  'vertical': Props;
   'vertical-mix': Props;
-  horizontal: Props;
+  'horizontal': Props;
 }
 
 export function useBasicLayout() {
@@ -33,7 +33,7 @@ export function useBasicLayout() {
 
   // 各种布局的布局参数
   const layout: Layout = {
-    vertical: {
+    'vertical': {
       layoutProps: {
         showHeader: false,
         showMixHeader: true,
@@ -65,7 +65,7 @@ export function useBasicLayout() {
         showLogo: false
       }
     },
-    horizontal: {
+    'horizontal': {
       layoutProps: {
         showHeader: true,
         showMixHeader: false,

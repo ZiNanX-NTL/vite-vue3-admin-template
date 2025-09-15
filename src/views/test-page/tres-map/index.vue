@@ -1,14 +1,13 @@
 <script setup lang="ts">
+import { CameraControls, Stars, useProgress } from '@tresjs/cientos';
 // import { dateZhCN, zhCN } from 'naive-ui';
 import { TresCanvas, useRenderLoop } from '@tresjs/core';
-import { CameraControls, Stars, useProgress } from '@tresjs/cientos';
-import { Pane } from 'tweakpane';
 import * as EssentialsPlugin from '@tweakpane/plugin-essentials';
+import { Pane } from 'tweakpane';
 import { useThemeStore } from '@/store';
 import { setLightness } from '@/utils';
-import DigitalGround from './components/DigitalGround.vue';
 import DigitalGround1 from './components/DigitalGround1.vue';
-import ReflectorGround from './components/ReflectorGround.vue';
+import DigitalGround from './components/DigitalGround.vue';
 import HeiLongJiangMapMesh from './components/HeiLongJiangMapMesh.vue';
 import MapTabs from './components/MapTabs.vue';
 
@@ -113,13 +112,15 @@ onMounted(() => {
 <template>
   <div>
     <div class="size-full relative">
-      <div id="pane-container" class="w-256px right-8px top-8px absolute z-1"></div>
+      <div id="pane-container" class="w-256px right-8px top-8px absolute z-1" />
       <Transition name="fade">
         <div
           v-show="!hasFinishLoading"
           class="text-white font-mono bg-gray-600 flex h-full w-full items-center left-0 top-0 justify-center absolute z-20"
         >
-          <div class="w-200px">Loading... {{ progress }} %</div>
+          <div class="w-200px">
+            Loading... {{ progress }} %
+          </div>
         </div>
       </Transition>
 

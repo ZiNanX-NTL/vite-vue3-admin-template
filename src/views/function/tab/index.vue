@@ -27,16 +27,32 @@ function handleSetTitle() {
   <NSpace :vertical="true" :size="16">
     <NCard title="Tab Home" :bordered="false" size="small" class="rounded-8px shadow-sm">
       <NSpace :vertical="true" :size="12">
-        <NButton @click="handleToTabDetail">跳转Tab Detail</NButton>
-        <NButton @click="handleToTabMultiDetail(1)">跳转Tab Multi Detail 1</NButton>
-        <NButton @click="handleToTabMultiDetail(2)">跳转Tab Multi Detail 2</NButton>
-        <NButton @click="handleToTabMultiDetail(3)">跳转Tab Multi Detail 3</NButton>
-        <NButton @click="handleToTabMultiDetail(4)">跳转Tab Multi Detail 4</NButton>
-        <NButton @click="handleToTabMultiDetail(5)">跳转Tab Multi Detail 5</NButton>
-        <NButton @click="handleToTabMultiDetail(6)">跳转Tab Multi Detail 6</NButton>
+        <NButton @click="handleToTabDetail">
+          跳转Tab Detail
+        </NButton>
+        <NButton @click="handleToTabMultiDetail(1)">
+          跳转Tab Multi Detail 1
+        </NButton>
+        <NButton @click="handleToTabMultiDetail(2)">
+          跳转Tab Multi Detail 2
+        </NButton>
+        <NButton @click="handleToTabMultiDetail(3)">
+          跳转Tab Multi Detail 3
+        </NButton>
+        <NButton @click="handleToTabMultiDetail(4)">
+          跳转Tab Multi Detail 4
+        </NButton>
+        <NButton @click="handleToTabMultiDetail(5)">
+          跳转Tab Multi Detail 5
+        </NButton>
+        <NButton @click="handleToTabMultiDetail(6)">
+          跳转Tab Multi Detail 6
+        </NButton>
         <NInputGroup>
           <NInput v-model:value="title" />
-          <NButton type="primary" @click="handleSetTitle">设置当前Tab页标题</NButton>
+          <NButton type="primary" @click="handleSetTitle">
+            设置当前Tab页标题
+          </NButton>
         </NInputGroup>
       </NSpace>
     </NCard>

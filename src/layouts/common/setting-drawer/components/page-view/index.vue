@@ -8,7 +8,9 @@ const theme = useThemeStore();
 </script>
 
 <template>
-  <NDivider title-placement="center">界面显示</NDivider>
+  <NDivider title-placement="center">
+    界面显示
+  </NDivider>
   <NSpace vertical size="large">
     <SettingMenu label="面包屑">
       <NSwitch :value="theme.header.crumb.visible" @update:value="theme.setHeaderCrumbVisible" />

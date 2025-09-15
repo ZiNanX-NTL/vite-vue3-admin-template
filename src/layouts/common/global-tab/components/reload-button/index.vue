@@ -1,6 +1,6 @@
 <script setup>
-import { useRouteStore } from '@/store';
 import { useLoading } from '@/hooks';
+import { useRouteStore } from '@/store';
 
 defineOptions({ name: 'ReloadButton' });
 

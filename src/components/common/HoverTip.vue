@@ -16,7 +16,8 @@ function handleEnter() {
 }
 /** 显示tooltip */
 const handleShowTooltip = useDebounceFn((e: MouseEvent) => {
-  if (!inBox) return;
+  if (!inBox)
+    return;
   showTooltip.value = true;
   xRef.value = e.clientX;
   yRef.value = e.clientY;
@@ -30,7 +31,7 @@ function handleHideTooltip() {
 
 <template>
   <div @mouseenter="handleEnter" @mousemove="handleShowTooltip" @mouseleave="handleHideTooltip">
-    <slot></slot>
+    <slot />
     <NTooltip :show="showTooltip" :x="xRef" :y="yRef" trigger="manual" :show-arrow="false" placement="bottom-start">
       {{ tip }}
     </NTooltip>
