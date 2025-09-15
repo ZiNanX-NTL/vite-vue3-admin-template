@@ -65,6 +65,8 @@ export const useTabStore = defineStore('tab-store', {
      *
      * @param fullPath - 路由fullPath
      * @param position - tab当前页的滚动位置
+     * @param position.left - 水平滚动位置
+     * @param position.top - 垂直滚动位置
      */
     recordTabScrollPosition(fullPath: string, position: { left: number; top: number }) {
       const index = getIndexInTabRoutes(this.tabs, fullPath);

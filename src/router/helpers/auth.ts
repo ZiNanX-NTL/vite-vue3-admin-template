@@ -2,7 +2,7 @@
  * 根据用户权限过滤路由
  *
  * @param routes - 权限路由
- * @param permission - 权限
+ * @param role - 权限
  */
 export function filterAuthRoutesByUserRole(routes: AuthRoute.Route[], role: string) {
   return routes.map(route => filterAuthRouteByUserRole(route, role)).flat(1);
@@ -29,7 +29,7 @@ function filterAuthRouteByUserRole(route: AuthRoute.Route, role: string): AuthRo
  * 根据用户权限过滤路由
  *
  * @param routes - 权限路由
- * @param permission - 权限
+ * @param permissions - 权限
  */
 export function filterAuthRoutesByUserPermission(routes: AuthRoute.Route[], permissions: string[]) {
   return routes.map(route => filterAuthRouteByUserPermission(route, permissions)).flat(1);
@@ -39,7 +39,7 @@ export function filterAuthRoutesByUserPermission(routes: AuthRoute.Route[], perm
  * 根据用户权限过滤单个路由
  *
  * @param route - 单个权限路由
- * @param permission - 权限
+ * @param permissions - 权限
  */
 function filterAuthRouteByUserPermission(route: AuthRoute.Route, permissions: string[]): AuthRoute.Route[] {
   const filterRoute = { ...route };

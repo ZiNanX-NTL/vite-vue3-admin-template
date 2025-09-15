@@ -43,6 +43,7 @@ async function handleFormData(data: Record<string, any>) {
 /**
  * 接口为上传文件的类型时数据转换
  *
+ * @param formData - FormData对象
  * @param key - 文件的属性名
  * @param file - 单文件或多文件
  */
