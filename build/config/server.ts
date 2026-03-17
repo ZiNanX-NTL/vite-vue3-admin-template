@@ -12,5 +12,9 @@ export function viteServer(viteEnv: ImportMetaEnv): ServerOptions {
         rewrite: path => path.replace(new RegExp(`^${viteEnv.VITE_PROXY_PATTERN}`), '')
       }
     }
+    // forwardConsole: {
+    //   unhandledErrors: true,
+    //   logLevels: ['warn', 'error'],
+    // }
   };
 }
