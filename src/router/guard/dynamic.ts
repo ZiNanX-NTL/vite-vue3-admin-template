@@ -37,9 +37,18 @@ export async function createDynamicRouteGuard(
     }
   }
 
-  // 权限路由已经加载，仍然未找到，重定向到404
+  // 权限路由已经加载，仍然未找到，尝试重定向到第一个有效的叶子路由，否则跳转404
   if (to.name === 'not-found') {
-    next({ name: '404', replace: true });
+    let firstMenu = route.menus?.[0];
+    while (firstMenu?.children?.length) {
+      firstMenu = firstMenu.children[0];
+    }
+
+    if (firstMenu?.routeName) {
+      next({ name: firstMenu.routeName, replace: true });
+    } else {
+      next({ name: '404', replace: true });
+    }
     return false;
   }
 
