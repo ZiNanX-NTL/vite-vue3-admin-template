@@ -4,6 +4,7 @@ import { effectScope, onScopeDispose, ref } from 'vue';
 import { ESRI_LEAFLET_CDN, TIANDITU_KEY } from '@/config';
 import { router } from '@/router';
 import { useRender } from '../common';
+// 使用vite8 leaflet-marker 必须在 leaflet 之前引入，确保 L.Marker 已经定义,否则会导致打包后找不到 L
 import '@/plugins/leaflet/leaflet-marker.js';
 import 'leaflet-easybutton';
 
