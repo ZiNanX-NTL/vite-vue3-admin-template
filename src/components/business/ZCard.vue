@@ -80,7 +80,7 @@ defineExpose({} as ComponentInstance<typeof NCard>);
 </template>
 
 <style lang="scss" scoped>
-:deep(.n-card__content) {
+:deep(.n-card-content) {
   transition: padding-bottom 0.3s var(--n-bezier);
   padding-bottom: v-bind(contentPadding);
 }
