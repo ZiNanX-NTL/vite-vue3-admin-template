@@ -10,5 +10,13 @@
   "prettier.enable": false,
   "typescript.tsdk": "node_modules/typescript/lib",
   "unocss.root": ["./"],
-  "vue.server.hybridMode": true
+  "vue.server.hybridMode": true,
+  "gutterpreview.paths": {
+    "@": "/src",
+    "~@": "/src"
+  },
+  "path-intellisense.mappings": {
+    "@": "${workspaceFolder}/src",
+    "~@": "${workspaceFolder}/src"
+  }
 }
