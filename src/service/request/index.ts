@@ -21,12 +21,6 @@ interface InstanceAxiosRequestConfig extends AxiosRequestConfig {
 interface SingleRequestAxiosRequestConfig extends AxiosRequestConfig {
   interceptors?: SingleRequestInterceptors;
 }
-interface IBackendConfig {
-  codeKey: string;
-  dataKey: string;
-  msgKey: string;
-  successCode: number | string;
-}
 
 class Request {
   instance: AxiosInstance;
@@ -36,7 +30,7 @@ class Request {
 
   constructor(
     axiosConfig?: InstanceAxiosRequestConfig,
-    backendConfig: IBackendConfig = {
+    backendConfig: Service.BackendResultConfig = {
       codeKey: 'code',
       dataKey: 'data',
       msgKey: 'message',
@@ -70,7 +64,9 @@ class Request {
           const { codeKey, dataKey, successCode } = this.backendConfig;
           // 请求成功
           if (backend[codeKey] === successCode) {
-            return handleServiceResult(null, backend[dataKey]);
+            // dataKey 为空时返回整个 backend 对象
+            const resultData = dataKey ? backend[dataKey] : backend;
+            return handleServiceResult(null, resultData);
           }
 
           const error = handleBackendError(backend, this.backendConfig);
@@ -93,7 +89,7 @@ class ZNRequest extends Request {
 
   constructor(
     axiosConfig: InstanceAxiosRequestConfig,
-    backendConfig: IBackendConfig = {
+    backendConfig: Service.BackendResultConfig = {
       codeKey: 'code',
       dataKey: 'data',
       msgKey: 'message',
