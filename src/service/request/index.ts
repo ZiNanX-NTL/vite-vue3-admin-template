@@ -58,8 +58,11 @@ class Request {
     // 全局响应拦截
     this.instance.interceptors.response.use(
       (async response => {
-        const { status } = response;
+        const { status, config } = response;
         if (status === 200 || status < 300 || status === 304) {
+          if (config.responseType === 'blob') {
+            return handleServiceResult(null, response.data);
+          }
           const backend = { ...response.data, url: response.config.url };
           const { codeKey, dataKey, successCode } = this.backendConfig;
           // 请求成功
