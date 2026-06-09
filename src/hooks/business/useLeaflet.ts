@@ -1,7 +1,7 @@
 import { useScriptTag } from '@vueuse/core';
-import L from 'leaflet';
+// import L from 'leaflet';
 import { effectScope, onScopeDispose, ref } from 'vue';
-import { ESRI_LEAFLET_CDN, TIANDITU_KEY } from '@/config';
+import { ESRI_LEAFLET_CDN, LEAFLET_CDN, LEAFLET_CSS_CDN, TIANDITU_KEY } from '@/config';
 import { router } from '@/router';
 import { useRender } from '../common';
 // 使用vite8 leaflet-marker 必须在 leaflet 之前引入，确保 L.Marker 已经定义,否则会导致打包后找不到 L
@@ -17,7 +17,40 @@ interface MapHooks {
 export function useLeaflet(options: L.MapOptions = {}, hooks: MapHooks = {}) {
   const scope = effectScope();
 
-  const { load: loadEsriLeaflet } = useScriptTag(ESRI_LEAFLET_CDN);
+  const loading = ref(false);
+
+  function loadLeafletCss(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const LEAFLET_CSS_ID = 'fg-leaflet-css';
+      if (document.getElementById(LEAFLET_CSS_ID))
+        return resolve();
+      const link = document.createElement('link');
+      link.id = LEAFLET_CSS_ID;
+      link.rel = 'stylesheet';
+      link.href = LEAFLET_CSS_CDN;
+
+      // 加载成功
+      link.onload = () => {
+        resolve();
+      };
+
+      // 加载失败
+      link.onerror = () => {
+        reject(new Error('LEAFLET CSS 加载失败'));
+      };
+
+      document.head.appendChild(link);
+    });
+  }
+
+  const { load: loadEsriLeaflet } = useScriptTag(ESRI_LEAFLET_CDN, () => {}, {
+    immediate: false,
+    manual: true
+  });
+  const { load: loadLeaflet } = useScriptTag(LEAFLET_CDN, () => {}, {
+    immediate: false,
+    manual: true
+  });
 
   const domRef = ref<HTMLElement | null>(null);
 
@@ -28,7 +61,13 @@ export function useLeaflet(options: L.MapOptions = {}, hooks: MapHooks = {}) {
 
   const { instance: mapInstance, isRendered } = useRender(domRef, {
     async render() {
+      loading.value = true;
+      await Promise.all([
+        loadLeafletCss(),
+        loadLeaflet(true)
+      ]);
       await loadEsriLeaflet(true);
+      loading.value = false;
 
       await nextTick();
 
@@ -149,6 +188,7 @@ export function useLeaflet(options: L.MapOptions = {}, hooks: MapHooks = {}) {
   return {
     domRef,
     mapInstance,
-    updateMap
+    updateMap,
+    loading
   };
 }

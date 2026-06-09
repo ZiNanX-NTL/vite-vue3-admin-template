@@ -1,6 +1,6 @@
 <script setup lang="jsx">
 import { Button as DvButton } from '@kjgl77/datav-vue3';
-import L from 'leaflet';
+// import L from 'leaflet';
 import { darkTheme } from 'naive-ui';
 import soyPoint from '@/assets/images/soy_point.png';
 import pointList from '@/assets/json/pointList.json';
@@ -44,7 +44,7 @@ const TooltipContent = defineComponent(
   }
 );
 
-const { domRef } = useLeaflet(
+const { domRef, loading } = useLeaflet(
   {
     attributionControl: true
     // crs: undefined
@@ -134,16 +134,17 @@ const { domRef } = useLeaflet(
 
 <template>
   <div class="leaflet-map w-full overflow-hidden !p-0">
-    <div ref="domRef" class="size-full overflow-hidden" />
+    <NSpin :show="loading" :delay="1000" class="size-full" content-class="size-full relative">
+      <template #description>
+        加载地图资源中...
+      </template>
+      <div ref="domRef" class="size-full overflow-hidden" />
+    </NSpin>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .leaflet-map {
-  /* 去掉地图聚焦边框 */
-  :deep(.esri-view-surface:focus::after) {
-    outline: none !important;
-  }
   @include leafletControlLayers(29px, 32px);
 
   :deep(.leaflet-control-layers) {
