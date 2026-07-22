@@ -83,7 +83,11 @@ export function useLeaflet(options: L.MapOptions = {}, hooks: MapHooks = {}) {
         attributionControl: false,
         zoomControl: false,
         layers: [
-          L.tileLayer(`https://t{s}.tianditu.gov.cn/DataServer?T=img_c&X={x}&Y={y}&L={z}&tk=${TIANDITU_KEY}`, {
+          // L.tileLayer(`https://t{s}.tianditu.gov.cn/DataServer?T=img_c&X={x}&Y={y}&L={z}&tk=${TIANDITU_KEY}`, {
+          //   subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'],
+          //   zoomOffset: 1
+          // }),
+          L.tileLayer(`http://t{s}.tianditu.gov.cn/img_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=${TIANDITU_KEY}`, {
             subdomains: ['0', '1', '2', '3', '4', '5', '6', '7'],
             zoomOffset: 1
           }),
