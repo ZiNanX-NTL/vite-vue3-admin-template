@@ -59,7 +59,7 @@ function addPartialProps(config: {
     Object.assign(item, { icon: iconRender({ icon }) });
   }
 
-  if (children) {
+  if (children?.length) {
     Object.assign(item, { children });
   }
   return item;
