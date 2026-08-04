@@ -4,12 +4,12 @@ import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import progress from 'vite-plugin-progress';
 import VueDevtools from 'vite-plugin-vue-devtools';
-import autoImport from './unpluginAutoImport';
-import icons from './unpluginIcons';
-import components from './unpluginVueComponents';
-import compression from './vitePluginCompression';
-import mock from './vitePluginMock';
-import svgIcons from './vitePluginSvgIcons';
+import autoImport from './unpluginAutoImport.ts';
+import icons from './unpluginIcons.ts';
+import components from './unpluginVueComponents.ts';
+import compression from './vitePluginCompression.ts';
+import mock from './vitePluginMock.ts';
+import svgIcons from './vitePluginSvgIcons.ts';
 
 export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | PluginOption[])[] {
   return [

@@ -1,5 +1,5 @@
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
-import { getSrcPath } from '../utils';
+import { getSrcPath } from '../utils/index.ts';
 
 export default (viteEnv: ImportMetaEnv) => {
   const { VITE_ICON_LOCAL_PREFIX } = viteEnv;
