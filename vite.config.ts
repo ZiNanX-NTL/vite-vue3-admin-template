@@ -9,7 +9,7 @@ import {
   viteDefine,
   viteOptimizeDeps,
   viteServer
-} from './build';
+} from './build/index.ts';
 
 // https://vitejs.dev/config/
 export default defineConfig(configEnv => {

@@ -1,3 +1,3 @@
-export * from './config';
-export * from './plugins';
-export * from './utils';
+export * from './config/index.ts';
+export * from './plugins/index.ts';
+export * from './utils/index.ts';
