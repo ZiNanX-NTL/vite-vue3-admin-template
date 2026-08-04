@@ -5,7 +5,17 @@
  */
 export function sortRoutesByOrder(routes: AuthRoute.Route[]) {
   return routes
-    .sort((next, pre) => Number(next.meta?.order) - Number(pre.meta?.order))
+    .sort((next, pre) => {
+      const nextOrder = next.meta?.order;
+      const preOrder = pre.meta?.order;
+
+      if (nextOrder == null)
+        return preOrder == null ? 0 : 1;
+      if (preOrder == null)
+        return -1;
+
+      return Number(nextOrder) - Number(preOrder);
+    })
     .map(i => {
       if (i.children)
         sortRoutesByOrder(i.children);
