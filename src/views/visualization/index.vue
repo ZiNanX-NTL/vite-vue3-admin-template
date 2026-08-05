@@ -50,7 +50,7 @@ const state = reactive({
 });
 
 const params = reactive({
-  rotationSpeed: 0.04,
+  rotationSpeed: 0,
 
   landColor: '#6d96cc',
   landDotScale: 1,
@@ -69,7 +69,7 @@ const params = reactive({
   shieldHexScale: 12,
   shieldEdgeWidth: 0.06,
   shieldHexOpacity: 0.14,
-  shieldFlashSpeed: 2.9,
+  shieldFlashSpeed: 0.5,
   shieldFlashIntensity: 0.11,
   shieldFlowScale: 4,
   shieldFlowSpeed: 1.5,
@@ -302,7 +302,7 @@ onBeforeUnmount(() => {
             :renderer="createWebGPURenderer"
             @loop="onLoop"
           >
-            <TresPerspectiveCamera :position="[2, 2, 2]" :fov="40" :near="0.1" :far="100" />
+            <TresPerspectiveCamera :position="[0.5, 1.5, 3]" :fov="40" :near="0.1" :far="100" />
             <OrbitControls
               make-default
               :enable-damping="true"
@@ -310,7 +310,7 @@ onBeforeUnmount(() => {
               :enable-zoom="false"
             />
             <TresAmbientLight :intensity="0.1" color="#8844ff" />
-            <!-- <PostProcessing v-if="sceneRoot" :settings="params" /> -->
+            <PostProcessing v-if="sceneRoot" :settings="params" />
             <primitive v-if="sceneRoot" :object="sceneRoot" />
           </TresCanvas>
         </div>
