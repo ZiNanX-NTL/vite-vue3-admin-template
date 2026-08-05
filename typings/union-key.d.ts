@@ -7,8 +7,9 @@ declare namespace UnionKey {
    *
    * - basic 基础布局
    * - blank 空白布局
+   * - big 大屏布局
    */
-  type LayoutComponentType = 'basic' | 'blank';
+  type LayoutComponentType = 'basic' | 'blank' | 'big';
 
   /**
    * 登录模块

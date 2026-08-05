@@ -1,4 +1,5 @@
 import type { PluginOption } from 'vite';
+import { templateCompilerOptions } from '@tresjs/core';
 import unocss from '@unocss/vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
@@ -14,11 +15,7 @@ import svgIcons from './vitePluginSvgIcons.ts';
 export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | PluginOption[])[] {
   return [
     vue({
-      template: {
-        compilerOptions: {
-          isCustomElement: tag => (tag.startsWith('Tres') && tag !== 'TresCanvas') || tag === 'primitive'
-        }
-      }
+      ...templateCompilerOptions
     }),
     vueJsx(),
     unocss(),

@@ -9,10 +9,11 @@ declare namespace AuthRoute {
    *
    * - basic - 基础布局，具有公共部分的布局
    * - blank - 空白布局
+   * - big - 大屏布局
    * - multi - 多级路由布局(三级路由或三级以上时，除第一级路由和最后一级路由，其余的采用该布局)
    * - self - 作为子路由，使用自身的布局(作为最后一级路由，没有子路由)
    */
-  type RouteComponentType = 'basic' | 'blank' | 'multi' | 'self' | Lazy<ModuleComponent>;
+  type RouteComponentType = 'basic' | 'blank' | 'big' | 'multi' | 'self' | Lazy<ModuleComponent>;
 
   /** 路由描述 */
   interface RouteMeta {
@@ -21,7 +22,7 @@ declare namespace AuthRoute {
     /** 路由的动态路径(需要动态路径的页面需要将path添加进范型参数) */
     dynamicPath?: string;
     /** 作为单级路由的父级路由布局组件 */
-    singleLayout?: Extract<RouteComponentType, 'basic' | 'blank'>;
+    singleLayout?: Extract<RouteComponentType, 'basic' | 'blank' | 'big'>;
     /** 需要登录权限 */
     requiresAuth?: boolean;
     /**

@@ -1,12 +1,12 @@
 {
-  "followSystemTheme": true,
-  "darkMode": false,
+  "followSystemTheme": false,
+  "darkMode": true,
   "scrollMode": "content",
   "scrollModeList": [
     { "value": "wrapper", "label": "外层滚动" },
     { "value": "content", "label": "主体滚动" }
   ],
-  "themeColor": "#5856D6",
+  "themeColor": "#00a3cf",
   "themeColorList": [
     "#1890ff",
     "#409EFF",

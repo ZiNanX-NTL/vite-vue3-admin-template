@@ -1,5 +1,5 @@
 import type { RouteComponent } from 'vue-router';
-import { BasicLayout, BlankLayout } from '@/layouts';
+import { BasicLayout, BlankLayout, BigLayout } from '@/layouts';
 import { isFunction } from '@/utils';
 import { views } from './autoRegister';
 
@@ -15,7 +15,8 @@ type LayoutComponent = Record<UnionKey.LayoutComponentType, Lazy<ModuleComponent
 export function getLayout() {
   const layoutComponent: LayoutComponent = {
     basic: BasicLayout,
-    blank: BlankLayout
+    blank: BlankLayout,
+    big: BigLayout
   };
   /** 布局的所有名称 */
   const layoutTypes = Object.keys(layoutComponent) as UnionKey.LayoutComponentType[];
