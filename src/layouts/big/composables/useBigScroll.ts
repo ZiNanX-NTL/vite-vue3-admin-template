@@ -20,6 +20,7 @@ export type BigScrollEvent = Lenis;
 
 export interface BigScroll {
   readonly lenis: Lenis | undefined;
+  readonly scroller: HTMLElement | undefined;
   onScroll: (listener: (event: BigScrollEvent) => void) => () => void;
   registerScrollbar: (scrollbar: BigScrollbarRef | null | undefined) => void;
   unregisterScrollbar: (scrollbar: BigScrollbarRef | null | undefined) => void;
@@ -32,6 +33,7 @@ export const bigScrollKey: InjectionKey<BigScroll> = Symbol('big-scroll');
 export function createBigScroll(): BigScroll {
   let lenis: Lenis | undefined;
   let scrollbar: BigScrollbarRef | null | undefined;
+  let scroller: HTMLElement | undefined;
   let unsubscribeScroll: (() => void) | undefined;
   const scrollListeners = new Set<(event: BigScrollEvent) => void>();
 
@@ -50,6 +52,14 @@ export function createBigScroll(): BigScroll {
     gsap.ticker.remove(tick);
     lenis?.destroy();
     lenis = undefined;
+    if (scroller) {
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.scroller === scroller) {
+          trigger.kill();
+        }
+      });
+    }
+    scroller = undefined;
     scrollbar = undefined;
   }
 
@@ -66,7 +76,33 @@ export function createBigScroll(): BigScroll {
 
     destroy();
     scrollbar = nextScrollbar;
+    scroller = wrapper;
     lenis = new Lenis({ wrapper, content, autoRaf: false, smoothWheel: true });
+
+    ScrollTrigger.scrollerProxy(wrapper, {
+      scrollTop(value) {
+        if (arguments.length) {
+          lenis?.scrollTo(value as number, { immediate: true });
+        }
+        return lenis?.animatedScroll ?? wrapper.scrollTop;
+      },
+      scrollLeft(value) {
+        if (arguments.length) {
+          wrapper.scrollLeft = value as number;
+        }
+        return wrapper.scrollLeft;
+      },
+      scrollHeight: () => content.scrollHeight,
+      scrollWidth: () => content.scrollWidth,
+      getBoundingClientRect: () => ({
+        top: 0,
+        left: 0,
+        width: window.innerWidth,
+        height: window.innerHeight
+      }),
+      pinType: getComputedStyle(wrapper).transform !== 'none' ? 'transform' : 'fixed'
+    });
+
     unsubscribeScroll = lenis.on('scroll', notifyScroll);
     gsap.ticker.add(tick);
     requestAnimationFrame(() => ScrollTrigger.refresh());
@@ -90,6 +126,9 @@ export function createBigScroll(): BigScroll {
   return {
     get lenis() {
       return lenis;
+    },
+    get scroller() {
+      return scroller;
     },
     onScroll,
     registerScrollbar,

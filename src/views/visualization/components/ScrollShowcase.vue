@@ -5,6 +5,7 @@ import { inject, nextTick, onBeforeUnmount, onMounted, ref, useSlots, useTemplat
 import LineSidebar from '@/components/vue-bits/LineSidebar.vue';
 import { bigScrollKey } from '@/layouts/big/composables/useBigScroll';
 import { gsap } from '@/plugins';
+import { useThemeStore } from '@/store';
 import ScrollShowcaseSection from './ScrollShowcaseSection.vue';
 
 interface ScrollShowcaseItem {
@@ -21,10 +22,10 @@ type ScrollShowcaseSectionInstance = ComponentPublicInstance & {
 
 defineProps<{
   items: ScrollShowcaseItem[];
-  accentColor?: string;
 }>();
 
 const slots = useSlots();
+const themeStore = useThemeStore();
 const bigScroll = inject(bigScrollKey);
 const rootRef = useTemplateRef<HTMLElement>('rootRef');
 const sidebarRef = useTemplateRef<HTMLElement>('sidebarRef');
@@ -171,7 +172,7 @@ onBeforeUnmount(() => {
       <LineSidebar
         :items="items.map(item => item.label)"
         :active-index="activeIndex"
-        :accent-color="accentColor"
+        :accent-color="themeStore.colorScheme[0]"
         :item-gap="40"
         :default-active="0"
         @update:active-index="activeIndex = $event"

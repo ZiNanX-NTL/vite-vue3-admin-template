@@ -26,11 +26,11 @@ defineExpose({
   <section
     :id="item.id"
     ref="rootRef"
-    class="bg-[#020812] flex h-100vh items-center justify-center relative overflow-hidden"
+    class="flex min-h-100vh items-center justify-center relative overflow-hidden"
   >
     <div
       ref="contentRef"
-      class="border-y border-white/10 flex min-h-60vh w-[min(72vw,1100px)] items-center relative"
+      class="border-y border-white/10 flex min-h-100vh items-center relative"
     >
       <slot :item="item" :index="index">
         <div class="flex gap-80px w-full items-center justify-between">

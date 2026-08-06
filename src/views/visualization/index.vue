@@ -13,6 +13,7 @@ import { useThemeStore } from '@/store';
 import { createEarth } from '../demo/particle-earth/components/Earth';
 import { createFlyline } from '../demo/particle-earth/components/Flyline';
 import PostProcessing from '../demo/particle-earth/components/PostProcessing.vue';
+import OverviewSection from './components/OverviewSection.vue';
 import ProjectMarkers from './components/ProjectMarkers.vue';
 import ScrollShowcase from './components/ScrollShowcase.vue';
 import {
@@ -354,9 +355,9 @@ onBeforeUnmount(() => {
 const showcaseItems = [
   {
     id: 'overview',
-    label: 'Overview',
-    title: 'Overview',
-    description: 'Scroll-driven showcase placeholder.'
+    label: '概览',
+    title: '公司与系统',
+    description: '公司项目概览.'
   },
   {
     id: 'components',
@@ -425,8 +426,25 @@ const showcaseItems = [
     </div>
     <ScrollShowcase
       :items="showcaseItems"
-      :accent-color="themeStore.colorScheme[0]"
-    />
+    >
+      <template #section="{ item }">
+        <OverviewSection v-if="item.id === 'overview'" class="w-[min(72vw,1100px)]" />
+
+        <div v-else-if="item.id === 'components'" class="w-full">
+          <h2>组件展示</h2>
+          <div class="gap-20px grid grid-cols-3">
+            <div>按钮组件</div>
+            <div>卡片组件</div>
+            <div>表格组件</div>
+          </div>
+        </div>
+
+        <div v-else class="w-full">
+          <h2>{{ item.title }}</h2>
+          <p>{{ item.description }}</p>
+        </div>
+      </template>
+    </ScrollShowcase>
   </NScrollbar>
 </template>
 
