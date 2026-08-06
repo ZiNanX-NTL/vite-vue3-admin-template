@@ -1,6 +1,7 @@
 import type { ScrollToOptions } from 'lenis';
 import type { InjectionKey } from 'vue';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 
 export interface BigScrollbarRef {
@@ -36,6 +37,7 @@ export function createBigScroll(): BigScroll {
 
   function notifyScroll(event: BigScrollEvent) {
     scrollListeners.forEach(listener => listener(event));
+    ScrollTrigger.update();
   }
 
   function tick(time: number) {
@@ -67,6 +69,7 @@ export function createBigScroll(): BigScroll {
     lenis = new Lenis({ wrapper, content, autoRaf: false, smoothWheel: true });
     unsubscribeScroll = lenis.on('scroll', notifyScroll);
     gsap.ticker.add(tick);
+    requestAnimationFrame(() => ScrollTrigger.refresh());
   }
 
   function unregisterScrollbar(currentScrollbar: BigScrollbarRef | null | undefined) {

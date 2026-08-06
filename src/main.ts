@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import GlobalLoading from './components/common/GlobalLoading.vue';
 import { setupDirectives } from './directives';
-import { fixResizeObserver, setupAssets, setupDayjs, setupLoading } from './plugins';
+import { fixResizeObserver, setupAssets, setupDayjs, setupGsap, setupLoading } from './plugins';
 import { setupRouter } from './router';
 import { setupStore } from './store';
 
@@ -14,6 +14,7 @@ async function bootstrapApp() {
   setupLoading();
 
   setupDayjs();
+  setupGsap();
 
   const app = createApp(App);
 
