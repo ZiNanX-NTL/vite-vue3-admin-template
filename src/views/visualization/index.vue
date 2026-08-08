@@ -428,7 +428,7 @@ const showcaseItems = [
       :items="showcaseItems"
     >
       <template #section="{ item }">
-        <OverviewSection v-if="item.id === 'overview'" class="w-[min(72vw,1100px)]" />
+        <OverviewSection v-if="item.id === 'overview'" class="w-[min(80vw,1100px)]" />
 
         <div v-else-if="item.id === 'components'" class="w-full">
           <h2>组件展示</h2>

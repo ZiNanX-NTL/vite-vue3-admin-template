@@ -1,387 +1,288 @@
 <script setup lang="ts">
-import { Icon } from '@iconify/vue';
-import { inject, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
+import { gsap } from 'gsap';
+import { computed, inject, onMounted, onUnmounted, ref } from 'vue';
 import { bigScrollKey } from '@/layouts/big/composables/useBigScroll';
-import { gsap, ScrollTrigger } from '@/plugins';
-import { overviewContent } from '../config/overview';
+import { useThemeStore } from '@/store';
 
-const rootRef = ref<HTMLElement | null>(null);
+interface OverviewFeature {
+  label: string;
+}
+
+const overviewContent = {
+  slogan: '掌上植保',
+  title: '让每一块农田\n都成为可计算的生产单元',
+  tagline: '农民少跑腿 · 信息多跑路',
+  features: [
+    { label: '学农技' },
+    { label: '寻防治' },
+    { label: '问专家' },
+    { label: '农友圈' }
+  ] as OverviewFeature[],
+  ctaText: '病虫害发生趋势一键查'
+};
+
+const heroImageUrl = 'https://www.whqdxz.com:8081/dy/file/QDXZ/img/ntb.jpg';
+
+const themeStore = useThemeStore();
+const themeColor = computed(() => themeStore.colorScheme[0]);
+
 const bigScroll = inject(bigScrollKey);
 
-let mediaQuery: ReturnType<typeof gsap.matchMedia> | undefined;
-let retryTimer: number | undefined;
+const sectionRef = ref<HTMLElement | null>(null);
+const sloganRef = ref<HTMLElement | null>(null);
+const titleRef = ref<HTMLElement | null>(null);
+const featuresRef = ref<HTMLElement | null>(null);
+const taglineRef = ref<HTMLElement | null>(null);
+const ctaRef = ref<HTMLElement | null>(null);
+const mediaRef = ref<HTMLElement | null>(null);
 
-function setReducedMotionState(root: HTMLElement) {
-  gsap.set(root.querySelectorAll('[data-motion]'), {
-    autoAlpha: 1,
-    x: 0,
-    y: 0,
-    scale: 1,
-    rotation: 0
-  });
-  gsap.set(root.querySelectorAll<HTMLElement>('[data-progress]'), {
-    scaleX: (_index, target) => Number(target.dataset.value ?? 1)
-  });
-  gsap.set(root.querySelectorAll('[data-scanline]'), { x: 0 });
-}
+let triggers: ScrollTrigger[] = [];
 
-function createAnimations(root: HTMLElement, scroller: HTMLElement) {
-  const mm = gsap.matchMedia();
-
-  mm.add(
-    {
-      allowMotion: '(prefers-reduced-motion: no-preference)',
-      reduceMotion: '(prefers-reduced-motion: reduce)',
-      compact: '(max-width: 767px)'
-    },
-    context => {
-      const compact = context.conditions?.compact;
-      if (context.conditions?.reduceMotion) {
-        setReducedMotionState(root);
-        return;
-      }
-
-      const intro = gsap.timeline({
-        paused: true,
-        defaults: { ease: 'power3.out' }
-      });
-      intro
-        .fromTo(root.querySelector('[data-motion="eyebrow"]'), { autoAlpha: 0, x: -34 }, { autoAlpha: 1, x: 0, duration: 0.48 })
-        .fromTo(root.querySelector('[data-motion="title"]'), { autoAlpha: 0, y: 56, clipPath: 'inset(0 0 100% 0)' }, { autoAlpha: 1, y: 0, clipPath: 'inset(0 0 0% 0)', duration: 0.78 }, '-=0.22')
-        .fromTo(root.querySelector('[data-motion="description"]'), { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, duration: 0.56 }, '-=0.36')
-        .fromTo(root.querySelectorAll('[data-motion="metric"]'), { autoAlpha: 0, x: 42 }, { autoAlpha: 1, x: 0, duration: 0.58, stagger: 0.1 }, '-=0.16')
-        .fromTo(root.querySelectorAll<HTMLElement>('[data-progress]'), { scaleX: 0 }, {
-          scaleX: (_index, target) => Number(target.dataset.value ?? 1),
-          duration: 0.8,
-          ease: 'power2.out',
-          stagger: 0.08
-        }, '<');
-
-      const moduleGrid = root.querySelector('[data-section="modules"]');
-      const moduleCards = root.querySelectorAll('[data-motion="module"]');
-      const moduleTimeline = gsap.timeline({ paused: true });
-      if (moduleCards.length) {
-        moduleTimeline.fromTo(moduleCards, {
-          autoAlpha: 0,
-          x: index => index % 2 === 0 ? -44 : 44,
-          y: 22
-        }, {
-          autoAlpha: 1,
-          x: 0,
-          y: 0,
-          duration: 0.65,
-          ease: 'power3.out',
-          stagger: 0.12
-        });
-      }
-
-      const workflow = root.querySelector('[data-section="workflow"]');
-      const workflowNodes = root.querySelectorAll('[data-motion="workflow"]');
-      const workflowTimeline = gsap.timeline({ paused: true });
-      if (workflowNodes.length) {
-        workflowTimeline.fromTo(workflowNodes, { autoAlpha: 0, y: 36, scale: 0.94 }, {
-          autoAlpha: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.55,
-          ease: 'power2.out',
-          stagger: 0.14
-        });
-      }
-
-      const fieldPanel = root.querySelector<HTMLElement>('[data-field-panel]');
-      const scrub = gsap.timeline({ paused: true });
-      scrub
-        .fromTo(root.querySelector('[data-motion="orbit"]'), { rotation: -35, y: 30 }, { rotation: 155, y: -28, ease: 'none' }, 0)
-        .fromTo(root.querySelector('[data-scanline]'), { x: -12 }, { x: () => (fieldPanel?.clientWidth ?? 320) + 12, ease: 'none' }, 0)
-        .fromTo(root.querySelector('[data-motion="plot"]'), { y: compact ? 10 : 34 }, { y: compact ? -10 : -28, ease: 'none' }, 0)
-        .fromTo(root.querySelector('.overview-grid'), { backgroundPosition: '0px 0px' }, { backgroundPosition: '0px -90px', ease: 'none' }, 0);
-
-      const scrollTrigger = ScrollTrigger.create({
-        trigger: root,
-        scroller,
-        start: 'top bottom',
-        end: 'bottom top',
-        onUpdate: self => {
-          scrub.progress(self.progress);
-          self.progress > 0.08 ? intro.play() : intro.reverse();
-          moduleGrid && self.progress > 0.3 ? moduleTimeline.play() : moduleTimeline.reverse();
-          workflow && self.progress > 0.62 ? workflowTimeline.play() : workflowTimeline.reverse();
-        },
-        onRefresh: () => {
-          scrub.invalidate();
-        }
-      });
-
-      return () => {
-        intro.kill();
-        moduleTimeline.kill();
-        workflowTimeline.kill();
-        scrub.kill();
-        scrollTrigger.kill();
-      };
-    },
-    root
-  );
-
-  return mm;
-}
-
-onMounted(async () => {
-  await nextTick();
-  const root = rootRef.value;
-  if (!root)
-    return;
-
-  let attempts = 0;
-  const mountAnimations = () => {
+onMounted(() => {
+  requestAnimationFrame(() => {
     const scroller = bigScroll?.scroller;
-    if (!scroller && attempts++ < 20) {
-      retryTimer = window.setTimeout(mountAnimations, 50);
-      return;
-    }
-    if (!scroller)
-      return;
-    mediaQuery = createAnimations(root, scroller);
-    requestAnimationFrame(() => ScrollTrigger.refresh());
-  };
-  mountAnimations();
+    const scrollerVars = scroller ? { scroller } : {};
+
+    // 左侧内容：随滚动依次浮现
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.value,
+        start: 'top 70%',
+        end: 'top 30%',
+        scrub: 0.9,
+        ...scrollerVars
+      }
+    });
+
+    tl.fromTo(
+      sloganRef.value,
+      { clipPath: 'inset(100% 0% 0% 0%)', y: 28 },
+      { clipPath: 'inset(0% 0% 0% 0%)', y: 0, ease: 'power3.out' },
+      0
+    );
+    tl.fromTo(
+      titleRef.value,
+      { clipPath: 'inset(100% 0% 0% 0%)', y: 18 },
+      { clipPath: 'inset(0% 0% 0% 0%)', y: 0, ease: 'power3.out' },
+      0.13
+    );
+    tl.fromTo(
+      featuresRef.value,
+      { x: -30, opacity: 0 },
+      { x: 0, opacity: 1, ease: 'power2.out' },
+      0.25
+    );
+    tl.fromTo(
+      taglineRef.value,
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, ease: 'power2.out' },
+      0.35
+    );
+    tl.fromTo(
+      ctaRef.value,
+      { opacity: 0, x: -16 },
+      { opacity: 1, x: 0, ease: 'power2.out' },
+      0.42
+    );
+
+    if (tl.scrollTrigger)
+      triggers.push(tl.scrollTrigger);
+
+    // 右侧图片：clip-path 随滚动连贯展开，不浮动
+    const imgAnim = gsap.fromTo(
+      mediaRef.value,
+      { clipPath: 'inset(12% 18% 12% 0%)', opacity: 0.15 },
+      {
+        clipPath: 'inset(0% 0% 0% 0%)',
+        opacity: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.value,
+          start: 'top bottom',
+          end: 'center 50%',
+          scrub: 1.2,
+          ...scrollerVars
+        }
+      }
+    );
+
+    if (imgAnim.scrollTrigger)
+      triggers.push(imgAnim.scrollTrigger);
+  });
 });
 
-onBeforeUnmount(() => {
-  if (retryTimer)
-    window.clearTimeout(retryTimer);
-  mediaQuery?.revert();
-  mediaQuery = undefined;
+onUnmounted(() => {
+  triggers.forEach(t => t.kill());
+  triggers = [];
+  gsap.killTweensOf(
+    [sloganRef.value, titleRef.value, featuresRef.value, taglineRef.value, ctaRef.value, mediaRef.value].filter(Boolean)
+  );
 });
 </script>
 
 <template>
-  <section ref="rootRef" class="overview-root text-white/85 w-full relative overflow-hidden" aria-labelledby="overview-title">
-    <div class="overview-grid opacity-60 pointer-events-none inset-0 absolute" aria-hidden="true" />
-    <div class="mx-auto px-18px pb-100px pt-30px max-w-1180px relative lg:px-44px sm:px-32px">
-      <header class="gap-42px grid items-end lg:grid-cols-[minmax(0,1.15fr)_minmax(280px,0.85fr)]">
-        <div class="max-w-720px">
-          <p data-motion="eyebrow" class="text-[11px] text-[#79f7c0] tracking-[0.24em] mb-18px flex gap-10px uppercase items-center">
-            <span class="rounded-full bg-[#79f7c0] h-6px w-6px shadow-[0_0_18px_rgba(121,247,192,0.8)]" aria-hidden="true" />
-            {{ overviewContent.eyebrow }}
-          </p>
-          <h1 id="overview-title" data-motion="title" class="text-[clamp(38px,5.5vw,78px)] text-white leading-[1.02] tracking-[-0.035em] font-600 m-0 max-w-680px">
-            <template v-for="(line, index) in overviewContent.title.split('\n')" :key="line">
-              <span class="block" :class="index === 1 ? 'text-[#9fdcff]' : ''">{{ line }}</span>
-            </template>
+  <section ref="sectionRef" class="overview-section text-white relative" aria-labelledby="overview-title">
+    <div class="gap-x-0 gap-y-40px grid items-center lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.2fr)]">
+      <div class="">
+        <!-- 主标语 -->
+        <div ref="sloganRef" class="overflow-hidden">
+          <h1
+            id="overview-title"
+            class="text-[clamp(52px,7.5vw,88px)] text-white leading-[0.92] tracking-[-0.03em] font-900 m-0"
+          >
+            {{ overviewContent.slogan }}
           </h1>
-          <p data-motion="description" class="text-16px text-[#9aaec3] leading-28px mt-26px max-w-620px sm:text-18px sm:leading-30px">
-            {{ overviewContent.description }}
+        </div>
+
+        <!-- 副标题 -->
+        <div ref="titleRef" class="mt-22px overflow-hidden">
+          <p class="text-[clamp(14px,1.5vw,18px)] text-white/52 leading-[1.65] tracking-[0.005em] m-0 whitespace-pre-line">
+            {{ overviewContent.title }}
           </p>
         </div>
 
-        <div class="text-12px text-[#7890a8] leading-20px pl-18px border-l border-white/14 lg:mb-8px lg:pl-22px">
-          <div class="text-[#b9c9d9] mb-12px flex gap-12px items-center justify-between">
-            <span>PLATFORM NOTE</span>
-            <span class="text-[10px] text-[#79f7c0] tracking-[0.16em] px-10px py-3px rounded-full bg-[#79f7c0]/10">SIMULATION</span>
-          </div>
-          <p class="m-0 max-w-300px">
-            植保数字化系统将感知、研判与执行连接到同一张农田数据底图。
-          </p>
+        <!-- 特性标签 -->
+        <div ref="featuresRef" class="mt-30px flex flex-wrap gap-8px">
+          <span
+            v-for="feature in overviewContent.features"
+            :key="feature.label"
+            class="overview-pill text-13px tracking-[0.05em] px-14px py-7px"
+            :style="{ '--tc': themeColor }"
+          >
+            {{ feature.label }}
+          </span>
         </div>
-      </header>
 
-      <div class="mt-54px gap-12px grid lg:mt-70px sm:gap-16px sm:grid-cols-3">
-        <article v-for="metric in overviewContent.metrics" :key="metric.label" data-motion="metric" class="overview-metric px-16px pb-16px pt-18px border border-white/10 bg-[#07131b]/72 sm:px-20px sm:pt-20px">
-          <div class="mb-20px flex gap-12px items-start justify-between">
-            <p class="text-12px text-[#8ca3b9] tracking-[0.12em] m-0">
-              {{ metric.label }}
-            </p>
-            <span class="i-carbon-arrow-up-right text-15px text-[#79f7c0]" aria-hidden="true" />
-          </div>
-          <p class="text-[clamp(26px,3vw,42px)] text-white leading-none font-600 m-0 tabular-nums">
-            {{ metric.value }}
-          </p>
-          <p class="text-12px text-[#71879e] mb-16px mt-10px">
-            {{ metric.detail }}
-          </p>
-          <div class="bg-white/8 h-2px w-full overflow-hidden" role="progressbar" :aria-label="metric.label" :aria-valuenow="Math.round(metric.progress * 100)" aria-valuemin="0" aria-valuemax="100">
-            <span data-progress class="bg-[#79f7c0] h-full block shadow-[0_0_14px_rgba(121,247,192,0.65)] origin-left" :data-value="metric.progress" :style="{ transform: `scaleX(${metric.progress})` }" />
-          </div>
-        </article>
+        <!-- 标语 -->
+        <p
+          ref="taglineRef"
+          class="text-11px tracking-[0.1em] m-0 mt-14px"
+          :style="{ color: `${themeColor}80` }"
+        >
+          {{ overviewContent.tagline }}
+        </p>
+
+        <!-- CTA -->
+        <button
+          ref="ctaRef"
+          type="button"
+          class="overview-cta group text-14px text-white/90 tracking-[0.04em] mt-38px px-26px py-14px flex gap-12px items-center relative overflow-hidden"
+          :style="{ '--tc': themeColor }"
+        >
+          <span class="relative z-1">{{ overviewContent.ctaText }}</span>
+          <span
+            class="i-carbon-chevron-right text-14px transition-transform duration-300 relative z-1 group-hover:translate-x-3px"
+            aria-hidden="true"
+            :style="{ color: themeColor }"
+          />
+        </button>
       </div>
 
-      <div data-section="modules" class="mt-88px gap-28px grid lg:gap-48px lg:grid-cols-[minmax(0,1fr)_minmax(300px,0.75fr)]">
-        <div>
-          <div class="mb-26px flex gap-14px items-end justify-between">
-            <div>
-              <p class="text-[11px] text-[#77b8ff] tracking-[0.22em] mb-10px uppercase">
-                SYSTEM CAPABILITIES
-              </p>
-              <h2 class="text-28px text-white leading-tight tracking-[-0.025em] font-500 m-0 sm:text-36px">
-                把复杂农事，变成可执行的系统语言
-              </h2>
-            </div>
-            <span class="text-[10px] text-[#5e748b] tracking-[0.18em] hidden sm:block">04 MODULES</span>
-          </div>
-
-          <div class="gap-10px grid sm:grid-cols-2">
-            <article v-for="module in overviewContent.modules" :key="module.index" data-motion="module" class="overview-module group p-18px border border-white/10 bg-[#07131b]/58 transition-colors duration-300 sm:p-22px hover:border-[#79f7c0]/42 hover:bg-[#0a1d26]/82">
-              <div class="mb-36px flex gap-14px items-start justify-between">
-                <span class="text-18px text-[#79f7c0] border border-[#79f7c0]/22 bg-[#79f7c0]/6 flex size-36px transition-transform duration-300 items-center justify-center group-hover:scale-105">
-                  <Icon :icon="module.icon" aria-hidden="true" />
-                </span>
-                <span class="text-[10px] text-[#6c849b] tracking-[0.14em]">{{ module.signal }}</span>
-              </div>
-              <p class="text-[11px] text-[#79f7c0] tracking-[0.18em] mb-9px">
-                {{ module.index }}
-              </p>
-              <h3 class="text-18px text-white leading-26px font-500 m-0">
-                {{ module.title }}
-              </h3>
-              <p class="text-13px text-[#879db3] leading-22px mb-0 mt-12px">
-                {{ module.description }}
-              </p>
-            </article>
-          </div>
-        </div>
-
-        <aside data-motion="plot" class="overview-plot p-18px border border-[#77b8ff]/22 bg-[#07131b]/78 relative sm:p-24px" aria-label="示范田实时切片">
-          <div data-motion="orbit" class="overview-orbit border border-[#77b8ff]/18 rounded-full size-190px pointer-events-none right-[-66px] top-[-58px] absolute" aria-hidden="true">
-            <span class="rounded-full bg-[#77b8ff] size-4px shadow-[0_0_20px_rgba(119,184,255,0.95)] left-1/2 top-1/2 absolute -translate-x-1/2 -translate-y-1/2" />
-          </div>
-          <div class="mb-26px flex gap-12px items-center justify-between">
-            <div>
-              <p class="text-[10px] text-[#77b8ff] tracking-[0.2em] mb-8px uppercase">
-                LIVE FIELD SLICE
-              </p>
-              <h2 class="text-20px text-white font-500 m-0">
-                {{ overviewContent.demoPlot.name }}
-              </h2>
-            </div>
-            <span class="text-[10px] text-[#79f7c0] tracking-[0.12em] flex gap-6px items-center"><i class="rounded-full bg-[#79f7c0] size-5px shadow-[0_0_12px_rgba(121,247,192,0.8)]" aria-hidden="true" /> LIVE</span>
-          </div>
-
-          <div data-field-panel class="p-14px border border-white/10 bg-[#061018]/80 relative overflow-hidden">
-            <div class="overview-field opacity-75 inset-0 absolute" aria-hidden="true" />
-            <div data-scanline class="bg-[#79f7c0] h-full w-1px shadow-[0_0_18px_rgba(121,247,192,0.95)] left-0 top-0 absolute" aria-hidden="true" />
-            <div class="flex flex-col min-h-190px justify-between relative">
-              <div class="flex gap-12px items-start justify-between">
-                <span class="text-11px text-[#9cb3c8] tracking-[0.16em]">PLOT / {{ overviewContent.demoPlot.id }}</span>
-                <span class="text-11px text-[#79f7c0]">{{ overviewContent.demoPlot.status }}</span>
-              </div>
-              <div class="flex gap-12px items-end justify-between">
-                <div>
-                  <p class="text-12px text-[#8ca3b9] m-0">
-                    {{ overviewContent.demoPlot.crop }}
-                  </p>
-                  <p class="text-12px text-[#627b92] mb-0 mt-8px">
-                    {{ overviewContent.demoPlot.updated }}
-                  </p>
-                </div>
-                <div class="p-5px rounded-full size-86px" :style="{ background: `conic-gradient(#79f7c0 ${overviewContent.demoPlot.health}%, rgba(255,255,255,0.1) 0)` }" role="img" :aria-label="`地块健康度 ${overviewContent.demoPlot.health}%`">
-                  <div class="rounded-full bg-[#07131b] flex flex-col size-full items-center justify-center">
-                    <strong class="text-22px text-white leading-none tabular-nums">{{ overviewContent.demoPlot.health }}</strong>
-                    <span class="text-[9px] text-[#7790a6] tracking-[0.12em] mt-4px">HEALTH</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="text-11px mt-16px pt-16px border-t border-white/10 gap-x-16px gap-y-12px grid grid-cols-2">
-            <div><span class="text-[#617a91]">SENSOR NODES</span><strong class="text-[#c8d9e8] font-500 mt-4px block">42 online</strong></div>
-            <div><span class="text-[#617a91]">LAST SIGNAL</span><strong class="text-[#c8d9e8] font-500 mt-4px block">02 min ago</strong></div>
-          </div>
-        </aside>
+      <!-- 媒体区：嵌入背景感，左缘模糊渐隐，无悬浮 -->
+      <div ref="mediaRef" class="overview-media w-full relative">
+        <span
+          class="overview-media-glow pointer-events-none inset-0 absolute"
+          aria-hidden="true"
+          :style="{ background: `radial-gradient(circle at 58% 36%, ${themeColor}40, transparent 60%)` }"
+        />
+        <img
+          :src="heroImageUrl"
+          alt="掌上植保应用界面展示"
+          class="overview-media-img w-full block object-cover object-center"
+          loading="lazy"
+        >
+        <div class="overview-media-scanline pointer-events-none inset-0 absolute" aria-hidden="true" />
       </div>
-
-      <section data-section="workflow" class="mt-88px py-30px border-y border-white/10 sm:py-38px" aria-labelledby="workflow-title">
-        <div class="mb-30px flex flex-wrap gap-16px items-end justify-between">
-          <div>
-            <p class="text-[11px] text-[#79f7c0] tracking-[0.22em] mb-10px uppercase">
-              THE PROTECTION LOOP
-            </p>
-            <h2 id="workflow-title" class="text-28px text-white leading-tight tracking-[-0.025em] font-500 m-0 sm:text-36px">
-              从发现异常，到完成一次闭环
-            </h2>
-          </div>
-          <p class="text-12px text-[#71879e] leading-20px m-0 max-w-300px">
-            每一次回传都会成为下一次判断的上下文，系统持续校正而不是重复告警。
-          </p>
-        </div>
-
-        <ol class="m-0 p-0 list-none gap-16px grid sm:gap-0 sm:grid-cols-4">
-          <li v-for="(step, index) in overviewContent.workflow" :key="step.code" data-motion="workflow" class="flex gap-12px relative sm:pr-22px sm:block">
-            <div class="text-[10px] text-[#9fdcff] tracking-[0.08em] border border-[#77b8ff]/35 bg-[#77b8ff]/8 flex shrink-0 size-34px items-center justify-center">
-              {{ String(index + 1).padStart(2, '0') }}
-            </div>
-            <div class="sm:mt-16px">
-              <p class="text-11px text-[#79f7c0] tracking-[0.18em] m-0">
-                {{ step.code }}
-              </p>
-              <h3 class="text-16px text-white font-500 mb-0 mt-8px">
-                {{ step.title }}
-              </h3>
-              <p class="text-12px text-[#71879e] mb-0 mt-7px">
-                {{ step.description }}
-              </p>
-            </div>
-            <span v-if="index < overviewContent.workflow.length - 1" class="bg-[#77b8ff]/32 h-16px w-1px left-34px top-34px absolute sm:h-1px sm:w-[calc(100%-58px)] sm:left-auto sm:right-0 sm:top-17px" aria-hidden="true" />
-          </li>
-        </ol>
-      </section>
-
-      <footer class="text-[10px] text-[#586f86] tracking-[0.14em] pt-28px flex flex-wrap gap-14px items-center justify-between">
-        <span>AGRICULTURE INTELLIGENCE / OVERVIEW</span>
-        <span>{{ overviewContent.dataNote }}</span>
-      </footer>
     </div>
   </section>
 </template>
 
 <style scoped>
-.overview-root {
-  --overview-ink: #07131b;
-  --overview-line: rgba(121, 247, 192, 0.1);
-  background:
-    radial-gradient(circle at 82% 8%, rgba(44, 112, 155, 0.18), transparent 34%),
-    linear-gradient(180deg, rgba(3, 11, 17, 0.97), rgba(4, 13, 20, 0.94));
+@property --scan-pos {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: -40%;
 }
 
-.overview-grid {
-  background-image:
-    linear-gradient(to right, var(--overview-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--overview-line) 1px, transparent 1px);
-  background-size: 58px 58px;
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), transparent 70%);
+.overview-pill {
+  border: 1px solid color-mix(in srgb, var(--tc) 30%, transparent);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--tc) 6%, transparent);
+  backdrop-filter: blur(6px);
+  color: rgba(255, 255, 255, 0.72);
+  transition: background 0.22s, border-color 0.22s, color 0.22s;
 }
 
-.overview-field {
-  background:
-    linear-gradient(135deg, transparent 44%, rgba(121, 247, 192, 0.14) 44.5%, transparent 45%),
-    linear-gradient(40deg, transparent 54%, rgba(119, 184, 255, 0.12) 54.5%, transparent 55%),
-    linear-gradient(90deg, rgba(119, 184, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(rgba(119, 184, 255, 0.08) 1px, transparent 1px);
-  background-size: auto, auto, 34px 34px, 34px 34px;
-  mask-image: radial-gradient(circle at center, #000, transparent 78%);
+.overview-pill:hover {
+  background: color-mix(in srgb, var(--tc) 14%, transparent);
+  border-color: color-mix(in srgb, var(--tc) 55%, transparent);
+  color: rgba(255, 255, 255, 0.95);
 }
 
-.overview-orbit::before,
-.overview-orbit::after {
-  border: 1px solid rgba(119, 184, 255, 0.18);
-  border-radius: 999px;
+.overview-cta {
+  border: 1px solid color-mix(in srgb, var(--tc) 32%, transparent);
+  background: color-mix(in srgb, var(--tc) 8%, transparent);
+  backdrop-filter: blur(6px);
+  border-radius: 8px;
+  transition: background 0.25s, border-color 0.25s;
+}
+
+.overview-cta::before {
   content: '';
-  inset: 20px;
   position: absolute;
+  inset: 0;
+  --scan-pos: -40%;
+  background: linear-gradient(
+    90deg,
+    transparent var(--scan-pos),
+    color-mix(in srgb, var(--tc) 22%, transparent) calc(var(--scan-pos) + 55%),
+    transparent calc(var(--scan-pos) + 100%)
+  );
+  border-radius: inherit;
+  pointer-events: none;
 }
 
-.overview-orbit::after {
-  border-color: rgba(121, 247, 192, 0.24);
-  inset: 42px;
+.overview-cta:hover::before {
+  --scan-pos: 130%;
+  transition: --scan-pos 0.52s ease-out;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .overview-module,
-  .overview-metric,
-  [data-motion='workflow'] {
-    opacity: 1;
-  }
+.overview-cta:hover {
+  background: color-mix(in srgb, var(--tc) 13%, transparent);
+  border-color: color-mix(in srgb, var(--tc) 52%, transparent);
+}
+
+/* 嵌入背景：左缘透明渐变遮罩，右侧轻微溢出 */
+.overview-media {
+  margin-right: -48px;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 12%,
+    rgba(0, 0, 0, 0.82) 28%,
+    black 44%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 12%,
+    rgba(0, 0, 0, 0.82) 28%,
+    black 44%
+  );
+}
+
+.overview-media-img {
+  aspect-ratio: 4 / 3;
+}
+
+.overview-media-glow {
+  filter: blur(48px);
+  z-index: 1;
+}
+
+.overview-media-scanline {
+  background:
+    linear-gradient(180deg, rgba(4, 13, 20, 0.22), transparent 18%, transparent 72%, rgba(4, 13, 20, 0.5)),
+    radial-gradient(circle at 50% 108%, rgba(3, 11, 17, 0.45), transparent 55%);
 }
 </style>
