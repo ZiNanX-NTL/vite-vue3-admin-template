@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-09T00:00:00+08:00",
+  "title": "Design System: Field Intelligence Atlas",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Signal Cyan",
+        "canonical": "#00a3cf",
+        "tonalRamp": ["#003746", "#00576e", "#007895", "#0095b9", "#00a3cf", "#22b7de", "#62cbe6", "#a0dfef", "#d1f1f8"]
+      },
+      "signal-cyan-light": {
+        "role": "tertiary",
+        "displayName": "Signal Cyan Light",
+        "canonical": "#c4f3fe",
+        "tonalRamp": ["#164551", "#2a6877", "#438b9d", "#6dafbd", "#8cd2df", "#a9e1eb", "#c4f3fe", "#dcf8fb", "#f1fdfe"]
+      },
+      "visualization-space": {
+        "role": "neutral",
+        "displayName": "Visualization Space",
+        "canonical": "#040d14",
+        "tonalRamp": ["#040d14", "#081923", "#102834", "#193946", "#2a4c59", "#456773", "#6d8991", "#a4b8bd", "#dce5e7"]
+      },
+      "shell-light": {
+        "role": "neutral",
+        "displayName": "Shell Light",
+        "canonical": "#f6f9f8",
+        "tonalRamp": ["#252b2a", "#414947", "#626b68", "#87908d", "#adb6b2", "#c8d0cd", "#dbe3e0", "#eaf0ed", "#f6f9f8"]
+      },
+      "shell-dark": {
+        "role": "neutral",
+        "displayName": "Shell Dark",
+        "canonical": "#101014",
+        "tonalRamp": ["#101014", "#1a1a20", "#26262c", "#34343b", "#47474e", "#626269", "#818188", "#a7a7ad", "#d4d4d7"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Visualization Display", "purpose": "Hero and section titles on the immersive visualization surface." },
+      "body": { "displayName": "System Sans Body", "purpose": "Operational controls, tables, forms, and descriptive copy." },
+      "label": { "displayName": "Telemetry Label", "purpose": "Small metadata, statistic captions, and visualization telemetry." }
+    },
+    "shadows": [
+      { "name": "header-separation", "value": "0 1px 2px rgba(0, 21, 41, 0.08)", "purpose": "Separates fixed header chrome from content." },
+      { "name": "sider-separation", "value": "2px 0 8px rgba(29, 35, 41, 0.05)", "purpose": "Separates the operational sider from the content canvas." },
+      { "name": "marker-signal", "value": "0 0 8px var(--project-marker-color)", "purpose": "Marks a project location on the earth without a panel." }
+    ],
+    "motion": [
+      { "name": "transition-base", "value": "all 300ms ease-in-out", "purpose": "Default shell control and layout transition." },
+      { "name": "page-fade-slide", "value": "300ms ease", "purpose": "Default route transition when page animation is enabled." },
+      { "name": "earth-scrub", "value": "ScrollTrigger scrub 0.9-1.2", "purpose": "Links earth view changes and section reveals to scroll progress." },
+      { "name": "reduced-motion", "value": "State transitions without continuous scrubbing", "purpose": "Preserves orientation when prefers-reduced-motion is active." }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "max-md", "purpose": "Collapses the sider and narrows visualization content." },
+      { "name": "large", "value": "lg", "purpose": "Enables wide two-column visualization compositions." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Visualization CTA",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "A cyan-signaled action embedded in the agricultural overview section.",
+      "html": "<button class=\"ds-viz-cta\" type=\"button\"><span>病虫害发生趋势一键查</span><svg viewBox=\"0 0 16 16\" aria-hidden=\"true\"><path d=\"m6 3 5 5-5 5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button>",
+      "css": ".ds-viz-cta { position: relative; display: inline-flex; align-items: center; gap: 12px; overflow: hidden; padding: 14px 26px; border: 1px solid color-mix(in srgb, #00a3cf 32%, transparent); border-radius: 8px; background: color-mix(in srgb, #00a3cf 8%, transparent); color: rgba(255,255,255,.9); font: 400 14px/1.5 ui-sans-serif,system-ui,sans-serif; letter-spacing: .04em; transition: background .25s,border-color .25s; } .ds-viz-cta svg { width: 14px; height: 14px; color: #00a3cf; transition: transform .3s; } .ds-viz-cta:hover { border-color: color-mix(in srgb, #00a3cf 52%, transparent); background: color-mix(in srgb, #00a3cf 13%, transparent); } .ds-viz-cta:hover svg { transform: translateX(3px); } .ds-viz-cta:focus-visible { outline: 2px solid #c4f3fe; outline-offset: 3px; }"
+    },
+    {
+      "name": "Visualization Chip",
+      "kind": "chip",
+      "refersTo": "visualization-chip",
+      "description": "A quiet feature label for agricultural capabilities.",
+      "html": "<span class=\"ds-viz-chip\">学农技</span>",
+      "css": ".ds-viz-chip { display: inline-flex; padding: 7px 14px; border: 1px solid color-mix(in srgb, #00a3cf 30%, transparent); border-radius: 6px; background: color-mix(in srgb, #00a3cf 6%, transparent); color: rgba(255,255,255,.72); font: 500 13px/1.4 ui-sans-serif,system-ui,sans-serif; letter-spacing: .05em; transition: background .22s,border-color .22s,color .22s; } .ds-viz-chip:hover { border-color: color-mix(in srgb, #00a3cf 55%, transparent); background: color-mix(in srgb, #00a3cf 14%, transparent); color: rgba(255,255,255,.95); } .ds-viz-chip:focus-visible { outline: 2px solid #c4f3fe; outline-offset: 3px; }"
+    },
+    {
+      "name": "Operational Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "The standard quiet container used for admin data and settings.",
+      "html": "<article class=\"ds-card\"><h3>表格</h3><p>Operational content stays easy to scan.</p></article>",
+      "css": ".ds-card { padding: 16px; border: 0; border-radius: 8px; background: #fff; color: #18181c; box-shadow: 0 1px 2px rgba(0,0,0,.08); font: 400 14px/1.5 ui-sans-serif,system-ui,sans-serif; } .ds-card h3 { margin: 0 0 8px; font-size: 16px; font-weight: 600; } .ds-card p { margin: 0; color: #6b7280; }"
+    },
+    {
+      "name": "Visualization Statistic",
+      "kind": "card",
+      "refersTo": "visualization-stat",
+      "description": "A compact statistic tile for the business coverage section.",
+      "html": "<div class=\"ds-viz-stat\"><strong>28+</strong><span>省份覆盖</span></div>",
+      "css": ".ds-viz-stat { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px; border: 1px solid color-mix(in srgb, #00a3cf 22%, transparent); border-radius: 10px; background: color-mix(in srgb, #00a3cf 5%, rgba(0,0,0,.2)); color: #fff; backdrop-filter: blur(8px); transition: border-color .25s,background .25s; } .ds-viz-stat strong { color: color-mix(in srgb, #00a3cf 80%, #fff); font: 700 32px/1 ui-sans-serif,system-ui,sans-serif; text-shadow: 0 0 20px color-mix(in srgb, #00a3cf 50%, transparent); } .ds-viz-stat span { color: rgba(255,255,255,.45); font: 500 11px/1.4 ui-sans-serif,system-ui,sans-serif; letter-spacing: .1em; } .ds-viz-stat:hover { border-color: color-mix(in srgb, #00a3cf 42%, transparent); background: color-mix(in srgb, #00a3cf 10%, rgba(0,0,0,.2)); }"
+    },
+    {
+      "name": "Search Result Row",
+      "kind": "nav",
+      "refersTo": "button-text",
+      "description": "A compact result item inside the global search surface.",
+      "html": "<button class=\"ds-search-row\"><span>种植概况</span><kbd>Enter</kbd></button>",
+      "css": ".ds-search-row { display: flex; align-items: center; justify-content: space-between; width: 100%; height: 56px; padding: 0 14px; border: 0; border-radius: 4px; background: #e5e7eb; color: #18181c; font: 400 14px/1.5 ui-sans-serif,system-ui,sans-serif; text-align: left; transition: background .3s,color .3s; } .ds-search-row:hover,.ds-search-row:focus-visible { background: #00a3cf; color: #fff; } .ds-search-row:focus-visible { outline: 2px solid #c4f3fe; outline-offset: 2px; } .ds-search-row kbd { font: 500 11px/1 ui-monospace,monospace; opacity: .7; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Field Intelligence Atlas",
+    "overview": "The system treats agricultural operations as a navigable field of evidence. The everyday admin surface is measured, configurable, and information-dense: menus, tabs, cards, tables, forms, and settings help an operator complete work quickly. The visualization surface changes register without changing the product's purpose. It uses a deep spatial canvas, a luminous earth, project markers, and scroll-linked transitions to make distributed agricultural activity feel legible at a glance.\n\nThis is a two-speed system. Operational UI earns trust through predictable controls, quiet surfaces, and restrained depth. The dramatic layer earns attention through scale, atmospheric contrast, cyan signal light, masks, scanlines, and motion that follows the user's scroll. Both modes share the same configurable primary accent and a system sans voice rather than introducing a separate brand language.",
+    "keyCharacteristics": [
+      "Configurable operational shell with a vertical navigation default.",
+      "Signal Cyan used as a functional accent and visualization beacon.",
+      "Deep-space visualization canvas paired with pale or charcoal admin surfaces.",
+      "Subtle elevation for admin surfaces; glow and tonal layering for visualization.",
+      "Scroll-linked motion with reduced-motion fallbacks."
+    ],
+    "rules": [
+      { "name": "The Two-Speed Surface Rule", "body": "Keep the admin shell calm and scannable; reserve spectacle for the spatial visualization surface.", "section": "overview" },
+      { "name": "The Signal Rarity Rule", "body": "Use Signal Cyan to direct action or attention; keep large areas neutral or deep-space so the signal remains meaningful.", "section": "colors" },
+      { "name": "The Scale Split Rule", "body": "Large display type belongs to the visualization layer; operational screens stay compact enough for scanning and comparison.", "section": "typography" },
+      { "name": "The Layered Depth Rule", "body": "Use shadow for operational separation and light for visualization emphasis; do not use both to make the same element feel heavy.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep operational layouts predictable, dense, and configurable.",
+      "Do use Signal Cyan for actions, active states, geographic signals, and meaningful emphasis.",
+      "Do preserve the distinction between pale/charcoal shell surfaces and the deep-space visualization ground.",
+      "Do use scroll-linked motion to explain spatial relationships, with a reduced-motion path.",
+      "Do use thin borders, translucent fills, and selective glow on the visualization layer."
+    ],
+    "donts": [
+      "Don't turn routine admin cards into dramatic floating panels.",
+      "Don't spread Signal Cyan across every surface; its rarity creates hierarchy.",
+      "Don't introduce a second decorative typeface without an explicit identity decision.",
+      "Don't replace the earth scene with an opaque dashboard canvas when the visualization surface is in use.",
+      "Don't rely on motion alone to communicate state or navigation."
+    ]
+  }
+}
