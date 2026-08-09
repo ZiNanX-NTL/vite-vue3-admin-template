@@ -33,7 +33,7 @@ function setHeadBarVisible(visible: boolean) {
 }
 
 const stopScrollListener = bigScroll.onScroll(({ direction, scroll }) => {
-  if (scroll <= window.innerHeight && (scroll <= 0 || direction < 0)) {
+  if (scroll <= (window.innerHeight * 0.7) && (scroll <= 0 || direction < 0)) {
     setHeadBarVisible(true);
   } else if (direction > 0) {
     setHeadBarVisible(false);

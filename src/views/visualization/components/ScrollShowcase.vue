@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ComponentPublicInstance } from 'vue';
+import type { ScrollShowcaseChangeSource, ScrollShowcaseItem } from '../types';
 import type { BigScrollEvent } from '@/layouts/big/composables/useBigScroll';
 import { inject, nextTick, onBeforeUnmount, onMounted, ref, useSlots, useTemplateRef } from 'vue';
 import LineSidebar from '@/components/vue-bits/LineSidebar.vue';
@@ -8,20 +9,21 @@ import { gsap } from '@/plugins';
 import { useThemeStore } from '@/store';
 import ScrollShowcaseSection from './ScrollShowcaseSection.vue';
 
-interface ScrollShowcaseItem {
-  id: string;
-  label: string;
-  title: string;
-  description?: string;
-}
-
 type ScrollShowcaseSectionInstance = ComponentPublicInstance & {
   getRoot: () => HTMLElement | null;
   getContent: () => HTMLElement | null;
 };
 
-defineProps<{
+const props = defineProps<{
   items: ScrollShowcaseItem[];
+}>();
+
+const emit = defineEmits<{
+  activeSectionChange: [
+    item: ScrollShowcaseItem | null,
+    index: number | null,
+    source: ScrollShowcaseChangeSource
+  ];
 }>();
 
 const slots = useSlots();
@@ -32,13 +34,19 @@ const sidebarRef = useTemplateRef<HTMLElement>('sidebarRef');
 const sectionRefs = ref<(ScrollShowcaseSectionInstance | null)[]>([]);
 const activeIndex = ref(0);
 
-let sectionTimelines: gsap.core.Timeline[] = [];
+// Allow null so standalone sections keep the index aligned with sectionRefs.
+let sectionTimelines: (gsap.core.Timeline | null)[] = [];
 let stopScrollListener: (() => void) | undefined;
 let matchMedia: ReturnType<typeof gsap.matchMedia> | undefined;
 let sidebarVisible = false;
+let lastEmittedIndex: number | null | undefined;
 
 function setSectionRef(instance: Element | ComponentPublicInstance | null, index: number) {
   sectionRefs.value[index] = instance as ScrollShowcaseSectionInstance | null;
+}
+
+function getSections() {
+  return sectionRefs.value.map(section => section?.getRoot() ?? null);
 }
 
 function setSidebarVisible(visible: boolean) {
@@ -56,6 +64,14 @@ function setSidebarVisible(visible: boolean) {
   });
 }
 
+function emitActiveSection(index: number | null, source: ScrollShowcaseChangeSource = 'scroll') {
+  if (lastEmittedIndex === index)
+    return;
+
+  lastEmittedIndex = index;
+  emit('activeSectionChange', index === null ? null : props.items[index] ?? null, index, source);
+}
+
 function handleScroll(_event?: BigScrollEvent) {
   const root = rootRef.value;
   const sections = sectionRefs.value
@@ -68,6 +84,7 @@ function handleScroll(_event?: BigScrollEvent) {
   const viewportHeight = window.innerHeight;
   const rootRect = root.getBoundingClientRect();
   const sectionRects = sections.map(section => section.getBoundingClientRect());
+  const earthViewActivationLine = 0;
 
   setSidebarVisible(rootRect.top <= 0 && rootRect.bottom > 0);
 
@@ -85,14 +102,30 @@ function handleScroll(_event?: BigScrollEvent) {
     }
   });
 
-  if (rootRect.top < viewportHeight && rootRect.bottom > 0 && activeIndex.value !== closestIndex)
-    activeIndex.value = closestIndex;
+  if (rootRect.top > earthViewActivationLine) {
+    emitActiveSection(null);
+    return;
+  }
+
+  if (rootRect.top < viewportHeight && rootRect.bottom > 0) {
+    if (activeIndex.value !== closestIndex)
+      activeIndex.value = closestIndex;
+
+    emitActiveSection(closestIndex);
+  }
 }
 
 function handleItemClick(index: number) {
+  activeIndex.value = index;
+  emitActiveSection(index, 'navigation');
   const section = sectionRefs.value[index]?.getRoot();
   if (section)
     bigScroll?.scrollTo(section, { duration: 1.1 });
+}
+
+function handleActiveIndexUpdate(index: number) {
+  activeIndex.value = index;
+  emitActiveSection(index, 'navigation');
 }
 
 onMounted(async () => {
@@ -100,11 +133,13 @@ onMounted(async () => {
 
   const root = rootRef.value;
   const sidebar = sidebarRef.value;
-  const contents = sectionRefs.value
-    .map(section => section?.getContent())
-    .filter((content): content is HTMLElement => Boolean(content));
 
-  if (!root || !sidebar || contents.length === 0)
+  // Collect contents per-index; standalone sections return null and are skipped
+  // in animation setup but keep the array index aligned with sectionRefs.
+  const allContents = sectionRefs.value.map(section => section?.getContent() ?? null);
+  const animatedContents = allContents.filter((c): c is HTMLElement => c !== null);
+
+  if (!root || !sidebar || animatedContents.length === 0)
     return;
 
   gsap.set(sidebar, { autoAlpha: 0, pointerEvents: 'none' });
@@ -119,30 +154,37 @@ onMounted(async () => {
       sectionTimelines = [];
 
       if (context.conditions?.reduceMotion) {
-        gsap.set(contents, { autoAlpha: 1, x: 0, y: 0, scale: 1 });
+        gsap.set(animatedContents, { autoAlpha: 1, x: 0, y: 0, scale: 1 });
         return;
       }
 
-      sectionTimelines = contents.map(content => gsap.timeline({ paused: true })
-        .fromTo(content, {
-          autoAlpha: 0.15,
-          y: 80,
-          scale: 0.96,
-          transformOrigin: '50% 50%'
-        }, {
-          autoAlpha: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.5,
-          ease: 'none'
-        })
-        .to(content, {
-          autoAlpha: 0.15,
-          y: -80,
-          scale: 0.96,
-          duration: 0.5,
-          ease: 'none'
-        }));
+      // Build index-aligned timelines: null for standalone sections so that
+      // handleScroll's sectionTimelines[index]?.progress() skips them cleanly.
+      sectionTimelines = allContents.map(content => {
+        if (!content)
+          return null;
+
+        return gsap.timeline({ paused: true })
+          .fromTo(content, {
+            autoAlpha: 0.15,
+            y: 80,
+            scale: 0.96,
+            transformOrigin: '50% 50%'
+          }, {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.5,
+            ease: 'none'
+          })
+          .to(content, {
+            autoAlpha: 0.15,
+            y: -80,
+            scale: 0.96,
+            duration: 0.5,
+            ease: 'none'
+          });
+      });
 
       requestAnimationFrame(() => handleScroll());
     },
@@ -160,6 +202,10 @@ onBeforeUnmount(() => {
     gsap.killTweensOf(sidebarRef.value);
   sectionTimelines = [];
 });
+
+defineExpose({
+  getSections
+});
 </script>
 
 <template>
@@ -175,7 +221,7 @@ onBeforeUnmount(() => {
         :accent-color="themeStore.colorScheme[0]"
         :item-gap="40"
         :default-active="0"
-        @update:active-index="activeIndex = $event"
+        @update:active-index="handleActiveIndexUpdate"
         @item-click="handleItemClick"
       />
     </aside>
@@ -186,6 +232,7 @@ onBeforeUnmount(() => {
       :ref="instance => setSectionRef(instance, index)"
       :item="item"
       :index="index"
+      :standalone="item.standalone"
     >
       <template v-if="slots.section" #default="slotProps">
         <slot name="section" v-bind="slotProps" />

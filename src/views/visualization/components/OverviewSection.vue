@@ -122,7 +122,7 @@ onUnmounted(() => {
 
 <template>
   <section ref="sectionRef" class="overview-section text-white relative" aria-labelledby="overview-title">
-    <div class="gap-x-0 gap-y-40px grid items-center lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.2fr)]">
+    <div class="gap-x-0 gap-y-40px grid items-center lg:grid-cols-[minmax(0,0.5fr)_minmax(0,1.2fr)]">
       <div class="">
         <!-- 主标语 -->
         <div ref="sloganRef" class="overflow-hidden">
@@ -272,7 +272,7 @@ onUnmounted(() => {
 }
 
 .overview-media-img {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 5 / 3;
 }
 
 .overview-media-glow {

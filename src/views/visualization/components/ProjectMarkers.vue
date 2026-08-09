@@ -61,7 +61,7 @@ function getLeaderStyle(marker: ProjectMarkerConfig) {
         <TresMeshBasicMaterial
           :color="marker.pointColor ?? '#72f6b5'"
           :opacity="opacity"
-          :transparent="opacity < 1"
+          :transparent="true"
         />
       </TresMesh>
 

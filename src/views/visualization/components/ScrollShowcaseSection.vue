@@ -1,16 +1,11 @@
 <script setup lang="ts">
+import type { ScrollShowcaseItem } from '../types';
 import { useTemplateRef } from 'vue';
 
-interface ScrollShowcaseItem {
-  id: string;
-  label: string;
-  title: string;
-  description?: string;
-}
-
-defineProps<{
+const props = defineProps<{
   item: ScrollShowcaseItem;
   index: number;
+  standalone?: boolean;
 }>();
 
 const rootRef = useTemplateRef<HTMLElement>('rootRef');
@@ -18,7 +13,9 @@ const contentRef = useTemplateRef<HTMLElement>('contentRef');
 
 defineExpose({
   getRoot: () => rootRef.value,
-  getContent: () => contentRef.value
+  // Standalone sections manage their own animations; returning null tells
+  // ScrollShowcase to skip the fade/scale timeline for this section.
+  getContent: () => props.standalone ? null : contentRef.value
 });
 </script>
 
@@ -26,9 +23,18 @@ defineExpose({
   <section
     :id="item.id"
     ref="rootRef"
-    class="flex min-h-100vh items-center justify-center relative overflow-hidden"
+    :class="standalone
+      ? 'relative'
+      : 'flex min-h-100vh items-center justify-center relative overflow-hidden'"
   >
+    <!-- Standalone mode: render slot directly, no animation wrapper, no height/overflow constraints -->
+    <template v-if="standalone">
+      <slot :item="item" :index="index" />
+    </template>
+
+    <!-- Normal mode: contentRef wrapper drives the ScrollShowcase fade/scale timeline -->
     <div
+      v-else
       ref="contentRef"
       class="border-y border-white/10 flex min-h-100vh items-center relative"
     >
